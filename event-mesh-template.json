@@ -1,0 +1,7 @@
+{
+    "xsappname": "<xs-appname from kyma secret>",
+    "management": <credentials from kyma secret>,
+    "messaging": <credentials from kyma secret>,
+     "namespace": "<namespace from kyma secret>",
+    "serviceinstanceid": "<service instance id from kyma secret>"
+}

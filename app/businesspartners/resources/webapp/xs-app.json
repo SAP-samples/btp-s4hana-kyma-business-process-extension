@@ -1,0 +1,24 @@
+{
+	"welcomeFile": "index.html",
+	"authenticationMethod": "route",
+	"logout": {
+	"logoutEndpoint": "/do/logout"
+	},
+	"routes": [{
+		"source": "^/sales/(.*)$",
+		"destination": "srv-binding",
+		"authenticationType": "xsuaa"
+	},{
+	"source": "^/resources/(.*)$",
+	"target": "/resources/$1",
+	"authenticationType": "none",
+	"destination": "ui5"
+	},
+	{
+	"source": "^(.*)$",
+	"target": "$1",
+	"service": "html5-apps-repo-rt",
+	"authenticationType": "xsuaa"
+	}
+	]
+	}

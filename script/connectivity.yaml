@@ -1,0 +1,19 @@
+apiVersion: services.cloud.sap.com/v1alpha1
+kind: ServiceInstance
+metadata:
+  name: test-connectivity
+spec:
+  serviceOfferingName: connectivity
+  servicePlanName: connectivity_proxy
+  externalName: connectivity_proxy-instance
+
+---
+
+apiVersion: services.cloud.sap.com/v1alpha1
+kind: ServiceBinding
+metadata:
+  name: test-connectivity-binding
+spec:
+  serviceInstanceName: test-connectivity
+  externalName: test-connectivity-binding
+  secretName: test-connectivity-binding

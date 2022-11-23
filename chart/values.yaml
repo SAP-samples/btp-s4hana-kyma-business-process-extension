@@ -1,0 +1,116 @@
+
+# yaml-language-server: $schema=./values.root.schema.json
+
+global:
+  domain: <DOMAIN>
+  imagePullSecret: {}
+srv:
+  bindings:
+    uaa:
+      serviceInstanceName: xsuaa
+    db:
+      fromSecret: {{ .Release.Name }}-caphana
+    destinations:
+      serviceInstanceName: destinations
+    messaging:
+      serviceInstanceName: event-mesh
+  image:
+    repository: <DOCKER_ACCOUNT>/kyma-cap-s4ems-srv
+    tag: latest
+  env:
+    SERVERLESS_URL: https://<RELEASE_NAME>-qrcodegenerator.<domain>
+  resources:
+    limits:
+      ephemeral-storage: 1G
+      memory: 1000M
+    requests:
+      cpu: 1000m
+      ephemeral-storage: 1G
+      memory: 1000M
+  health_check:
+    liveness:
+      path: /
+    readiness:
+      path: /
+  additionalVolumes:
+    - name: connectivity-secret
+      volumeMount:
+        mountPath: /bindings/connectivity
+        readOnly: true
+      projected:
+        sources:
+          - secret:
+              name: <CONNECTIVITY_SECRET>
+              optional: false
+          - secret:
+              name: <CONNECTIVITY_SECRET>
+              optional: false
+              items:
+                - key: token_service_url
+                  path: url
+          - configMap:
+              name: <RELEASE_NAME>-connectivity-proxy-info
+              optional: false
+xsuaa:
+  serviceOfferingName: xsuaa
+  servicePlanName: application
+  parameters:
+    xsappname: kyma-cap-s4ems
+  config: xs-security.json
+hana_deployer:
+  image:
+    repository: <DOCKER_ACCOUNT>/kyma-cap-s4ems-db
+    tag: latest
+  bindings:
+    hana:
+      fromSecret: {{ .Release.Name }}-caphana
+  resources:
+    limits:
+      cpu: 2000m
+      memory: 1G
+    requests:
+      cpu: 1000m
+      memory: 1G
+destinations:
+  serviceOfferingName: destination
+  servicePlanName: lite
+  parameters:
+    version: 1.0.0
+    HTML5Runtime_enabled: true
+event_mesh:
+  serviceOfferingName: enterprise-messaging
+  servicePlanName: default
+  config: event-mesh.json
+html5_apps_deployer:
+  cloudService: com.bp.businesspartners
+  backendDestinations: 
+    srv-binding: 
+      service: srv
+  image:
+    repository: <DOCKER_ACCOUNT>/kyma-cap-s4ems-html5-deployer
+    tag: latest
+  bindings:
+    xsuaa:
+      serviceInstanceName: xsuaa
+    destination:
+      serviceInstanceName: destinations
+    html5_apps_repo:
+      serviceInstanceName: html5-apps-repo-host
+  resources:
+    limits:
+      cpu: 2000m
+      memory: 1G
+    requests:
+      cpu: 1000m
+      memory: 1G
+html5_apps_repo_host:
+  serviceOfferingName: html5-apps-repo
+  servicePlanName: app-host
+
+gitusername: <base64encodeduser>
+gitpassword: <base_64_encoded_GIT_secret>
+giturl: <git_repo_url>
+gitbranch: <branch>
+  
+functionshttpproxy: https://connectivity-proxy.kyma-system.svc.cluster.local:20003
+functionsenv: '{ "name":"s4h", "attachmentSrvApi":"API_CV_ATTACHMENT_SRV", "businessPartnerSrvApi":"API_BUSINESS_PARTNER", "businessObjectTypeName" : "BUS1006" }'

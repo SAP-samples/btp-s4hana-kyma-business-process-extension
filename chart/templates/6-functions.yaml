@@ -1,0 +1,73 @@
+
+apiVersion: serverless.kyma-project.io/v1alpha2
+kind: Function
+metadata:
+  name: {{ .Release.Name }}-qrcodegenerator
+  namespace: {{.Values.namespace}}
+  labels:
+     name: kyma-cap-s4ems
+spec:
+  runtime: nodejs14
+  source:
+    gitRepository:
+     url: {{.Values.giturl}}
+     reference: {{.Values.gitbranch}}
+     baseDir: /qrcodegenerator
+     auth:
+       type: basic
+       secretName: {{ .Release.Name }}-githubtools
+  env:
+    - name: http_proxy
+      valueFrom:
+        configMapKeyRef:
+          name: {{ .Release.Name }}-qrcodeconfig
+          key: http_proxy
+    - name: destination_name
+      valueFrom:
+        configMapKeyRef:
+          name: {{ .Release.Name }}-qrcodeconfig
+          key: destination_name
+    - name: dest_clientid
+      valueFrom:
+        secretKeyRef:
+          name: {{ .Release.Name }}-srv-destinations
+          key: clientid
+    - name: dest_clientsecret
+      valueFrom:
+        secretKeyRef:
+          name: {{ .Release.Name }}-srv-destinations
+          key: clientsecret
+    - name: dest_uri
+      valueFrom:
+        secretKeyRef:
+          name: {{ .Release.Name }}-srv-destinations
+          key: uri
+    - name: dest_url
+      valueFrom:
+        secretKeyRef:
+          name: {{ .Release.Name }}-srv-destinations
+          key: url
+          
+
+---
+
+apiVersion: gateway.kyma-project.io/v1beta1
+kind: APIRule
+metadata:
+  namespace: {{.Values.namespace}}
+  labels:
+    app: {{ .Release.Name }}-qrcodegenerator
+    name: kyma-cap-s4ems
+  name: {{ .Release.Name }}-qrcodegenerator
+spec:
+  host: {{ .Release.Name }}-qrcodegenerator.{{ .Values.global.domain }}
+  service:
+    name: {{ .Release.Name }}-qrcodegenerator
+    port: 80
+  gateway: kyma-system/kyma-gateway
+  rules:
+    - path: /.*
+      methods: ["GET", "PUT", "POST", "HEAD", "PATCH", "DELETE" ]
+      accessStrategies:
+        - handler: allow
+      mutators: []

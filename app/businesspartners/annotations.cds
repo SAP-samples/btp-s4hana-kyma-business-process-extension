@@ -1,0 +1,1 @@
+using service.businessPartnerValidation.SalesService as service from '../../srv/ui-annotations';
