@@ -9,7 +9,7 @@ srv:
     uaa:
       serviceInstanceName: xsuaa
     db:
-      fromSecret: {{ .Release.Name }}-caphana
+      fromSecret: <RELEASE_NAME>-caphana
     destinations:
       serviceInstanceName: destinations
     messaging:
@@ -63,7 +63,7 @@ hana_deployer:
     tag: latest
   bindings:
     hana:
-      fromSecret: {{ .Release.Name }}-caphana
+      fromSecret: <RELEASE_NAME>-caphana
   resources:
     limits:
       cpu: 2000m

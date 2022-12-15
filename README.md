@@ -1,4 +1,4 @@
-# SAP S/4HANA Extended Business Process Scenario in Kyma
+# SAP S/4HANA Extend Business Process Scenario in SAP BTP, Kyma Runtime
 ## Description
 
 The main intent of this scenario is to complement an existing business process in an SAP solution – currently SAP S/4HANA with additional business process steps. This involves adding major logic and additional data and goes beyond simple UI changes.
@@ -53,15 +53,15 @@ The Business Partner Validation application is developed using CAP and runs on t
 
 The application requires the following set of [Entitlements and Quotas](https://help.sap.com/products/BTP/65de2977205c403bbc107264b8eccf4b/00aa2c23479d42568b18882b1ca90d79.html?locale=en-US) in the SAP BTP cockpit:
 
-| Service                           | Plan       | Number of Instances |
-|-----------------------------------|------------|:-------------------:|
-| Event Mesh                        | default    |          1          |
-| SAP HANA Schemas & HDI Containers | hdi-shared |          1          |
-| SAP HANA Cloud                    | hana       |          1          |
-| Kyma runtime                      |            |          1          |
-| Destination Service               |            |          1          |
-| Connectivity Service              |            |          1          |
-| Launchpad Service	               | standard	 |Subscription|
+| Service                           | Plan               | Number of Instances |
+|-----------------------------------|------------------- |:-------------------:|
+| SAP HANA Schemas & HDI Containers | hdi-shared         |          1          |
+| SAP HANA Cloud                    | tools              |  Subscription       |
+| SAP HANA Cloud                    | hana               |          1          |
+| Event Mesh                        | default            |          1          |
+| Kyma runtime                      |                    |          1          |
+| Connectivity Service              | connectivity_proxy |          1          |
+| Launchpad Service                 | standard           |  Subscription       |
 
 ## Configuration
 
@@ -153,8 +153,8 @@ No known issues.
 
 ## How to Obtain Support
 
-In case you find a bug, or you need additional support, please [open an issue](https://github.com/SAP-samples/btp-s4hana-kyma-business-process-extension/issues/new) in GitHub.
+In case you find a bug, or you need additional support, please open an issue here in GitHub.
 
 ## License
 
-Copyright (c) 2022 SAP SE or an SAP affiliate company. All rights reserved. This project is licensed under the Apache Software License, version 2.0 except as noted otherwise in the [LICENSE](LICENSES/Apache-2.0.txt) file.
+Copyright (c) 2022 SAP SE or an SAP affiliate company. All rights reserved. This project is licensed under the Apache Software License, version 2.0 except as noted otherwise in the [LICENSE](LICENSE) file.

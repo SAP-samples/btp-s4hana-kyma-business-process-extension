@@ -2,7 +2,7 @@
 
 ## Clone the Mock Server
 
-Clone the mock server application from [GitHub](https://github.com/SAP-samples/btp-s4hana-kyma-business-process-extension.git) using the branch `mockserver`:
+Clone the mock server application from [GitHub](https://github.com/SAP-samples/btp-s4hana-kyma-business-process-extension) using the branch `mockserver`:
 
 ```
 git clone <Git URL> -b mockserver

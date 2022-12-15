@@ -29,15 +29,15 @@ This section contains the prerequisites that you have to fulfill before you get 
 
 The application requires the following [Entitlements and Quotas](https://help.sap.com/products/BTP/65de2977205c403bbc107264b8eccf4b/00aa2c23479d42568b18882b1ca90d79.html?locale=en-US) in the SAP BTP cockpit:
 
-| Service                           | Plan       | Number of Instances |
-|-----------------------------------|------------|:-------------------:|
-| SAP HANA Schemas & HDI Containers | hdi-shared |          1          |
-| SAP HANA Cloud                    | tools      |          1          |
-| Event Mesh                        | default    |          1          |
-| Kyma runtime                      |            |          1          |
-| Destination Service               |            |          1          |
-| Connectivity Service              | proxy      |          1          |
-| Launchpad Service                 | standard   |  Subscription       |
+| Service                           | Plan               | Number of Instances |
+|-----------------------------------|------------------- |:-------------------:|
+| SAP HANA Schemas & HDI Containers | hdi-shared         |          1          |
+| SAP HANA Cloud                    | tools              |  Subscription       |
+| SAP HANA Cloud                    | hana               |          1          |
+| Event Mesh                        | default            |          1          |
+| Kyma runtime                      |                    |          1          |
+| Connectivity Service              | connectivity_proxy |          1          |
+| Launchpad Service                 | standard           |  Subscription       |
 
 ## Instance of Connectivity Service
 

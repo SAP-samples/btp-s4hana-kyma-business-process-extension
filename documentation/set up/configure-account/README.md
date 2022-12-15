@@ -1,6 +1,6 @@
 # Configure Your Subaccount in SAP BTP
 
-In this section, you will set up the subaccount in SAP BTP for developing the S/4HANA Kyma extension application.
+In this section, you will set up the subaccount in SAP BTP for developing the SAP S/4HANA Kyma extension application.
 
 **Prerequisite:** You must have an administrator role for SAP BTP.
 
