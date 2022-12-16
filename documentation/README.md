@@ -12,7 +12,7 @@
   - [Discover the Cloud Application Programming Model (CAP)](./discover/discover-cap/README.md)
   - [Discover the SAP Cloud SDK](./discover/discover-sap-cloud-sdk/README.md)
   - [Discover SAPUI5 and SAP Fiori Elements](./discover/ui5-fiori-elements-business-app-studio-launchpad/README.md)
-  - [Learn About of SAP BTP, Kyma Runtime](discover/kyma-basics/README.md)
+  - [Learn About SAP BTP, Kyma Runtime](discover/kyma-basics/README.md)
   - [CAP on Kyma](discover/cap-on-kyma/README.md)
   
 - Explore
