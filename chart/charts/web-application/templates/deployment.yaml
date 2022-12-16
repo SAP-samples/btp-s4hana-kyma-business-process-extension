@@ -18,7 +18,7 @@ spec:
       automountServiceAccountToken: false
       serviceAccountName: {{ .Values.serviceAccountName }}
       containers:
-      - image: {{ include "web-application.imageName" . }}
+      - image: "{{ required ".Values.image.repository is required!" .Values.image.repository }}:{{ .Values.image.tag }}"
         name: {{ include "web-application.name" . }}
         ports:
         - name: http
@@ -30,17 +30,10 @@ spec:
             name: {{ $secretName }}
         {{- end }}
         env:
+        {{- include "cap.web-application.env" . | indent 8 }}
         {{- range $k, $v := .Values.env }}
         - name: {{ $k }}
-          value: {{ $v | quote }}
-        {{- end }}
-        {{- if not .Values.env.APPLICATION_NAME }}
-        - name: APPLICATION_NAME
-          value: {{ include "web-application.fullname" . }}
-        {{- end }}
-        {{- if not .Values.env.APPLICATION_URI }}
-        - name: APPLICATION_URI
-          value: {{ include "web-application.applicationUri" . }}
+          value: {{ tpl ($v | toString) $ | quote }}
         {{- end }}
         {{- if .Values.bindings }}
         - name: SERVICE_BINDING_ROOT
@@ -86,7 +79,7 @@ spec:
         - name: {{ $volume.name | quote }}
           {{- toYaml $volume.volumeMount  | nindent 10 }}
         {{- end }}
-        {{- include "web-application.serviceMounts" . | nindent 8 }}
+        {{- include "cap.web-application.serviceMounts" . | nindent 8 }}
         resources:
           {{- toYaml .Values.resources | nindent 10 }}
         securityContext:
@@ -110,7 +103,7 @@ spec:
       volumes:
       - emptyDir: {}
         name: tmp
-      {{- include "web-application.serviceVolumes" . | nindent 6 }}
+      {{- include "cap.web-application.serviceVolumes" . | nindent 6 }}
       {{- range $volume := .Values.additionalVolumes }}
       -
         {{- omit $volume "volumeMount" | toYaml  | nindent 8 }}

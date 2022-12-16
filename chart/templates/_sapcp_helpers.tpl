@@ -6,7 +6,7 @@ SAPCP Service Bindings: volume mounts
     {{- $ := . -}}
     {{- range $key, $binding := .bindings }}
 - name: {{ $key | replace "_" "-" }}-secret
-  mountPath: /bindings/{{ $key }}
+  mountPath: /etc/secrets/sapcp/{{ $key | replace "_" "-" }}/{{ $key }}
   readOnly: true
     {{- end }}
 {{- end }}

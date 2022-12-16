@@ -1,6 +1,6 @@
 {
-    "emname": "bpems",
-    "namespace": "refapps/bpems/event",
+    "emname": "kymamock",
+    "namespace": "refapps/kymamock/event",
     "options": {
       "management": true,
       "messaging": true,

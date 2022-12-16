@@ -1,160 +1,153 @@
-# SAP S/4HANA Extend Business Process Scenario in SAP BTP, Kyma Runtime
-## Description
+# OData Mock Server
 
-The main intent of this scenario is to complement an existing business process in an SAP solution – currently SAP S/4HANA with additional business process steps. This involves adding major logic and additional data and goes beyond simple UI changes.
+This is a Mock Server for OData API's (e.g. from S/4HANA, ECC etc.).
 
-This application showcases:
+This project implies to work as SAP S/4HANA Cloud Mock backend server for the Reference Applications use cases. The project is built on Cloud Application Programming ([CAP](https://cap.cloud.sap/docs/)) model with mocking capabilities.
 
-- Building applications on SAP Business Technology Platform (SAP BTP) using [SAP Cloud Application Programming Model (CAP)](https://cap.cloud.sap/docs/)
-- Consuming events from SAP S/4HANA on-premise using [SAP Event Mesh](https://help.sap.com/viewer/bf82e6b26456494cbdd197057c09979f/Cloud/en-US/df532e8735eb4322b00bfc7e42f84e8d.html)
-- Consuming REST APIs from SAP S/4HANA on-premise using SAP BTP Platform Connectivity Service
-- Building and deploying a function in [SAP BTP Kyma Runtime, Serverless](https://kyma-project.io/docs/components/serverless)
+## Why to use
 
-## Business Scenario
+1. Speed up mission implementation. SAP Customer can get an overview of the scenario even without ERP/Cloud Connector configuration.
+2. Troubleshooting. If something goes wrong it's nice to have an opportunity to limit the scope for cloud services only.
+3. Automated integration/E2E tests.
 
-A business scenario is used to showcase how to build a SAP S/4HANA on-premise extension application on SAP BTP, Kyma runtime.
+## Features
 
-John, who is an employee of Business Partner Validation Firm iCredible, which is a third-party vendor of ACME Corporation, would like to get notifications whenever new Business Partners are added in the SAP S/4HANA backend system of ACME Corporation. John would then be able to review the Business Partner details in his extension app. He would proceed to visit the Business Partner’s registered office and do some background verification. John would then proceed to update or validate the verification details into the extension app. Once the details are verified, the Business Partner gets activated in the SAP S/4HANA system of ACME Corporation.
+General features:
+- Simplified SAP S/4HANA mock server APIs with Business Partner and Business Partner Address entity
+- OData Endpoints for both versions - [V2](https://cap.cloud.sap/docs/advanced/odata#v2-support) and V4
+- CSV files for [mock data](https://cap.cloud.sap/docs/guides/using-services#local-mocking)
+- [Event emitting](https://cap.cloud.sap/docs/guides/messaging/#using-sap-event-mesh) on [data change](https://cap.cloud.sap/docs/guides/providing-services#registering-event-handlers)
+- Enhancement possibilities (adding new services)
+- In-memory [SQLite DB](https://cap.cloud.sap/docs/guides/databases#deploy-to-sqlite) is used (no DB instance is needed -> low cost, no dependencies)
+- [SwaggerUI](https://cap.cloud.sap/docs/advanced/openapi#swagger-ui)
+- Hybrid testing with Event Mesh [test](https://cap.cloud.sap/docs/advanced/hybrid-testing)
 
-The scenario covers:
+## Prerequisites
 
-- Custom extension application that works independently from SAP S/4HANA
+To deploy the mock server application it's necessary to have a SAP BTP Kyma runtime.
 
-- Changes in SAP S/4HANA communicated via events in real time to extension application
+## Quick deploy in SAP BTP Kyma Environment
 
-- Compute intensive processing available on demand (using serverless)
+1. Clone the mock server using the branch `mockserver`:
 
-- Vendor personnel needs access to only custom app
+	```
+	git clone https://github.com/SAP-samples/btp-s4hana-kyma-business-process-extension.git -b mockserver
+	```
+	
+2. Navigate to root folder in the cloned source code and run the following commands to build and push the docker image
 
-## Architecture
+    ```shell  
+    cds build --production
+    pack build kymamock --path gen/srv --builder paketobuildpacks/builder:base
+    docker tag mock:latest <DOCKER_ACCOUNT>/kymamock:latest
+    docker push <DOCKER_ACCOUNT>/kymamock:latest
+    ```
 
-### Solution Diagram
+3. Navigate to the charts folder in the cloned source code.
 
-![solution diagram](./documentation/images/solutionDiagram.jpg)
+4. Edit the domain of your cluster, so that the URL of your CAP service can be generated. You can use the preconfigured domain name for your Kyma cluster:
 
-The Business Partner Validation application is developed using CAP and runs on the SAP BTP, Kyma runtime. It consumes platform services like SAP Event Mesh, SAP HANA and Connectivity. The events occuring in SAP S/4HANA on-premise are inserted into the SAP Event Mesh queue. The application running in Kyma is notified on events, consumes them from the queue and inserts the event data into the SAP HANA database. The Business Partner Validation Application uses SAP S/4HANA REST API's to read additional Business Partner Data from the SAP S/4HANA system. in a next step, the Business Partner Validation App uses an event-driven approach as well by firing events that get consumed by Serverless Function which posts the relevant business partner data to SAP S/4HANA on-premise system using SAP S4/HANA OData api's.
+    ```shell  
+    kubectl get gateway -n kyma-system kyma-gateway -o jsonpath='{.spec.servers[0].hosts[0]}'
+    ```
+5. Find all <DOCKER_ACCOUNT> and replace all with your docker account/repository.
 
-## Requirements
-
-* SAP S/4HANA on-premise system
-* SAP BTP account
-
-### Prerequisites
-
-* [Node.js](https://nodejs.org/en/download/)
-* [kubectl command line tool]( https://kubernetes.io/docs/tasks/tools/install-kubectl-windows/)
-* [Visual Studio Code](https://cap.cloud.sap/docs/get-started/in-vscode)
-* [cds-dk](https://cap.cloud.sap/docs/get-started/)
-* [SQLite ](https://sqlite.org/download.html)
-* [Docker](https://www.docker.com/products/docker-desktop)
-* Get the required [tools](https://cap.cloud.sap/docs/guides/deployment/deploy-to-kyma#prerequisites) as mentioned in the CAP documentation
-
-### Entitlements
-
-The application requires the following set of [Entitlements and Quotas](https://help.sap.com/products/BTP/65de2977205c403bbc107264b8eccf4b/00aa2c23479d42568b18882b1ca90d79.html?locale=en-US) in the SAP BTP cockpit:
-
-| Service                           | Plan               | Number of Instances |
-|-----------------------------------|------------------- |:-------------------:|
-| SAP HANA Schemas & HDI Containers | hdi-shared         |          1          |
-| SAP HANA Cloud                    | tools              |  Subscription       |
-| SAP HANA Cloud                    | hana               |          1          |
-| Event Mesh                        | default            |          1          |
-| Kyma runtime                      |                    |          1          |
-| Connectivity Service              | connectivity_proxy |          1          |
-| Launchpad Service                 | standard           |  Subscription       |
-
-## Configuration
-
-
-### Step 1: [SAP S/4HANA Enable OData Service for Business Partner](./documentation/set%20up/s4h-setup/README.md)
-
-### Step 2: [Setup Connectivity between SAP S/4HANA System, SAP BTP](./documentation/set%20up/connectivity/README.md)
-
-### Step 3: Build and Deploy the CAP Application
-- [Configure Your Global Account and Subaccounts in SAP BTP ](configure-account/README.md)
-- [Configure Command Line Tool kubectl](./documentation/set%20up/kubeconfig-setup/README.md)
-- [Create an SAP HANA Cloud Instance](./documentation/set%20up/hana/README.md)
-- [Determine Placeholder Values](./documentation/deploy/prepare-deployment/README.md)
-- [Deploy the Application to SAP BTP Kyma Runtime](./documentation/deploy/README.md)
-
-### Step 4: [Configure Event-Based Communication between SAP S/4HANA and SAP Event Mesh](./documentation/deploy/configure-channel/README.md)
-
-
-## Demo Script
+6.  For a private container registry - Create a secret for your Docker repository and replace the value of DOCKER_SECRET with the created secret name.
    
-1. To start your Business Partner Validation Application go to **Instances and Subscriptions**.
-2. Find **Launchpad Service** and click to open the application.
-3. On the website, find your created website and click on the tile to open it.
-4. Click on the **Business Partner Validation** tile.
+    imagePullSecret: name: <DOCKER_SECRET>
 
-![fiori tile](./documentation/images/fioriLaunchpad.JPG)
+7. Find all <RELEASE_NAME_OF_KYMAAPP> and replace all with the release name of your deployed [CAP on Kyma](https://github.com/SAP-samples/btp-s4hana-kyma-business-process-extension/blob/main/documentation/deploy/deploy/README.md) application.
 
-5. The list of Business Partners along with their **Verification Status** gets displayed. 
+**Note:** Please make sure that you deploy the mock server to the same namespace where the Kyma application have been deployed.
 
-![BP list](./documentation/images/BPListView.JPG)
+8. Run the following command to deploy your application
 
-6. Log in to the SAP S/4HANA on-premise system.
+    ```shell 
+    helm upgrade --install <RELEASE_NAME> ./chart -n <NAMESPACE>
 
-![S/4HANA login](./documentation/images/GuiLogin.JPG)
+## How to use
 
-7. Enter the transaction code **bp**.
+1. After the successful deployment you will get the following message:
 
-![bp transaction](./documentation/images/BPtransaction.JPG)
+    <code>Application "mock-srv" started and available at "..."</code>
 
-8. Choose **Person**.
+2. Follow the given URL to get the CAP App Index Page. You can find *'/op-api-business-partner-srv'* link there. This URL can be used as OData V4 Endpoint. Use this URL in the corresponding destination for your mission.
 
-![person](./documentation/images/person.png)
+3. If you need V2 Endpoint please add '/v2' to the endpoint URL to get something like that:
 
-9. Provide **First name** and **Last name** for the Business Partner.
-![name](./documentation/images/name.png)
+    <code>https://someDomain/v2/op-api-business-partner-srv</code>
 
-10. Provide the address.
-![address](./documentation/images/bpaddress.png)
+3. On the index page there is also a link to SwaggerUI: *Open API Preview*. Open it and go to the section *POST /A_BusinessPartner*. Click the button *Try it out*. Use the following JSON as a payload (replace the proposed one):
 
-11. Move to the **Status** tab and check mark the **Central Block** lock. Choose **Save** to create the new Business Partner. 
+```
+    {  
+	"BusinessPartner": "555",  
+	"BusinessPartnerName": "Max Mustermann",  
+	"BusinessPartnerFullName": "Max Mustermann",  
+	"FirstName": "Max",  
+	"LastName": "Mustermann",  
+	"BusinessPartnerIsBlocked": true,  
+	"to_BusinessPartnerAddress": [{  
+        "BusinessPartner": "555",  
+		"AddressID": "1",  
+		"StreetName": "Platz der Republik",  
+		"HouseNumber": "1",  
+		"PostalCode": "10557",  
+		"CityName": "Berlin",  
+		"Country": "DE"  
+		}]  
+    }
+```    
 
-![lock](./documentation/images/lock.png)
+4. Click *Execute*. You should get a response with the code 201. This means that the entry was created in the database and the corresponding event was triggered (if the Event Mesh instance is binded).
 
-12. Now go back to the **Business Partner Validation** application to see if the new Business Partner appears on the UI.
+## Hybrid test
 
-![new bp](./documentation/images/bpNew.png)
+With the hybrid testing capabilities, you stay in your local development environment and avoid long turn-around times of cloud deployment and you can use Event Mesh instance from the cloud.
 
-13. Go to the details page for the new Business Partner. Choose **Edit**.
+It's assumed that the Event Mesh service and its key is already created beforehand.
 
-![edit bp](./documentation/images/editBP.png)
+Before the test you should be logged in to the Cloud Foundry Environment. To do it use *Ctrl+Shift+P* and select *CF: Login To Cloud Foundry*. Follow the next instructions on the screen.
 
-14. Change the Verification Status to **Verification Status: VERIFIED**. You can also edit the street name, postal code also if needed. Save the data. 
+To bind the Event Mesh service use the following command in terminal:
 
-![edit values](./documentation/images/editValue.png)
+<code>cds bind messaging -2 BusinessPartnerValidation-ems:emkey</code>
 
-15. Open SAP S/4HANA system, bp transaction. Search for the newly created **BusinessPartner**.
+After that the file *.cdsrc-private.json* will be created/updated with the corresponding information.
 
-![search bp](./documentation/images/searchBP.png)
+To start the Mock Server in hybrid mode use the following command:
 
-16. Double click on the Business Partner.
+<code>cds watch --profile hybrid</code>
 
-![click bp](./documentation/images/clickBP.png)
+## Project Structure
 
-17. You can see that the **Central Block** lock has been removed. 
+It contains these folders and files, following our recommended project layout:
 
-![release lock](./documentation/images/releasedLock.png)
+File or Folder | Purpose
+---------|----------
+`app/` | content for UI frontends goes here
+`img/` | images for README.md
+`srv/` | service models and CSV data
+`package.json` | project metadata and configuration
+`readme.md` | this getting started guide
+`mta.yaml` | ...
+`server.js` | ...
 
-18. The serverless application has also uploaded a QR code for the address details of the Business Partner to the SAP S/4HANA system. 
-You can view this by clicking on the arrow icon in the top left corner. You will have to give permission for downloading the image. 
 
-![attachment List](./documentation/images/attachmentList.png)
+- Open a new terminal and run `cds watch` 
+- (in VS Code simply choose _**Terminal** > Run Task > cds watch_)
 
-19. You can also notice that in the Business Partner Validation UI, the status is now set as **COMPLETED**.
+## Changing Mock Data
 
+If you want to deploy the Mock Server with other mock data you should change the corresponding CSV files in *srv/csv/* folder.
 
-## Known Issues
+For example to create a new business partner add a new line to *OP_API_BUSINESS_PARTNER_SRV-A_BusinessPartner.csv* file. The content of the line should exactly correspond to the header line of the file. Here is an example how to add a new business partner with the ID, name and category filled only:
 
-No known issues.
+![New mock data line](img/new-mock-data-line.png)
 
-## How to Obtain Support
-
-In case you find a bug, or you need additional support, please open an issue here in GitHub.
-
-## License
-
-Copyright (c) 2022 SAP SE or an SAP affiliate company. All rights reserved. This project is licensed under the Apache Software License, version 2.0 except as noted otherwise in the [LICENSE](LICENSE) file.
+To add additional field to the mock data do the following: 
+- check the field name in the model file *srv/external/OP_API_BUSINESS_PARTNER_SRV.cds*:
+  ![Field Name in Model](img/model-file-example.png)
+- add the field name to the header and field value to the lines correspondingly:
+  ![New field data](img/new-field.png)
+- **[NOTE]:** you should adjust all the existing lines with the new field(s)!
