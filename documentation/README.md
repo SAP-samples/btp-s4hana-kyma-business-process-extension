@@ -1,5 +1,7 @@
 # Project Board
 
+<!-- disco-toc-start -->
+
 1. [Discover](discover/README.md)
     1. [Learn how to use missions and project boards in SAP Discovery Center](./discover/how-to-use-missions/README.md)
     1. [The Mission Story](discover/business-story/README.md)
@@ -38,3 +40,4 @@
     1. [Complete the Mission](complete/complete-mission/README.md)
     2. [Provide Your Feedback](complete/give-feedback/README.md)
 
+<!-- disco-toc-end -->
