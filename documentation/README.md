@@ -14,30 +14,35 @@
   - [Discover SAPUI5 and SAP Fiori Elements](./discover/ui5-fiori-elements-business-app-studio-launchpad/README.md)
   - [Learn About of SAP BTP, Kyma Runtime](discover/kyma-basics/README.md)
   - [CAP on Kyma](discover/cap-on-kyma/README.md)
-2. [Explore](explore/README.md)
-    1. [Understand the Database Service](explore/db-service/README.md)
-    1. [Understand the Business Partner Service](explore/bp-service/README.md)
-    1. [Understand the QRCode Generator](explore/qrcodegenerator/README.md)
-    1. [Understand the Approuter](explore/approuter/README.md)
-2. [Prepare](prepare/README.md)
-    1. [Prerequisites and Required Systems](prepare/prerequisites/README.md)
-    1. [Look Up API in API Business Hub](prepare/explore-apis-and-events/README.md)
-    1. [Create an SAP S/4HANA Test System Using SAP Cloud Appliance Library](prepare/cal/README.md)
-3. [Set Up](set%20up/README.md)
-    1. [SAP BTP Setup Automator](set%20up/btp-setup-automator/README.md)
-    1. [Optional][Configure Your Global Account and Subaccounts in SAP BTP](set%20up/configure-account/README.md)
-    1. [Create an SAP HANA Cloud Instance](set%20up/hana/README.md)
-    1. [SAP S/4HANA Enable OData Service for Business Partner](set%20up/s4h-setup/README.md)
-    1. [Set Up Connectivity Between SAP S/4HANA System and SAP BTP](set%20up/connectivity/README.md)
-    1. [Configure Command Line Tool *kubectl*](set%20up/kubeconfig-setup/README.md)
-4. [Deploy](deploy/README.md)
-    1. [Determine Placeholders](deploy/prepare-deployment/README.md)
-    1. [Deploy the Application to SAP BTP, Kyma Runtime](deploy/deploy/README.md)
-    1. [Configure Event-Based Communication between SAP S/4HANA and SAP Event Mesh](deploy/configure-channel/README.md)
-    1. [Run the Business Partner Application](deploy/run-the-scenario/README.md)
-    1. Optional [Set Up Mock Server](deploy/setup-mock/README.md)
-5. [Complete](complete/README.md)
-    1. [Complete the Mission](complete/complete-mission/README.md)
-    2. [Provide Your Feedback](complete/give-feedback/README.md)
+  
+- Explore
+  - [Understand the Database Service](explore/db-service/README.md)
+  - [Understand the Business Partner Service](explore/bp-service/README.md)
+  - [Understand the QRCode Generator](explore/qrcodegenerator/README.md)
+  - [Understand the Approuter](explore/approuter/README.md)
+  
+- Prepare
+  - [Prerequisites and Required Systems](prepare/prerequisites/README.md)
+  - [Look Up API in API Business Hub](prepare/explore-apis-and-events/README.md)
+  - [Create an SAP S/4HANA Test System Using SAP Cloud Appliance Library](prepare/cal/README.md)
+  
+- Set Up
+  - [SAP BTP Setup Automator](set%20up/btp-setup-automator/README.md)
+  - [Optional][Configure Your Global Account and Subaccounts in SAP BTP](set%20up/configure-account/README.md)
+  - [Create an SAP HANA Cloud Instance](set%20up/hana/README.md)
+  - [SAP S/4HANA Enable OData Service for Business Partner](set%20up/s4h-setup/README.md)
+  - [Set Up Connectivity Between SAP S/4HANA System and SAP BTP](set%20up/connectivity/README.md)
+  - [Configure Command Line Tool *kubectl*](set%20up/kubeconfig-setup/README.md)
+  
+- Deploy
+  - [Determine Placeholders](deploy/prepare-deployment/README.md)
+  - [Deploy the Application to SAP BTP, Kyma Runtime](deploy/deploy/README.md)
+  - [Configure Event-Based Communication between SAP S/4HANA and SAP Event Mesh](deploy/configure-channel/README.md)
+  - [Run the Business Partner Application](deploy/run-the-scenario/README.md)
+  - Optional [Set Up Mock Server](deploy/setup-mock/README.md)
+  
+- Complete
+  - [Complete the Mission](complete/complete-mission/README.md)
+  - [Provide Your Feedback](complete/give-feedback/README.md)
 
 <!-- disco-toc-end -->
