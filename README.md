@@ -1,3 +1,4 @@
+[![REUSE status](https://api.reuse.software/badge/github.com/SAP-samples/btp-s4hana-kyma-business-process-extension)](https://api.reuse.software/info/github.com/SAP-samples/btp-s4hana-kyma-business-process-extension)
 # SAP S/4HANA Extend Business Process Scenario in SAP BTP, Kyma Runtime
 ## Description
 
