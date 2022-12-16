@@ -2,7 +2,7 @@
 
 <!-- disco-toc-start -->
 
-1. [Discover](discover/README.md)
+1. Discover
     1. [Learn how to use missions and project boards in SAP Discovery Center](./discover/how-to-use-missions/README.md)
     1. [The Mission Story](discover/business-story/README.md)
     1. [Learn the Basics of SAP BTP](discover/btp-basics/README.md)
