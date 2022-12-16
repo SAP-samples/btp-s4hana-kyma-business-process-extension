@@ -34,11 +34,17 @@ See section [Creating RFC Destination](https://help.sap.com/docs/r/810dfd34f2cc4
  5. After your configuration is saved, choose **Activate - Deactivate**.
 
  6. Choose **Check connection**.
- 
-    ![Check Connection](./images/EventBased6.png)
 
  7. Choose **Outbound Bindings** to start the configuration.
+ 
+  ![Check Connection](./images/EventBased6.png)
 
- 8. In the next screen, choose **Create** &rarr; **Topic** and choose: "BusinessPartner/created/V1" and "BusinessPartner/changed/V1".
-
- ![Create Outbound Bindings](./images/EventBased7.png)
+ 8. In the next screen, choose **Create** &rarr; **Topic** and choose: "BusinessPartner/created/V1" and click **Enter**.
+    
+   ![Create Outbound Bindings](./images/EventBased7.png)
+ 
+ 9. Repeat the above step and choose "BusinessPartner/changed/V1".
+ 
+ 10. The added topics get listed as below:
+ 
+    ![List Topics](./images/EventBased8.png)
