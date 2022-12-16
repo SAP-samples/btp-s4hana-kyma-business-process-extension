@@ -2,10 +2,10 @@
 
 1. Start your Business Partner Validation Application:
 
-- Navigate to **Instances and Subscriptions**.
-- Find **Launchpad Service** and click to open the application.
-- In the Website Manager find your created website and click on tile to open it.
+- Navigate to **HTML5 Applications**.
+- Find your application and click to open the application.
 - Click on **Business Partner Validation** tile.
+- Click on **Go**.
 - The list of BusinessPartners along with their verification status gets displayed.
 
  ![App](./images/endtoend2.png)
