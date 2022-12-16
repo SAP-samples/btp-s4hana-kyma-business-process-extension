@@ -43,8 +43,4 @@ See section [Creating RFC Destination](https://help.sap.com/docs/r/810dfd34f2cc4
     
    ![Create Outbound Bindings](./images/EventBased7.png)
  
- 9. Repeat the above step and choose "BusinessPartner/changed/V1".
- 
- 10. The added topics get listed as below:
- 
-    ![List Topics](./images/EventBased8.png)
+ 9. Repeat the above step, choose "BusinessPartner/changed/V1" and click **Enter**
