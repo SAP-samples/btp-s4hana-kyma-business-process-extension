@@ -3,12 +3,12 @@
 <!-- disco-toc-start -->
 
 - Discover
-  - [Learn how to use missions and project boards in SAP Discovery Center](./discover/how-to-use-missions/README.md)
+  - [Learn How to Use Missions and Project Boards in SAP Discovery Center](./discover/how-to-use-missions/README.md)
   - [The Mission Story](discover/business-story/README.md)
   - [Learn the Basics of SAP BTP](discover/btp-basics/README.md)
   - [Explore SAP Integration Suite](./discover/sap-integration-suite/README.md)
-  - [Learn the concepts behind business events and event-driven architectures](./discover/event-driven-architecture/README.md)
-  - [Learn about SAP Event Mesh](./discover/sap-event-mesh/README.md)
+  - [Learn the Concepts Behind Business Events and Event-Driven Architectures](./discover/event-driven-architecture/README.md)
+  - [Learn About SAP Event Mesh](./discover/sap-event-mesh/README.md)
   - [Discover the Cloud Application Programming Model (CAP)](./discover/discover-cap/README.md)
   - [Discover the SAP Cloud SDK](./discover/discover-sap-cloud-sdk/README.md)
   - [Discover SAPUI5 and SAP Fiori Elements](./discover/ui5-fiori-elements-business-app-studio-launchpad/README.md)
