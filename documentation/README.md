@@ -23,14 +23,14 @@
   
 - PREPARE
   - [Prerequisites and Required Systems](prepare/prerequisites/README.md)
-  - [Look Up API in API Business Hub](prepare/explore-apis-and-events/README.md)
+  - [Look up API in API Business Hub](prepare/explore-apis-and-events/README.md)
   - [Create an SAP S/4HANA Test System Using SAP Cloud Appliance Library](prepare/cal/README.md)
   
 - SET UP
   - [SAP BTP Setup Automator](set%20up/btp-setup-automator/README.md)
   - [Optional: Configure Your Global Account and Subaccounts in SAP BTP](set%20up/configure-account/README.md)
   - [Create an SAP HANA Cloud Instance](set%20up/hana/README.md)
-  - [SAP S/4HANA Enable OData Service for Business Partner](set%20up/s4h-setup/README.md)
+  - [SAP S/4HANA Enable oData Service for Business Partner](set%20up/s4h-setup/README.md)
   - [Set Up Connectivity Between SAP S/4HANA System and SAP BTP](set%20up/connectivity/README.md)
   - [Configure Command Line Tool *kubectl*](set%20up/kubeconfig-setup/README.md)
   
