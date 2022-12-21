@@ -2,7 +2,7 @@
 
 <!-- disco-toc-start -->
 
-- Discover
+- DISCOVER
   - [Learn How to Use Missions and Project Boards in SAP Discovery Center](./discover/how-to-use-missions/README.md)
   - [The Mission Story](discover/business-story/README.md)
   - [Learn the Basics of SAP BTP](discover/btp-basics/README.md)
@@ -15,18 +15,18 @@
   - [Learn About SAP BTP, Kyma Runtime](discover/kyma-basics/README.md)
   - [CAP on Kyma](discover/cap-on-kyma/README.md)
   
-- Explore
+- EXPLORE
   - [Understand the Database Service](explore/db-service/README.md)
   - [Understand the Business Partner Service](explore/bp-service/README.md)
   - [Understand the QRCode Generator](explore/qrcodegenerator/README.md)
   - [Understand the Approuter](explore/approuter/README.md)
   
-- Prepare
+- PREPARE
   - [Prerequisites and Required Systems](prepare/prerequisites/README.md)
   - [Look Up API in API Business Hub](prepare/explore-apis-and-events/README.md)
   - [Create an SAP S/4HANA Test System Using SAP Cloud Appliance Library](prepare/cal/README.md)
   
-- Set Up
+- SET UP
   - [SAP BTP Setup Automator](set%20up/btp-setup-automator/README.md)
   - [Optional: Configure Your Global Account and Subaccounts in SAP BTP](set%20up/configure-account/README.md)
   - [Create an SAP HANA Cloud Instance](set%20up/hana/README.md)
@@ -34,14 +34,14 @@
   - [Set Up Connectivity Between SAP S/4HANA System and SAP BTP](set%20up/connectivity/README.md)
   - [Configure Command Line Tool *kubectl*](set%20up/kubeconfig-setup/README.md)
   
-- Deploy
+- DEPLOY
   - [Determine Placeholders](deploy/prepare-deployment/README.md)
   - [Deploy the Application to SAP BTP, Kyma Runtime](deploy/deploy/README.md)
   - [Configure Event-Based Communication between SAP S/4HANA and SAP Event Mesh](deploy/configure-channel/README.md)
   - [Run the Business Partner Application](deploy/run-the-scenario/README.md)
   - [Optional: Set Up Mock Server](deploy/setup-mock/README.md)
   
-- Complete
+- COMPLETE
   - [Complete the Mission](complete/complete-mission/README.md)
   - [Provide Your Feedback](complete/give-feedback/README.md)
 
