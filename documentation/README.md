@@ -9,7 +9,7 @@
   - [Explore SAP Integration Suite](./discover/sap-integration-suite/README.md)
   - [Learn the Concepts Behind Business Events and Event-Driven Architectures](./discover/event-driven-architecture/README.md)
   - [Learn About SAP Event Mesh](./discover/sap-event-mesh/README.md)
-  - [Discover the Cloud Application Programming Model (CAP)](./discover/discover-cap/README.md)
+  - [Discover the SAP Cloud Application Programming Model (CAP)](./discover/discover-cap/README.md)
   - [Discover the SAP Cloud SDK](./discover/discover-sap-cloud-sdk/README.md)
   - [Discover SAPUI5 and SAP Fiori Elements](./discover/ui5-fiori-elements-business-app-studio-launchpad/README.md)
   - [Learn About SAP BTP, Kyma Runtime](discover/kyma-basics/README.md)
