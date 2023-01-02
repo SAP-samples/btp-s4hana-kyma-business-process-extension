@@ -154,7 +154,7 @@ No known issues.
 
 ## How to Obtain Support
 
-In case you find a bug, or you need additional support, please open an issue here in ![GitHub](https://github.com/SAP-samples/btp-s4hana-kyma-business-process-extension/issues).
+In case you find a bug, or you need additional support, please open an issue here in [GitHub](https://github.com/SAP-samples/btp-s4hana-kyma-business-process-extension/issues).
 
 ## License
 
