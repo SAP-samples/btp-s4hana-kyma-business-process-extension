@@ -13,7 +13,7 @@ You can run the below command in terminal to do a base64 encoding
 
       `echo -n "<STRING>" | base64`
 
-- **Git URL**: https://github.com/SAP-samples/btp-s4hana-kyma-business-process-extension
+- **Git URL**: https://github.com/SAP-samples/btp-s4hana-kyma-business-process-extension. 
 Please use the relevant url, if you have your own fork of the main repository
 
 - **Git branch**: main
