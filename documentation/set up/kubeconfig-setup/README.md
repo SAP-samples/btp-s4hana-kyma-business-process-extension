@@ -8,20 +8,7 @@ The **kubectl** command line tool lets you control your clusters. You will use i
 
 2. See section [Organizing Cluster Access Using kubeconfig Files](https://kubernetes.io/docs/concepts/configuration/organize-cluster-access-kubeconfig/) in the Kubernetes documentation for more details about the kubeconfig file.
 
-   One option is to configure the file access using the environment variable:
-
-   ```shell
-   # assuming the kubeconfig file name is kubeconfig.yaml
-   export KUBECONFIG=<path to kubeconfig.yaml>
-   ```
-
-3. Using the following command you can recheck if your configuration was successful:
-
-   ```
-   kubectl config view
-   ```
-
-> Note: Make sure that you have installed the Kubernetes OpenID Connect (OIDC) authentication plugin in order to use the command line tool.
+3. Refer [here](https://help.sap.com/docs/BTP/65de2977205c403bbc107264b8eccf4b/3e25944e491049b2aeec68c562a5ee48.html) to access a Kyma Instance using kubectl.
 
 4. Create a namespace:
 Either you can create the namespaces using kubectl or using the Kyma dashboard.
