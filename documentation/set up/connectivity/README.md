@@ -14,9 +14,6 @@ In this section we set up the end-to-end communication between the SAP S/4HANA o
 1. Get the connection information of your SAP BTP subaccount:
    1. Log on to your SAP BTP subaccount. From the overview page, we need the following environment information.
    2. Subaccount ID.
-   3. API Endpoint
-
-   ![Get Subaccount](./images/subaccount.png)
 
 2. (optional) If you don't want to use the SAP BTP administrator credentials as communication user, you can create a new user with the technical roles for the Cloud Connector. See [Communication User](https://help.sap.com/viewer/cca91383641e40ffbe03bdc78f00f681/Cloud/en-US/daca64dacc6148fcb5c70ed86082ef91.html) for more details.
 
@@ -27,7 +24,7 @@ In this section we set up the end-to-end communication between the SAP S/4HANA o
    ![Create new Subaccount](./images/CCCreateSubaccount.png)
 
 4. Do the following:
-   1. *Region:* Select the region of the API Endpoint of your Subaccount.
+   1. *Region:* The <Region> field specifies the SAP BTP region that should be used, for example, Europe (Rot). Choose the one you need from the drop-down list. You can also configure a region yourself, if it is not part of the standard list. See [Managing Subaccounts](https://help.sap.com/docs/CP_CONNECTIVITY/cca91383641e40ffbe03bdc78f00f681/f16df12fab9f4fe1b8a4122f0fd54b6e.html#procedure) for more details.
    2. *Subaccount:* Enter the ID of your Subaccount.
    3. *Display Name:* The name of this connection which is displayed in your SAP BTP subaccount.
    4. *Subaccount User:* Name of the connection user - for testing you could use your SAP BTP account user, else you first have to create a specific connection user at your SAP BTP account.

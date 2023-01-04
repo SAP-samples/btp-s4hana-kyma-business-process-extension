@@ -45,8 +45,3 @@ Instance of SAP BTP connectivity service (connectivity-proxy plan) is created to
  If the connectivity service is not provisioned after creation of cluster by your administrator, you can do it by running the below command:
 
     kubectl apply -f ./script/connectivity.yaml
-
-
-## Prerequisites for SAP HANA Cloud
-
-Make sure that you have an instance of SAP HANA database in your space. See section [Create an SAP HANA Database Instance Using SAP HANA Cloud Central](https://help.sap.com/docs/HANA_CLOUD/9ae9104a46f74a6583ce5182e7fb20cb/784a1dbb421a4da29fb1e3bdf5f198ec.html) on SAP Help Portal for more details.

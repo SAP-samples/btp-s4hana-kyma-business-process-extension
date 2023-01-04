@@ -40,7 +40,7 @@ In this section, you will set up the subaccount in SAP BTP for developing the SA
       - 'SAP HANA Schemas & HDI container' ->Select Available Plans -> "hdi-shared"
       - 'Event Mesh' -> Select Available Service Plans -> "default"
       - 'Connectivity Service' -> Select Available Service Plans -> "proxy"
-      - 'Launchpad Service' -> Select Available Service Plans -> "standard"
+      - 'SAP Launchpad Service' -> Select Available Service Plans -> "standard"
 
    5. Choose **Add 6 Service Plans**.
 
@@ -63,13 +63,13 @@ In this section, you will set up the subaccount in SAP BTP for developing the SA
 
 8. Assign the relevant subaccount roles to the users.
 
-      1. Choose **Security** &rarr; **Role Collections**. Select one of the role collections below:
+      1. Choose **Security** &rarr; **Users** and **Assign Role Collection**:
 
-   ![role collection](./images/rolecollection1.png)
+         ![role collection](./images/rolecollection1.png)
 
-      2. Choose **Edit** and then add a user by setting the User ID. Selecting the relevant Identity Provider and set the user e-mail. Choose **Save**.
+      2. Select the required Role Collections and click on **Assign Role Collection**
 
-   ![role collection](./images/rolecollection1.png)
+         ![role collection](./images/rolecollection11.png)
 
 9. Enable Launchpad Subscription:
     
@@ -77,7 +77,7 @@ In this section, you will set up the subaccount in SAP BTP for developing the SA
 
     ![lunchpad1](./images/launchpad1.png)
 
-    2. In the **service** field choose **Launchpad Service**.
+    2. In the **service** field choose **SAP Launchpad Service**.
     3. In the **Plan** choose **standard**.
     4. Choose **Create**.
 
@@ -89,5 +89,7 @@ In this section, you will set up the subaccount in SAP BTP for developing the SA
     2. In the **service** field choose **SAP HANA Cloud**.
     3. In the **Plan** choose **tools**.
     4. Choose **Create**.
+
+11. Assign *SAP HANA Cloud Instance Administrator* role collection to the users. Refer Step 8 to do the same.
 
 
