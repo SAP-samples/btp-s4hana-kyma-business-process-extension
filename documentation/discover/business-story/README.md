@@ -35,7 +35,7 @@ The Business Partner Validation application is developed using the SAP Cloud App
 
 ## Requirements
 
-You can find all requirements to execute the tutorial in section [Prerequisites and Required Systems](prepare/prerequisites/README.md).
+You can find all requirements to execute the tutorial in section [Prerequisites and Required Systems](../../prepare/prerequisites/README.md).
 
 ## Known Issues
 
@@ -43,8 +43,8 @@ The tutorial is provided on the "as-is" basis. Currently, there are no known iss
 
 ## How to Obtain Support
 
-Create an issue to get support or to report a bug in [GitHub](https://github.tools.sap/refapps/kyma-cap-s4ems/issues).
+Create an issue to get support or to report a bug in [GitHub](https://github.com/SAP-samples/btp-s4hana-kyma-business-process-extension/issues).
 
 ## License
 
-Copyright (c) 2022 SAP SE or an SAP affiliate company. All rights reserved. This file is licensed under the Apache Software License, version 2.0 except as noted otherwise in the [LICENSE](LICENSES/Apache-2.0.txt) file.
+Copyright (c) 2022 SAP SE or an SAP affiliate company. All rights reserved. This file is licensed under the Apache Software License, version 2.0 except as noted otherwise in the [LICENSE](../../../LICENSES/Apache-2.0.txt) file.
