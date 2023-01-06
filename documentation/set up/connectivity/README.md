@@ -14,6 +14,7 @@ In this section we set up the end-to-end communication between the SAP S/4HANA o
 1. Get the connection information of your SAP BTP subaccount:
    1. Log on to your SAP BTP subaccount. From the overview page, we need the following environment information.
    2. Subaccount ID.
+   3. Region.
 
 2. (optional) If you don't want to use the SAP BTP administrator credentials as communication user, you can create a new user with the technical roles for the Cloud Connector. See [Communication User](https://help.sap.com/viewer/cca91383641e40ffbe03bdc78f00f681/Cloud/en-US/daca64dacc6148fcb5c70ed86082ef91.html) for more details.
 
