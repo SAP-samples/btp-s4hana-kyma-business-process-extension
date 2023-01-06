@@ -6,12 +6,18 @@
 
      kubectl apply -f ./script/connectivity.yaml -n <NAME_SPACE>
 
- **[NOTE]:** If connectivity service instance resides in a different space, then create the secret for connectivity service by running the following command.
+ **[NOTE]:** If connectivity service instance resides in a different namespace, then create the secret for connectivity service by running the following command.
  Make sure you update the `connectivity-secret.yaml` file with the required encoded values before secret creation.
 
      kubectl apply -f ./script/connectivity-secret.yaml -n <NAME_SPACE>
 
-1. Navigate to root folder of the cloned source code.
+1. Clone the source code by executing the below command
+
+    ```shell
+    git clone https://github.com/SAP-samples/btp-s4hana-kyma-business-process-extension.git
+    ```
+    
+   Navigate to root folder of the cloned source code.
 
 2. Open Makefile and edit the value for <DOCKER_ACCOUNT>.
 

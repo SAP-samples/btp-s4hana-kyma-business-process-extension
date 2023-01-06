@@ -4,10 +4,11 @@ This section contains the prerequisites that you have to fulfill before you get 
 
 ## Systems and Accounts
 
-* [SAP S/4HANA](https://www.sap.com/india/products/s4hana-erp.html) system
-* [Global account](https://help.sap.com/products/BTP/65de2977205c403bbc107264b8eccf4b/)
-* [SAP S/4HANA Cloud](https://www.sap.com/products/erp/s4hana-erp.html) system
-* [Optional] If you don't have an SAP S/4HANA Cloud system you can run this mission by installing a [mock server](../../deploy/setup-mock/README.md).
+* [Global account](https://help.sap.com/docs/BTP/65de2977205c403bbc107264b8eccf4b/8ed4a705efa0431b910056c0acdbf377.html#loio8d6e3a0fa4ab43e4a421d3ed08128afa) in SAP BTP.
+* [SAP S/4HANA](https://www.sap.com/india/products/s4hana-erp.html) system.
+* [Optional] If you don't have access to SAP S/4HANA on-premise system
+  * Option 1 - you could use the 30-day trial version. Refer [SAP S/4HANA Test System Using SAP Cloud Appliance Library](../cal/README.md) for more details.
+  * Option 2 -  you can also run this mission by installing a [mock server](../../deploy/setup-mock/README.md).
 
 ## Tools
 
@@ -19,11 +20,6 @@ This section contains the prerequisites that you have to fulfill before you get 
 * (For Windows) [SQLite ](https://sqlite.org/download.html) Find the steps how to install it in the CAP documentation in section [How Do I Install SQLite](https://cap.cloud.sap/docs/advanced/troubleshooting#how-do-i-install-sqlite-on-windows).
 * [Docker](https://www.docker.com/products/docker-desktop)
 * See section [tools](https://cap.cloud.sap/docs/guides/deployment/deploy-to-kyma#prerequisites) for the other required tools.
-
-
-## SAP BTP Provider Account
-
-* SAP BTP [subaccount](https://help.sap.com/products/BTP/65de2977205c403bbc107264b8eccf4b/8ed4a705efa0431b910056c0acdbf377.html?locale=en-US#loio8d6e3a0fa4ab43e4a421d3ed08128afa)
 
 ### Entitlements
 

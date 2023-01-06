@@ -14,7 +14,7 @@ To deploy the application, perform the following steps:
 
 1. Navigate to root folder int he cloned source code and run the following commands to build and push the docker image:
 
-    ```shell  
+    ```
     cds build --production
     pack build kymamock --path gen/srv --builder paketobuildpacks/builder:base
     docker tag kymamock:latest <DOCKER_ACCOUNT>/kymamock:latest
@@ -25,7 +25,7 @@ To deploy the application, perform the following steps:
 
 3. Edit the domain of your cluster, so that the URL of your CAP service can be generated. You can use the preconfigured domain name for your Kyma cluster:
 
-    ```shell  
+    ```
     kubectl get configmap -n kube-system shoot-info -ojsonpath='{.data.domain}'
     ```
 4. Find all values for <DOCKER_ACCOUNT> and replace all with your docker account/repository.
@@ -34,15 +34,13 @@ To deploy the application, perform the following steps:
    
     imagePullSecret: name: <DOCKER_SECRET>
 
-    public container registry: Create a dummy secret and replace the value of <DOCKER_SECRET> with the created secret name.
-
 **Note:** Make sure that you deploy the mock server to the same namespace where the Kyma application have been deployed.
 
-6. Find all values for <RELEASE_NAME_OF_KYMAAPP> and replace all with the release name of deployed CAP application.
+6. Find all values for <RELEASE_NAME_OF_KYMAAPP> and replace all with the release name of CAP application deployed in previous steps.
 
 7. Run the following command to deploy your application:
 
-    ```shell 
+    ```
     helm upgrade --install <RELEASE_NAME> ./chart -n <NAMESPACE>
     ```
     
@@ -119,7 +117,7 @@ POST https://<mock_srv_url>/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_BusinessPar
 7. Notice that the changes reflected back to the Business Partner in the mock server.
 
 ```
-GET https:/<MOCK_SRV_URL>/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_BusinessPartner('25555')
+GET https:/<MOCK_SRV_URL>/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_BusinessPartner('25599')
 
 ```
 

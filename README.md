@@ -72,7 +72,7 @@ The application requires the following set of [Entitlements and Quotas](https://
 ### Step 2: [Setup Connectivity between SAP S/4HANA System, SAP BTP](./documentation/set%20up/connectivity/README.md)
 
 ### Step 3: Build and Deploy the CAP Application
-- [Configure Your Global Account and Subaccounts in SAP BTP ](configure-account/README.md)
+- [Configure Your Global Account and Subaccounts in SAP BTP ](./documentation/set%20up/configure-account/README.md)
 - [Configure Command Line Tool kubectl](./documentation/set%20up/kubeconfig-setup/README.md)
 - [Create an SAP HANA Cloud Instance](./documentation/set%20up/hana/README.md)
 - [Determine Placeholder Values](./documentation/deploy/prepare-deployment/README.md)
