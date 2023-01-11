@@ -22,6 +22,6 @@ Here are the steps using kubectl. Open a shell and run:
 
 Here are the steps using the Kyma Dashboard:
 
-1. Open the Kyma Dashboard and choose **Add new namespace** Provide the namespace name, **Enable Sidecar Injection** and choose **Create**.
-
+1. Open the Kyma Dashboard and choose **Add new** namespace**. Select **YAML** and Provide the **name**, **app.kubernetes.io/name**. Both the names should be the same. 
+2. Change the value of **istio-injection** to **enabled** and then coose **Create**
    ![](images/createNamespace.png)

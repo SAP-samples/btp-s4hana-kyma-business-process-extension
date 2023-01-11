@@ -19,7 +19,7 @@ This section contains the prerequisites that you have to fulfill before you get 
 * [cds-dk](https://cap.cloud.sap/docs/get-started/)
 * (For Windows) [SQLite ](https://sqlite.org/download.html) Find the steps how to install it in the CAP documentation in section [How Do I Install SQLite](https://cap.cloud.sap/docs/advanced/troubleshooting#how-do-i-install-sqlite-on-windows).
 * [Docker](https://www.docker.com/products/docker-desktop)
-* See section [tools](https://cap.cloud.sap/docs/guides/deployment/deploy-to-kyma#prerequisites) for the other required tools.
+* See [prerequisites section](https://cap.cloud.sap/docs/guides/deployment/deploy-to-kyma#prerequisites) for Deploying CAP Applications to Kyma runtime for other required tools.
 
 ### Entitlements
 

@@ -38,6 +38,8 @@ The following fields are part of this table:
 - isModified
 - businessPartnerId
 
+[CAP CDS definition of db tables can be found in this file](https://github.com/SAP-samples/btp-s4hana-kyma-business-process-extension/blob/main/db/schema.cds)
+
 ### StatusValues
 
 The details of Status are stored in StatusValues table.

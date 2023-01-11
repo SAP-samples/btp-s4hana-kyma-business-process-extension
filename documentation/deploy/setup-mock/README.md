@@ -12,9 +12,9 @@ git clone <Git URL> -b mockserver
 
 To deploy the application, perform the following steps:
 
-1. Navigate to root folder int he cloned source code and run the following commands to build and push the docker image:
+1. Navigate to the root folder in the cloned source code and run the following commands to build and push the docker image:
 
-    ```
+    ```shell
     cds build --production
     pack build kymamock --path gen/srv --builder paketobuildpacks/builder:base
     docker tag kymamock:latest <DOCKER_ACCOUNT>/kymamock:latest
@@ -34,7 +34,7 @@ To deploy the application, perform the following steps:
    
     imagePullSecret: name: <DOCKER_SECRET>
 
-**Note:** Make sure that you deploy the mock server to the same namespace where the Kyma application have been deployed.
+**Note:** Make sure that you deploy the mock server to the same namespace where the Kyma application has been deployed.
 
 6. Find all values for <RELEASE_NAME_OF_KYMAAPP> and replace all with the release name of CAP application deployed in previous steps.
 
@@ -44,7 +44,7 @@ To deploy the application, perform the following steps:
     helm upgrade --install <RELEASE_NAME> ./chart -n <NAMESPACE>
     ```
     
-**Note:** Make sure that the release names are different for mock server and CAP application.
+**Note:** Make sure that the release names are different for the mock server and CAP application.
 
 ### Set Up Destination in SAP BTP
 
