@@ -90,6 +90,6 @@ In this section, you will set up the subaccount in SAP BTP for developing the SA
     3. In the **Plan** choose **tools**.
     4. Choose **Create**.
 
-11. Assign *SAP HANA Cloud Instance Administrator* role collection to the users. Refer Step 8 to do the same.
+11. Assign *SAP HANA Cloud Administrator* role collection to the users. Refer Step 8 to do the same.
 
 

@@ -6,3 +6,5 @@ As and when the Business Partner is verified in the extension application, an ev
 The serverless function then updates the Business Partner, and the Business Partner address verifies the Business Partner and also attaches the generated QRcode to the attachments in the SAP S/4HANA on-premise system.
 
 The events are delivered to serverless function by event-mesh via webhooks.
+
+[QR Code Generator implementation](https://github.com/SAP-samples/btp-s4hana-kyma-business-process-extension/tree/main/qrcodegenerator)
