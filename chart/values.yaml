@@ -12,13 +12,13 @@ srv:
     tag: latest
   resources:
     limits:
-      cpu: 3000m
-      ephemeral-storage: 1G
-      memory: 1G
+      cpu: 500m
+      ephemeral-storage: 500M
+      memory: 500M
     requests:
-      cpu: 3000m
-      ephemeral-storage: 1G
-      memory: 1G
+      cpu: 500m
+      ephemeral-storage: 500M
+      memory: 500M
   health_check:
     liveness:
       path: /
