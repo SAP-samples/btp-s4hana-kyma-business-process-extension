@@ -27,8 +27,8 @@
   - [Create an SAP S/4HANA Test System Using SAP Cloud Appliance Library](prepare/cal/README.md)
   
 - SET UP
-  - [Optional][SAP BTP Setup Automator](set%20up/btp-setup-automator/README.md)
-  - [Configure Your Global Account and Subaccounts in SAP BTP](set%20up/configure-account/README.md)
+  - [SAP BTP Setup Automator](set%20up/btp-setup-automator/README.md)
+  - [Optional][Configure Your Global Account and Subaccounts in SAP BTP](set%20up/configure-account/README.md)
   - [Create an SAP HANA Cloud Instance](set%20up/hana/README.md)
   - [SAP S/4HANA Enable oData Service for Business Partner](set%20up/s4h-setup/README.md)
   - [Set Up Connectivity Between SAP S/4HANA System and SAP BTP](set%20up/connectivity/README.md)
