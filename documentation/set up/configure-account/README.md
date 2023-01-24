@@ -40,7 +40,7 @@ In this section, you will set up the subaccount in SAP BTP for developing the SA
       - 'SAP HANA Schemas & HDI container' ->Select Available Plans -> "hdi-shared"
       - 'Event Mesh' -> Select Available Service Plans -> "default"
       - 'Connectivity Service' -> Select Available Service Plans -> "proxy"
-      - 'SAP Launchpad Service' -> Select Available Service Plans -> "standard"
+      - 'SAP Build Work Zone' -> Select Available Service Plans -> "standard"
 
    5. Choose **Add 6 Service Plans**.
 
@@ -71,17 +71,17 @@ In this section, you will set up the subaccount in SAP BTP for developing the SA
 
          ![role collection](./images/rolecollection11.png)
 
-9. Enable Launchpad Subscription:
+9. Enable SAP Build Work Zone Subscription:
     
     1. In SAP BTP cockpit navigate to the **Services** &rarr; **Instances and Subscriptions** and choose **create**.
 
-    ![lunchpad1](./images/launchpad1.png)
+    ![SAP Build Work Zone](./images/launchpad1.png)
 
-    2. In the **service** field choose **SAP Launchpad Service**.
+    2. In the **service** field choose **SAP Build Work Zone**.
     3. In the **Plan** choose **standard**.
     4. Choose **Create**.
 
-    ![lunchpad1](./images/launchpad2.png)
+    ![SAP Build Work Zone](./images/buildworkzoneSubacription.png)
 
 10. Enable SAP HANA Cloud Subscription:
 
@@ -90,6 +90,6 @@ In this section, you will set up the subaccount in SAP BTP for developing the SA
     3. In the **Plan** choose **tools**.
     4. Choose **Create**.
 
-11. Assign *SAP HANA Cloud Administrator* role collection to the users. Refer Step 8 to do the same.
+11. Assign *SAP HANA Cloud Administrator* role collection to the users. Refer to Step 8 to do the same.
 
 
