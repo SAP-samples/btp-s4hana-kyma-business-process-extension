@@ -66,7 +66,7 @@ To deploy the application, perform the following steps:
 1. Start your Business Partner Validation Application:
 
 - Go to **Instances and Subscriptions**.
-- Find **Launchpad Service** and click to open the application.
+- Find **SAP Build Work Zone** and click to open the application.
 - In the Website Manager find your created Website and click on tile to open it.
 - Click on **Business Partner Validation** tile.
 - The list of Business Partners along with their verification status gets displayed.
@@ -110,11 +110,11 @@ POST https://<mock_srv_url>/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_BusinessPar
 
  ![Backend](./images/mock02.png)
 
-6. (Optional) You can configure SAP Event Mesh in a way so that you can see the created event. For that you could create an additional queue that subscribes to the topic as well.
+6. (Optional) You can configure SAP Event Mesh in a way so that you can see the created event. For that, you could create an additional queue that subscribes to the topic as well.
 
  ![Backend](./images/mock03.png)
 
-7. Notice that the changes reflected back to the Business Partner in the mock server.
+7. Notice that the changes are reflected back to the Business Partner in the mock server.
 
 ```
 GET https:/<MOCK_SRV_URL>/sap/opu/odata/sap/API_BUSINESS_PARTNER/A_BusinessPartner('25599')
