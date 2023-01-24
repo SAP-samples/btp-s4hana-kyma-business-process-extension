@@ -27,6 +27,7 @@
   - [Create an SAP S/4HANA Test System Using SAP Cloud Appliance Library](prepare/cal/README.md)
   
 - SET UP
+  - [SAP BTP Setup Automator](set%20up/btp-setup-automator/README.md)
   - [Configure Your Global Account and Subaccounts in SAP BTP](set%20up/configure-account/README.md)
   - [Create an SAP HANA Cloud Instance](set%20up/hana/README.md)
   - [Configure Command Line Tool *kubectl*](set%20up/kubeconfig-setup/README.md)
