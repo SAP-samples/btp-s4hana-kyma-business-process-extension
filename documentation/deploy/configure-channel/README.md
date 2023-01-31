@@ -39,8 +39,8 @@ See section [Creating RFC Destination](https://help.sap.com/docs/r/810dfd34f2cc4
  
   ![Check Connection](./images/EventBased6.png)
 
- 8. In the next screen, choose **Create** &rarr; **Topic** and choose: "BusinessPartner/created/V1" and click **Enter**.
+ 8. In the next screen, choose **Create** &rarr; **Topic** and choose: "sap/s4/beh/businesspartner/v1/BusinessPartner/Created/v1" and click **Enter**.
     
    ![Create Outbound Bindings](./images/EventBased7.png)
  
- 9. Repeat the above step, choose "BusinessPartner/changed/V1" and click **Enter**
+ 9. Repeat the above step, choose "sap/s4/beh/businesspartner/v1/BusinessPartner/Changed/v1" and click **Enter**

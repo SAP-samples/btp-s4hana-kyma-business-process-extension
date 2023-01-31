@@ -28,15 +28,17 @@ To deploy the application, perform the following steps:
     ```
     kubectl get configmap -n kube-system shoot-info -ojsonpath='{.data.domain}'
     ```
-4. Find all values for <DOCKER_ACCOUNT> and replace all with your docker account/repository.
+4. Find all values for **DOCKER_ACCOUNT** and replace all with your docker account/repository.
 
-5. For a private container registry: Create a secret for your Docker repository and replace the value of <DOCKER_SECRET> with the created secret name.
-   
+5. For a private container registry: Create a secret for your Docker repository and replace the value of **DOCKER_SECRET** with the created secret name.
+
+    ```
     imagePullSecret: name: <DOCKER_SECRET>
+    ```
 
 **Note:** Make sure that you deploy the mock server to the same namespace where the Kyma application has been deployed.
 
-6. Find all values for <RELEASE_NAME_OF_KYMAAPP> and replace all with the release name of CAP application deployed in previous steps.
+6. Find all values for **RELEASE_NAME_OF_KYMAAPP** and replace all with the release name of CAP application deployed in previous steps.
 
 7. Run the following command to deploy your application:
 

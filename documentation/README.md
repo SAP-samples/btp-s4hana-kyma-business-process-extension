@@ -39,15 +39,12 @@
   - [SAP S/4HANA Enable oData Service for Business Partner](set%20up/s4h-setup/README.md)
   - [Set Up Connectivity Between SAP S/4HANA System and SAP BTP](set%20up/connectivity/README.md)
   - [Run the Business Partner Application](deploy/run-the-scenario/README.md)
-  - [Optional: Set Up Mock Server](deploy/setup-mock/README.md)
-
 
 - OPTION 2: DEPLOY WITH MOCK SERVER
   - [Determine Placeholders](deploy/prepare-deployment/README.md)
   - [Deploy the Application to SAP BTP, Kyma Runtime](deploy/deploy/README.md)
   - [Run the Business Partner Application](deploy/run-the-scenario/README.md)
   - [Optional: Set Up Mock Server](deploy/setup-mock/README.md)
-
 
 - COMPLETE
   - [Complete the Mission](complete/complete-mission/README.md)
