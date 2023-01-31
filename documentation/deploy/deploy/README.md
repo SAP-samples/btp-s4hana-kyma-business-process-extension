@@ -52,13 +52,13 @@
 
 9. Find all values for **<RELEASE_NAME>** and replace all with your Helm Chart's release name. This can be any name of your choice.
 
-10. Replace the value **<gitusername>** with encoded username.
+10. Replace the value for **<base64_encodeduser>** with encoded Git username.
 
-11. Replace the value **<gitpassword>** with encoded password.
+11. Replace the value for **<base_64_encoded_GIT_secret>** with encoded Git password.
 
-12. Replace the value **<giturl>** with url of your git repository.
+12. Replace the value for **<git_repo_url>** with url of your git repository.
 
-13. Replace the values **<gitbranch>** with the name of your branch.
+13. Replace the values for **<git_branch>** with the name of your git branch.
 
 14. Run the following command to deploy your application:
 
