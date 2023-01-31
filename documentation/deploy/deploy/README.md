@@ -12,17 +12,19 @@
    Navigate to root folder of the cloned source code.
 
  2. If the connectivity service is not provisioned after creation of cluster by your administrator, you can do it by running the following command:
-
+     
+     ```shell
      kubectl apply -f ./script/connectivity.yaml -n <NAME_SPACE>
+     ```
 
  **[NOTE]:** If connectivity service instance resides in a different namespace, then create the secret for connectivity service by running the following command.
  Make sure you update the `connectivity-secret.yaml` file with the required encoded values before secret creation.
 
+     ```shell
      kubectl apply -f ./script/connectivity-secret.yaml -n <NAME_SPACE>
+     ```
 
-
-
-3. Open Makefile and edit the value for <DOCKER_ACCOUNT>.
+3. Open Makefile and edit the value for **<DOCKER_ACCOUNT>**.
 
 4. Build the applications and also create and push the docker images to docker account by executing the following script:
 
@@ -38,23 +40,25 @@
     kubectl get configmap -n kube-system shoot-info -ojsonpath='{.data.domain}'
     ```
 
-6. For a private container registry, create a secret for your Docker repository and replace the value of <DOCKER_SECRET> with the created secret name:
+6. For a private container registry, create a secret for your Docker repository and replace the value of **<DOCKER_SECRET>** with the created secret name:
 
+    ```shell
     imagePullSecret: name: <DOCKER_SECRET>
+    ```
 
-7. Find all values for <DOCKER_ACCOUNT> and replace all with your docker account/repository.
+7. Find all values for **<DOCKER_ACCOUNT>** and replace all with your docker account/repository.
 
-8. Find all values for <CONNECTIVITY_SERVICE_SECRET> and replace all with your connectivity secret name.
+8. Find all values for **<CONNECTIVITY_SERVICE_SECRET>** and replace all with your connectivity secret name.
 
-9. Find all values for <RELEASE_NAME> and replace all with your Helm Chart's release name. This can be any name of your choice.
+9. Find all values for **<RELEASE_NAME>** and replace all with your Helm Chart's release name. This can be any name of your choice.
 
-10. Replace the value <gitusername> with encoded username.
+10. Replace the value **<gitusername>** with encoded username.
 
-11. Replace the value <gitpassword> with encoded password.
+11. Replace the value **<gitpassword>** with encoded password.
 
-12. Replace the value <giturl> with url of your git repository.
+12. Replace the value **<giturl>** with url of your git repository.
 
-13. Replace the values <gitbranch> with the name of your branch.
+13. Replace the values **<gitbranch>** with the name of your branch.
 
 14. Run the following command to deploy your application:
 
