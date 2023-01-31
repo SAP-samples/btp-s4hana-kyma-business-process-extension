@@ -24,7 +24,7 @@
      kubectl apply -f ./script/connectivity-secret.yaml -n <NAME_SPACE>
      ```
 
-3. Open Makefile and edit the value for **<DOCKER_ACCOUNT>**.
+3. Open Makefile and edit the value for **DOCKER_ACCOUNT**.
 
 4. Build the applications and also create and push the docker images to docker account by executing the following script:
 
@@ -40,25 +40,25 @@
     kubectl get configmap -n kube-system shoot-info -ojsonpath='{.data.domain}'
     ```
 
-6. For a private container registry, create a secret for your Docker repository and replace the value of **<DOCKER_SECRET>** with the created secret name:
+6. For a private container registry, create a secret for your Docker repository and replace the value of **DOCKER_SECRET** with the created secret name:
 
     ```shell
     imagePullSecret: name: <DOCKER_SECRET>
     ```
 
-7. Find all values for **<DOCKER_ACCOUNT>** and replace all with your docker account/repository.
+7. Find all values for **DOCKER_ACCOUNT** and replace all with your docker account/repository.
 
-8. Find all values for **<CONNECTIVITY_SERVICE_SECRET>** and replace all with your connectivity secret name.
+8. Find all values for **CONNECTIVITY_SERVICE_SECRET** and replace all with your connectivity secret name.
 
-9. Find all values for **<RELEASE_NAME>** and replace all with your Helm Chart's release name. This can be any name of your choice.
+9. Find all values for **RELEASE_NAME** and replace all with your Helm Chart's release name. This can be any name of your choice.
 
-10. Replace the value for **<base64_encodeduser>** with encoded Git username.
+10. Replace the value for **base64_encodeduser** with encoded Git username.
 
-11. Replace the value for **<base_64_encoded_GIT_secret>** with encoded Git password.
+11. Replace the value for **base_64_encoded_GIT_secret** with encoded Git password.
 
-12. Replace the value for **<git_repo_url>** with url of your git repository.
+12. Replace the value for **git_repo_url** with url of your git repository.
 
-13. Replace the values for **<git_branch>** with the name of your git branch.
+13. Replace the values for **git_branch** with the name of your git branch.
 
 14. Run the following command to deploy your application:
 
