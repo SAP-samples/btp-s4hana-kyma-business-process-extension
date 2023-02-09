@@ -55,7 +55,6 @@ async function updateBpAddress(destinationConfiguration, bpDetails, destinationN
         logger.info("Error Updating BP Address", error);
         throw util.errorHandler(error, logger);
     });
-    console.log("SUCCESS - Updating BP Address");
     logger.info("SUCCESS - Updating BP Address");
 }
 

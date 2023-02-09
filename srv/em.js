@@ -1,5 +1,6 @@
 const axios = require("axios");
 let serverlessConfigurationsDone = false;
+const LOG = cds.log('kyma-service')
 
 async function emConfiguration(credentials){
     const isQueueAvailable = await checkIfServerlessQueueAvailable(credentials);
@@ -20,15 +21,15 @@ async function checkIfServerlessQueueAvailable(credentials){
             'Authorization': 'Bearer ' + token
         }
     }).then(response => {
-      console.log("success in getting queue");
+      LOG.info("success in getting queue");
       return true;
     }).catch(async error => {
-    console.log("error in gettingqueue");
+      LOG.info("error in gettingqueue");
     await serverlessQueueConfigurations(credentials);
     return "Queue Created";
   })
 }).catch(error => {
-  console.log("error in fetching token", error);
+  LOG.info("error in fetching token", error);
   throw error;
 })
 }
@@ -39,29 +40,29 @@ async function serverlessQueueConfigurations(credentials){
           const token = response.data.access_token;
           const queueCreationOptionsData = await queueCreationOptions(token, credentials);
           await axios(queueCreationOptionsData).then(async response =>{
-                console.log("success inside queue creation");
+            LOG.info("success inside queue creation");
                 const topicSubscriptionOptionsData = await topicsSubscriptionOptions(token, credentials);
                 await axios(topicSubscriptionOptionsData).then(async response => {
-                  console.log("success subscribing to topic");
+                  LOG.info("success subscribing to topic");
                   const webhookCreationOptionsData = await webhookCreationOptions(token, credentials);
-                  console.log("webhookcreationoptions-----", webhookCreationOptionsData);
+                  LOG.info("webhookcreationoptions-----", webhookCreationOptionsData);
                   await axios(webhookCreationOptionsData).then(response => {
-                    console.log("success inside webhook subscription");
+                    LOG.info("success inside webhook subscription");
                     return "SUCCESS";
                   }).catch(error => {
-                    console.log("error in webhook subscription", error);
+                    LOG.info("error in webhook subscription", error);
                     throw error;
                     });
                 }).catch(error => {
-                console.log("error in topic subscription", error);
+                  LOG.info("error in topic subscription", error);
                 throw error;
                 });
           }).catch(error => {
-              console.log("error in queue creation", error);
+            LOG.info("error in queue creation", error);
               throw error;
           });
       }).catch(error => {
-        console.log("error in fetching xsrf token", error);
+        LOG.info("error in fetching xsrf token", error);
         throw error;
       });
     }
