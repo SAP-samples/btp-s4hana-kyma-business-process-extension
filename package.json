@@ -26,8 +26,6 @@
   },
   "scripts": {
     "start": "cds run",
-    "test": "mocha tests/mocha.test.js --timeout 28000",
-    "test:integration": "mocha tests/mocha.test.js --timeout 28000",
     "watch-businesspartner": "cds watch --open businesspartner/webapp/index.html#fe-lrop-v4",
     "watch-businesspartners": "cds watch --open businesspartners/webapp/index.html#fe-lrop-v4"
   },
