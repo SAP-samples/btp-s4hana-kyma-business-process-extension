@@ -64,7 +64,7 @@ The application requires the following set of [Entitlements and Quotas](https://
 | Event Mesh                        | default            |          1          |
 | Kyma runtime                      |                    |          1          |
 | Connectivity Service              | connectivity_proxy |          1          |
-| SAP Build Work Zone               | standard           |  Subscription       |
+| SAP Build Work Zone               | standard/free     |  Subscription       |
 
 ## Configuration
 
