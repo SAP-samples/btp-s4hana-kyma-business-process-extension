@@ -3,6 +3,10 @@
 const oAuthClient = require('client-oauth2');
 let cached = null;
 
+/**
+ * @param {Faas.Context} context
+ * @return {Promise<*>}
+ */
 async function token(credentials, logger) {
     return new Promise(async (resolve, reject) => {
         const now = Date.now();

@@ -6,6 +6,7 @@ const mock = require("./mock");
 const { PassThrough } = require('stream');
 const logger = require('cf-nodejs-logging-support');
 logger.setLoggingLevel("info");
+const axiosInstance = axios.create();
 
 
 async function postImage(context, msg, event) {
@@ -20,11 +21,13 @@ async function postImage(context, msg, event) {
             const destinationNameFromContext = JSON.parse(destinationNameFromContextString);
             const destinationName = destinationNameFromContext.name;
             const data = await util.readDetails(destination, destinationName, context, logger);
-            console.log("dataauthTokensvalue", data);
-                var response = '';
+            var response = '';
             if (data.destinationConfiguration.ProxyType === "Internet") {
                 response = await mock.processBpPayloadForInternet(data.destinationConfiguration, msg, destinationNameFromContext);
             } else{
+                if(data.destinationConfiguration.CloudConnectorLocationId){
+                    axiosInstance.defaults.headers.common['SAP-Connectivity-SCC-Location_ID'] = data.destinationConfiguration.CloudConnectorLocationId;
+                }
                 response = await processBpPayload(data.authTokens[0].value, data.destinationConfiguration, msg, destinationNameFromContext);
             }
             return response;
@@ -68,13 +71,12 @@ async function processBpPayload(accessToken, destinationConfiguration, msg, dest
 
 async function fetchXsrfToken(destinationConfiguration, accessToken, bpDetails, destinationNameFromContext) {
     const businessPartnerSrvApi = destinationNameFromContext.businessPartnerSrvApi;
-    const response =  await axios({
+    const response =  await axiosInstance({
             method: 'get',
             url: destinationConfiguration.URL  + "/sap/opu/odata/sap/" + businessPartnerSrvApi+"/A_BusinessPartnerAddress",
             headers: {
                 'Authorization': `Basic ${accessToken}`,
-                'x-csrf-token': 'fetch',
-                'SAP-Connectivity-SCC-Location_ID': destinationConfiguration.CloudConnectorLocationId 
+                'x-csrf-token': 'fetch'
             }
         }).catch(error => {
             logger.info("Error - Fetching CSRF token Error");
@@ -91,21 +93,19 @@ async function fetchXsrfToken(destinationConfiguration, accessToken, bpDetails, 
         cookie: cookies
     };
     logger.info("Success - Fetching CSRF Token : ");
-    console.log("success fetching xsrf token");
     return headers;
 }
 
 async function updateBpAddress(destinationConfiguration, accessToken, headers, bpDetails, destinationNameFromContext) {
     const businessPartnerSrvApi = destinationNameFromContext.businessPartnerSrvApi;
-    const response = await axios({
+    const response = await axiosInstance({
         method: 'patch',
         url: destinationConfiguration.URL + "/sap/opu/odata/sap/" + businessPartnerSrvApi+"/A_BusinessPartnerAddress(BusinessPartner='" + bpDetails.businessPartner + "',AddressID='" + bpDetails.addressId + "')",
         headers: {
             'Authorization': `Basic ${accessToken}`,
             'Content-Type': 'application/json',
             'x-csrf-token': headers.token,
-            'Cookie': headers.cookie,
-            'SAP-Connectivity-SCC-Location_ID': destinationConfiguration.CloudConnectorLocationId  
+            'Cookie': headers.cookie 
         },
         data: {
             "PostalCode": bpDetails.postalCode,
@@ -120,15 +120,14 @@ async function updateBpAddress(destinationConfiguration, accessToken, headers, b
 
 async function updateBp(destinationConfiguration, accessToken, headers, bpDetails, destinationNameFromContext) {
     const businessPartnerSrvApi = destinationNameFromContext.businessPartnerSrvApi;
-    const response = await axios({
+    const response = await axiosInstance({
         method: 'patch',
         url: destinationConfiguration.URL + "/sap/opu/odata/sap/" + businessPartnerSrvApi+ "/A_BusinessPartner('" + bpDetails.businessPartner + "')",
         headers: {
             'Authorization': `Basic ${accessToken}`,
             'Content-Type': 'application/json',
             'x-csrf-token': headers.token,
-            'Cookie': headers.cookie,
-            'SAP-Connectivity-SCC-Location_ID': destinationConfiguration.CloudConnectorLocationId
+            'Cookie': headers.cookie
         },
         data: {
             "SearchTerm1": bpDetails.searchTerm1,
@@ -146,7 +145,7 @@ async function postGeneratedImage(destinationConfiguration, accessToken, headers
     const businessObjectTypeName = destinationNameFromContext.businessObjectTypeName;
         return await generateQRCode(bpDetails).then(async image =>{
                 const bp = bpDetails.businessPartner;
-                const response =  await axios({
+                const response =  await axiosInstance({
                     method: 'post',
                     url: destinationConfiguration.URL + "/sap/opu/odata/sap/" + attachmentSrvApi+ "/AttachmentContentSet",
                     headers: {
@@ -156,16 +155,13 @@ async function postGeneratedImage(destinationConfiguration, accessToken, headers
                         'BusinessObjectTypeName': businessObjectTypeName,
                         'LinkedSAPObjectKey': bp.padStart(10,0),
                         'x-csrf-token': headers.token,
-                        'Cookie': headers.cookie,
-                        'SAP-Connectivity-SCC-Location_ID': destinationConfiguration.CloudConnectorLocationId
+                        'Cookie': headers.cookie
                     },
                     data: image,
-                }).catch(error => {
-                    console.log("uploading image");   
+                }).catch(error => {  
                     logger.info("ERROR - Uploading Image");
                     throw util.errorHandler(error, logger);
                 });
-                    console.log("success image");
                     logger.info("SUCCESS - Uploading Image");
             }).catch(error => {
                 logger.info("ERROR - uploading image");

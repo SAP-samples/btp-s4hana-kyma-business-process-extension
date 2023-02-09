@@ -4,7 +4,6 @@ module.exports = async function (event, context) {
 		let msg;
 		try {
 			msg = JSON.parse(event.data);
-			//console.log("msg", msg.data);
 		} catch (e) {
 		   if(event.data){
 				msg =  event.data

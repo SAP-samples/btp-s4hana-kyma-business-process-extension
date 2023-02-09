@@ -11,6 +11,8 @@ This application showcases:
 - Consuming REST APIs from SAP S/4HANA on-premise using SAP BTP Platform Connectivity Service
 - Building and deploying a function in [SAP BTP Kyma Runtime, Serverless](https://kyma-project.io/docs/components/serverless)
 
+We also have a Discovery center mission on [Extend SAP S/4HANA Business Processes on SAP BTP, Kyma Runtime](https://discovery-center.cloud.sap/missiondetail/3586/3629/) using this reference application. 
+
 ## Business Scenario
 
 A business scenario is used to showcase how to build a SAP S/4HANA on-premise extension application on SAP BTP, Kyma runtime.
@@ -62,7 +64,7 @@ The application requires the following set of [Entitlements and Quotas](https://
 | Event Mesh                        | default            |          1          |
 | Kyma runtime                      |                    |          1          |
 | Connectivity Service              | connectivity_proxy |          1          |
-| Launchpad Service                 | standard           |  Subscription       |
+| SAP Build Work Zone               | standard           |  Subscription       |
 
 ## Configuration
 
@@ -75,7 +77,6 @@ The application requires the following set of [Entitlements and Quotas](https://
 - [Configure Your Global Account and Subaccounts in SAP BTP ](./documentation/set%20up/configure-account/README.md)
 - [Configure Command Line Tool kubectl](./documentation/set%20up/kubeconfig-setup/README.md)
 - [Create an SAP HANA Cloud Instance](./documentation/set%20up/hana/README.md)
-- [Determine Placeholder Values](./documentation/deploy/prepare-deployment/README.md)
 - [Deploy the Application to SAP BTP Kyma Runtime](./documentation/deploy/README.md)
 
 ### Step 4: [Configure Event-Based Communication between SAP S/4HANA and SAP Event Mesh](./documentation/deploy/configure-channel/README.md)
@@ -84,7 +85,7 @@ The application requires the following set of [Entitlements and Quotas](https://
 ## Demo Script
    
 1. To start your Business Partner Validation Application go to **Instances and Subscriptions**.
-2. Find **Launchpad Service** and click to open the application.
+2. Find **SAP Build Work Zone** and click to open the application.
 3. On the website, find your created website and click on the tile to open it.
 4. Click on the **Business Partner Validation** tile.
 
