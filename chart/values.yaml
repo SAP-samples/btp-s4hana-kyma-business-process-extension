@@ -18,7 +18,7 @@ srv:
     repository: <DOCKER_ACCOUNT>/kyma-cap-s4ems-srv
     tag: latest
   env:
-    SERVERLESS_URL: https://<RELEASE_NAME>-qrcodegenerator.<DOMAIN>
+    SERVERLESS_URL: https://<RELEASE_NAME>-qrcodegenerator.<domain>
   resources:
     limits:
       ephemeral-storage: 1G
@@ -107,10 +107,10 @@ html5_apps_repo_host:
   serviceOfferingName: html5-apps-repo
   servicePlanName: app-host
 
-gitusername: <base64encodeduser>
+gitusername: <base64_encodeduser>
 gitpassword: <base_64_encoded_GIT_secret>
 giturl: <git_repo_url>
-gitbranch: <branch>
+gitbranch: <git_branch>
   
 functionshttpproxy: https://connectivity-proxy.kyma-system.svc.cluster.local:20003
 functionsenv: '{ "name":"s4h", "attachmentSrvApi":"API_CV_ATTACHMENT_SRV", "businessPartnerSrvApi":"API_BUSINESS_PARTNER", "businessObjectTypeName" : "BUS1006" }'
