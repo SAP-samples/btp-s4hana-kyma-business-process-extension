@@ -11,12 +11,9 @@ const axiosInstance = axios.create();
 
 async function postImage(context, msg, event) {
         try{
-            logger.info("msg in process.env", process.env);  
-            const destination = {};
-            for (const envName of Object.getOwnPropertyNames(process.env).filter( name => name.startsWith("dest_"))) {
-                const name = envName.substr("dest_".length);
-                destination[name] = process.env[envName];
-            }
+            logger.info("msg in process.env", process.env);
+            const destination = JSON.parse(JSON.parse(JSON.stringify(process.env.destination_credentials)))
+            console.log(destination)
             const destinationNameFromContextString = process.env.destination_name;
             const destinationNameFromContext = JSON.parse(destinationNameFromContextString);
             const destinationName = destinationNameFromContext.name;
