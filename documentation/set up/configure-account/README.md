@@ -92,4 +92,6 @@ In this section, you will set up the subaccount in SAP BTP for developing the SA
 
 11. Assign *SAP HANA Cloud Administrator* role collection to the users. Refer to Step 8 to do the same.
 
+11. Assign *Launchpad_Admin* role collection to the users. Refer to Step 8 to do the same.
+
 

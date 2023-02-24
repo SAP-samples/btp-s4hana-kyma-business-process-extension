@@ -22,7 +22,7 @@ To deploy the application, perform the following steps:
     docker push <DOCKER_ACCOUNT>/kymamock:latest
     ```
 
-2. Navigate to the **charts** folder in the cloned source code.
+2. Navigate to the **charts** folder and edit the **values.yaml** file in the cloned source code.
 
 3. Edit the domain of your cluster, so that the URL of your CAP service can be generated. You can use the preconfigured domain name for your Kyma cluster:
 
@@ -39,7 +39,7 @@ To deploy the application, perform the following steps:
 
 **Note:** Make sure that you deploy the mock server to the same namespace where the Kyma application has been deployed.
 
-6. Find all values for **RELEASE_NAME_OF_KYMAAPP** and replace all with the release name of CAP application deployed in previous steps.
+6. Find all values for **RELEASE_NAME_OF_KYMAAPP** and replace all with the release name of CAP application deployed in [previous steps](../deploy/README.md).
 
 7. Run the following command to deploy your application:
 
@@ -54,6 +54,13 @@ To deploy the application, perform the following steps:
 1. Open your SAP BTP account and navigate to your **Subaccount**.
 
 2. Choose **Connectivity** in the menu on the left then choose **Destinations** &rarr; **New Destination**.
+
+3. After the successful deployment of mock application you will get the following message in the terminal:
+    ```
+        Application "mock-srv" started and available at "https://<mock_srv_url>"
+    ```
+    
+   Copy the above URL and use it in the next step.
 
 3. Enter the following information to the Destination Configuration and **Save** your input:
 

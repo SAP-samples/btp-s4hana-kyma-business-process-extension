@@ -2,10 +2,10 @@
 
 1. Start your Business Partner Validation Application:
 
-- Navigate to **HTML5 Applications**.
-- Find your application and click to open the application.
+- Go to **Instances and Subscriptions**.
+- Find **SAP Build Work Zone** and click to open the application.
+- In the Website Manager find your created Website and click on tile to open it.
 - Click on **Business Partner Validation** tile.
-- Click on **Go**.
 - The list of BusinessPartners along with their verification status gets displayed.
 
  ![App](./images/endtoend2.png)
