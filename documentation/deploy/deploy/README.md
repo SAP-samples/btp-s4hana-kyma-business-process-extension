@@ -50,7 +50,8 @@
 
 7. Find all values for **DOCKER_ACCOUNT** and replace all with your docker account/repository.
 
-8. Find all values for **CONNECTIVITY_SERVICE_SECRET** and replace all with your connectivity secret name.
+8. Navigate to **Kyma Console** --> **Your Namespace** --> **Configuration** --> **Secrets**. Copy the       connectivity service secret name.
+Find all values for **CONNECTIVITY_SERVICE_SECRET** and replace all with your connectivity secret name.
 
 9. Find all values for **RELEASE_NAME** and replace all with your Helm Chart's release name. This can be any name of your choice.
 

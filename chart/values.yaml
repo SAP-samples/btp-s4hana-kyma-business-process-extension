@@ -18,15 +18,15 @@ srv:
     repository: <DOCKER_ACCOUNT>/kyma-cap-s4ems-srv
     tag: latest
   env:
-    SERVERLESS_URL: https://<RELEASE_NAME>-qrcodegenerator.<domain>
+    SERVERLESS_URL: https://<RELEASE_NAME>-qrcodegenerator.<DOMAIN>
   resources:
     limits:
       ephemeral-storage: 1G
-      memory: 1000M
+      memory: 256M
     requests:
-      cpu: 1000m
+      cpu: 250m
       ephemeral-storage: 1G
-      memory: 1000M
+      memory: 256M
   health_check:
     liveness:
       path: /
@@ -66,11 +66,11 @@ hana_deployer:
       fromSecret: <RELEASE_NAME>-caphana
   resources:
     limits:
-      cpu: 2000m
-      memory: 1G
+      cpu: 250m
+      memory: 256M
     requests:
-      cpu: 1000m
-      memory: 1G
+      cpu: 250m
+      memory: 256M
 destinations:
   serviceOfferingName: destination
   servicePlanName: lite
@@ -98,11 +98,11 @@ html5_apps_deployer:
       serviceInstanceName: html5-apps-repo-host
   resources:
     limits:
-      cpu: 2000m
-      memory: 1G
+      cpu: 250m
+      memory: 256M
     requests:
-      cpu: 1000m
-      memory: 1G
+      cpu: 250m
+      memory: 256M
 html5_apps_repo_host:
   serviceOfferingName: html5-apps-repo
   servicePlanName: app-host

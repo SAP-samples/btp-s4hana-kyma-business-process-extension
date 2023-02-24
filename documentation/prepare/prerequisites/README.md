@@ -29,9 +29,9 @@ The application requires the following [Entitlements and Quotas](https://help.sa
 |-----------------------------------|------------------- |:-------------------:|
 | SAP HANA Schemas & HDI Containers | hdi-shared         |          1          |
 | SAP HANA Cloud                    | tools              |  Subscription       |
-| SAP HANA Cloud                    | hana               |          1          |
+| SAP HANA Cloud                    | hana/ hana-free    |          1          |
 | Event Mesh                        | default            |          1          |
-| Kyma runtime                      |                    |          1          |
+| Kyma runtime                      | Enterprise/ free   |          1          |
 | Connectivity Service              | connectivity_proxy |          1          |
 | SAP Build Work Zone               | standard/free      |  Subscription       |
 
