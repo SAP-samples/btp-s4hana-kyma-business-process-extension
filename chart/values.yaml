@@ -1,33 +1,31 @@
-
-# yaml-language-server: $schema=./values.root.schema.json
-
 global:
   domain: <DOMAIN>
   imagePullSecret: {}
 srv:
   bindings:
-    uaa:
-      serviceInstanceName: xsuaa
     db:
-      fromSecret: <RELEASE_NAME>-caphana
-    destinations:
-      serviceInstanceName: destinations
+      serviceInstanceName: hana
+    auth:
+      serviceInstanceName: xsuaa
+    destination:
+      serviceInstanceName: destination
     messaging:
       serviceInstanceName: event-mesh
   image:
     repository: <DOCKER_ACCOUNT>/kyma-cap-s4ems-srv
     tag: latest
   env:
-    SERVERLESS_URL: https://<RELEASE_NAME>-qrcodegenerator.<DOMAIN>
+  - name: PUBLISHER_URL
+    value: http://eventing-event-publisher-proxy.kyma-system/publish
   resources:
     limits:
       ephemeral-storage: 1G
       memory: 256M
     requests:
-      cpu: 250m
       ephemeral-storage: 1G
+      cpu: 250m
       memory: 256M
-  health_check:
+  health:
     liveness:
       path: /
     readiness:
@@ -49,21 +47,15 @@ srv:
                 - key: token_service_url
                   path: url
           - configMap:
-              name: <RELEASE_NAME>-connectivity-proxy-info
+              name: "{{ .Release.Name }}-connectivity-proxy-info"
               optional: false
-xsuaa:
-  serviceOfferingName: xsuaa
-  servicePlanName: application
-  parameters:
-    xsappname: kyma-cap-s4ems
-  config: xs-security.json
-hana_deployer:
+hana-deployer:
   image:
     repository: <DOCKER_ACCOUNT>/kyma-cap-s4ems-db
     tag: latest
   bindings:
     hana:
-      fromSecret: <RELEASE_NAME>-caphana
+      serviceInstanceName: hana
   resources:
     limits:
       cpu: 250m
@@ -71,21 +63,33 @@ hana_deployer:
     requests:
       cpu: 250m
       memory: 256M
-destinations:
+hana:
+  serviceOfferingName: hana
+  servicePlanName: hdi-shared
+xsuaa:
+  serviceOfferingName: xsuaa
+  servicePlanName: application
+  parameters:
+    xsappname: kyma-cap-s4ems
+    tenant-mode: dedicated
+destination:
   serviceOfferingName: destination
   servicePlanName: lite
   parameters:
     version: 1.0.0
     HTML5Runtime_enabled: true
-event_mesh:
+event-mesh:
   serviceOfferingName: enterprise-messaging
   servicePlanName: default
-  config: event-mesh.json
-html5_apps_deployer:
-  cloudService: com.bp.businesspartners
-  backendDestinations: 
-    srv-binding: 
-      service: srv
+html5-apps-repo-host:
+  serviceOfferingName: html5-apps-repo
+  servicePlanName: app-host
+html5-apps-deployer:
+  env:
+    SAP_CLOUD_SERVICE: com.bp.businesspartners
+  envFrom:
+    - configMapRef:
+        name: "{{ .Release.Name }}-html5-apps-deployer-configmap"
   image:
     repository: <DOCKER_ACCOUNT>/kyma-cap-s4ems-html5-deployer
     tag: latest
@@ -93,8 +97,8 @@ html5_apps_deployer:
     xsuaa:
       serviceInstanceName: xsuaa
     destination:
-      serviceInstanceName: destinations
-    html5_apps_repo:
+      serviceInstanceName: destination
+    html5-apps-repo:
       serviceInstanceName: html5-apps-repo-host
   resources:
     limits:
@@ -103,10 +107,11 @@ html5_apps_deployer:
     requests:
       cpu: 250m
       memory: 256M
-html5_apps_repo_host:
-  serviceOfferingName: html5-apps-repo
-  servicePlanName: app-host
+backendDestinations:
+  srv-binding: 
+      service: srv
 
+namespace: <namespace>
 gitusername: <base64_encodeduser>
 gitpassword: <base_64_encoded_GIT_secret>
 giturl: <git_repo_url>
@@ -114,3 +119,4 @@ gitbranch: <git_branch>
   
 functionshttpproxy: https://connectivity-proxy.kyma-system.svc.cluster.local:20003
 functionsenv: '{ "name":"s4h", "attachmentSrvApi":"API_CV_ATTACHMENT_SRV", "businessPartnerSrvApi":"API_BUSINESS_PARTNER", "businessObjectTypeName" : "BUS1006" }'
+

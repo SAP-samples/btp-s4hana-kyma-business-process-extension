@@ -8,7 +8,7 @@ const logger = require('cf-nodejs-logging-support');
 logger.setLoggingLevel("info");
 
 async function processBpPayloadForInternet(destinationConfiguration, msg, destinationNameFromContext) {
-        let bpDetails = msg.data;
+        let bpDetails = msg;
         if (bpDetails.verificationStatus === "VERIFIED") {
             bpDetails.searchTerm1 = bpDetails.verificationStatus;
             bpDetails.businessPartnerIsBlocked = false;

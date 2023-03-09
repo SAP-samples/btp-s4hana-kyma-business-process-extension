@@ -6,6 +6,7 @@ module.exports = async srv => {
   const bupaSrv = await cds.connect.to("API_BUSINESS_PARTNER");
   const messaging = await cds.connect.to('messaging')
   const { postcodeValidator } = require('postcode-validator');
+  const { HTTP, CloudEvent } = require("cloudevents");
   const LOG = cds.log('kyma-service')
 
   srv.on("READ", BusinessPartnerAddress, req => bupaSrv.run(req.query))
@@ -81,23 +82,41 @@ module.exports = async srv => {
   }
 
   async function emitEvent(result, req) {
-      LOG.info("emit event");
-      const resultJoin = await cds.run(SELECT.one("my.businessPartnerValidation.Notifications as N").leftJoin("my.businessPartnerValidation.Addresses as A").on("N.businessPartnerId = A.businessPartnerId").where({ "N.ID": result.ID }));
-      const statusValues = { "N": "NEW", "P": "PROCESS", "INV": "INVALID", "V": "VERIFIED" }
-      // Format JSON as per serverless requires
-      const payload = {
-        "businessPartner": resultJoin.businessPartnerId,
-        "businessPartnerName": resultJoin.businessPartnerName,
-        "verificationStatus": statusValues[resultJoin.verificationStatus_code],
-        "addressId": resultJoin.addressId,
-        "streetName": resultJoin.streetName,
-        "postalCode": resultJoin.postalCode,
-        "country": resultJoin.country,
-        "addressModified": resultJoin.isModified
-      }
-      LOG.info(`<< emit formatted >>>>> ${JSON.stringify(payload)}`);
-      let msg =  await messaging.emit(`SalesService/d41d/BusinessPartnerVerified`, payload);
-      LOG.info(`Message emitted to Queue ${msg}`);
+    LOG.info("emit event");
+    const resultJoin = await cds.run(SELECT.one("my.businessPartnerValidation.Notifications as N").leftJoin("my.businessPartnerValidation.Addresses as A").on("N.businessPartnerId = A.businessPartnerId").where({ "N.ID": result.ID }));
+    const statusValues = { "N": "NEW", "P": "PROCESS", "INV": "INVALID", "V": "VERIFIED" }
+    // Format JSON as per serverless requires
+    const payload = new CloudEvent({
+      type: "sap.kyma.custom.internal.bp.notification.v1",
+      source: "/default/bp.ems/bpems",
+      data: {
+          "businessPartner": resultJoin.businessPartnerId,
+          "businessPartnerName": resultJoin.businessPartnerName,
+          "verificationStatus": statusValues[resultJoin.verificationStatus_code],
+          "addressId": resultJoin.addressId,
+          "streetName": resultJoin.streetName,
+          "postalCode": resultJoin.postalCode,
+          "country": resultJoin.country,
+          "addressModified": resultJoin.isModified
+      },
+      datacontenttype: "application/json"
+    });
+    const message = HTTP.structured(payload);
+    console.log("after sending payload");
+    console.log(`ce: ${JSON.stringify(message)}`);
+    // console.log(`printing content type ${JSON.stringify(message.headers['content-type'])}`);
+
+    const response = await axios({
+      method: 'post',
+      url: process.env.PUBLISHER_URL,
+      headers: message.headers,
+      data: message.body
+  }).catch(error => {
+      LOG.info("Error in post", error);
+      // throw util.errorHandler(error, logger);
+  });
+    LOG.info(`Message emitted to Queue`);
+    return {"status": "published"};
   }
 
 }
