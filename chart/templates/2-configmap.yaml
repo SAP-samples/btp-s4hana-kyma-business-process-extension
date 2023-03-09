@@ -7,6 +7,6 @@ metadata:
      name: kyma-cap-s4ems
 data:
   http_proxy: {{.Values.functionshttpproxy}}
-  destination_name: |
-      {{.Values.functionsenv}}
+  destination_name: | 
+   {{.Values.functionsenv}}
  

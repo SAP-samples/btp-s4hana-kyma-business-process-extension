@@ -1,5 +1,4 @@
-
-    {{- $ := merge (dict "name" "connectivity-proxy-info") . }}
+{{- $ := merge (dict "name" "connectivity-proxy-info") . }}
 apiVersion: v1
 kind: ConfigMap
 metadata:

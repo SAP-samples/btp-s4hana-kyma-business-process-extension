@@ -27,26 +27,11 @@ spec:
         configMapKeyRef:
           name: {{ .Release.Name }}-qrcodeconfig
           key: destination_name
-    - name: dest_clientid
+    - name: destination_credentials
       valueFrom:
         secretKeyRef:
-          name: {{ .Release.Name }}-srv-destinations
-          key: clientid
-    - name: dest_clientsecret
-      valueFrom:
-        secretKeyRef:
-          name: {{ .Release.Name }}-srv-destinations
-          key: clientsecret
-    - name: dest_uri
-      valueFrom:
-        secretKeyRef:
-          name: {{ .Release.Name }}-srv-destinations
-          key: uri
-    - name: dest_url
-      valueFrom:
-        secretKeyRef:
-          name: {{ .Release.Name }}-srv-destinations
-          key: url
+          name: {{ .Release.Name }}-srv-destination
+          key: credentials
           
 
 ---

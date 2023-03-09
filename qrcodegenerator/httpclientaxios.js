@@ -12,14 +12,12 @@ const axiosInstance = axios.create();
 async function postImage(context, msg, event) {
         try{
             logger.info("msg in process.env", process.env);  
-            const destination = {};
-            for (const envName of Object.getOwnPropertyNames(process.env).filter( name => name.startsWith("dest_"))) {
-                const name = envName.substr("dest_".length);
-                destination[name] = process.env[envName];
-            }
+            const destination = JSON.parse(JSON.parse(JSON.stringify(process.env.destination_credentials)))
+            console.log(destination);
             const destinationNameFromContextString = process.env.destination_name;
             const destinationNameFromContext = JSON.parse(destinationNameFromContextString);
             const destinationName = destinationNameFromContext.name;
+            console.log("destinationName", destinationName);
             const data = await util.readDetails(destination, destinationName, context, logger);
             var response = '';
             if (data.destinationConfiguration.ProxyType === "Internet") {
@@ -37,7 +35,7 @@ async function postImage(context, msg, event) {
 }
 
 async function processBpPayload(accessToken, destinationConfiguration, msg, destinationNameFromContext) {
-        let bpDetails = msg.data;
+        let bpDetails = msg;
         if (bpDetails.verificationStatus === "VERIFIED") {
             bpDetails.searchTerm1 = bpDetails.verificationStatus;
             bpDetails.businessPartnerIsBlocked = false;

@@ -55,6 +55,8 @@ Find all values for **CONNECTIVITY_SERVICE_SECRET** and replace all with your co
 
 9. Find all values for **RELEASE_NAME** and replace all with your Helm Chart's release name. This can be any name of your choice.
 
+10. Replace the value for **namespace** with the Kyma namespace in which you are going to dpeloy your application.
+
 10. Replace the value for **base64_encodeduser** with encoded Git username.
 
 11. Replace the value for **base_64_encoded_GIT_secret** with encoded Git password.
@@ -66,5 +68,5 @@ Find all values for **CONNECTIVITY_SERVICE_SECRET** and replace all with your co
 14. Run the following command to deploy your application:
 
     ```shell
-    helm upgrade --install <RELEASE_NAME> ./chart -n <NAMESPACE>
+    helm upgrade --install <RELEASE_NAME> ./chart -n <NAMESPACE> --set-file event-mesh.jsonParameters=chart/event-mesh.json --set-file xsuaa.jsonParameters=chart/xs-security.json
     ```

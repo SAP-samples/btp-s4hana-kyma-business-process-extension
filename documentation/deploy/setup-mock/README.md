@@ -22,7 +22,7 @@ To deploy the application, perform the following steps:
     docker push <DOCKER_ACCOUNT>/kymamock:latest
     ```
 
-2. Navigate to the **charts** folder and edit the **values.yaml** file in the cloned source code.
+2. Navigate to the **chart** folder and edit the **values.yaml** file in the cloned source code.
 
 3. Edit the domain of your cluster, so that the URL of your CAP service can be generated. You can use the preconfigured domain name for your Kyma cluster:
 
