@@ -4,7 +4,7 @@ global:
 srv:
   bindings:
     destinations:
-      fromSecret: <RELEASE_NAME_OF_KYMAAPP>-srv-destinations
+      fromSecret: <RELEASE_NAME_OF_KYMAAPP>-srv-destination
     messaging:
       fromSecret: <RELEASE_NAME_OF_KYMAAPP>-srv-messaging
   image:
