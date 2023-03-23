@@ -23,15 +23,14 @@ Check for mandatory configuration options
 Labels for a component
 */}}
 {{- define "cap.labels" -}}
-helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+helm.sh/revision: {{ .Release.Revision | quote }}
+helm.sh/chart: {{ printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 app.kubernetes.io/name: {{ .name }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 app.kubernetes.io/instance: {{ .Release.Name }}
+{{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion }}
-{{- end -}}
-{{- define "cap.labelsWithRevision" -}}
-{{- include "cap.labels" . }}
-revision: "{{ .Release.Revision }}"
+{{- end }}
 {{- end -}}
 
 {{/*
@@ -45,14 +44,6 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{/*
 Image
 */}}
-{{- define "cap.image.srv" -}}
-    {{- if .Values.srv.image.tag -}}
-{{ .Values.srv.image.repository }}:{{ .Values.srv.image.tag }}
-    {{- else -}}
-{{ .Values.srv.image.repository }}
-    {{- end -}}
-{{- end -}}
-
 {{- define "cap.image" -}}
     {{- if .image.tag -}}
 {{ .image.repository }}:{{ .image.tag }}
@@ -64,14 +55,6 @@ Image
 {{/*
 Image Pull Policy
 */}}
-{{- define "cap.imagePullPolicy.srv" -}}
-    {{- if and (.Values.srv.image.tag) (ne .Values.srv.image.tag "latest") -}}
-IfNotPresent
-   {{- else -}}
-Always
-    {{- end -}}
-{{- end -}}
-
 {{- define "cap.imagePullPolicy" -}}
     {{- if and (.image.tag) (ne .image.tag "latest") -}}
 IfNotPresent
@@ -88,23 +71,6 @@ Image Pull Secrets
 imagePullSecrets:
 - name: {{ .Values.global.imagePullSecret.name | quote }}
     {{- end -}}
-{{- end -}}
-
-
-{{/*
-Binding
-*/}}
-{{- define "cap.binding" -}}
-apiVersion: services.cloud.sap.com/v1alpha1
-kind: ServiceBinding
-metadata:
-  name: {{ include "cap.bindingSecretName" $ | quote }}
-  namespace: {{ $.Release.Namespace }}
-  labels: {{- include "cap.labels" $ | nindent 4 }}
-spec:
-  serviceInstanceName: {{ $.Release.Name }}-{{ $.binding.service }}
-  externalName: {{ include "cap.bindingSecretName" $ | quote }}
-  secretName: {{ include "cap.bindingSecretName" $ | quote }}
 {{- end -}}
 
 {{/*
@@ -164,4 +130,16 @@ spec:
     {{- end }}
     {{- $name }}
   {{- end }}
+{{- end }}
+
+{{/*
+    Saas Registry Parameters
+*/}}
+{{- define "cap.service-instance.saasRegistryParameters" -}}
+  {{- $srvHostFull := include "cap.deploymentHostFull" (merge (dict "name" "srv" "deployment" .Values.srv) . ) }}
+  {{- $parameters := .Values.saasRegistryParameters }}
+  {{- $appUrls := $parameters.appUrls }}
+  {{- $_ := set $appUrls "getDependencies" (printf "https://%s%s" $srvHostFull $appUrls.getDependencies) }}
+  {{- $_ := set $appUrls "onSubscription" (printf "https://%s%s" $srvHostFull $appUrls.onSubscription) }}
+  {{- $parameters | mustToJson }}
 {{- end }}
