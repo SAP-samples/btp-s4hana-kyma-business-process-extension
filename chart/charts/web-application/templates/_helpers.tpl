@@ -82,12 +82,19 @@ Define Host for the APIRule
 {{- end }}
 
 {{/*
+Define the application uri which will be used for the VCAP_APPLICATION env variable
+*/}}
+{{- define "web-application.applicationUri" -}}
+{{- include "web-application.fullname" . }}
+{{- end }}
+
+{{/*
 Service Binding secret mounts
 */}}
 {{- define "web-application.serviceMounts" -}}
 {{- range $name, $params := .Values.bindings }}
 - mountPath: /bindings/{{ $name }}/
-  name: "{{ $name }}-binding"
+  name: "{{ $name }}"
   readOnly: true
 {{- end }}
 {{- end }}
@@ -103,18 +110,9 @@ Service Binding secret volumes
 {{- else if $params.secretName }}
 {{- $secretName = $params.secretName }}
 {{- end }}
-- name: {{ $name }}-binding
+- name: {{ $name }}
   secret:
-    secretName: {{ $secretName }}
-    items:
-    - key: label
-      path: metadata/label
-    - key: plan
-      path: metadata/plan
-    - key: tags
-      path: metadata/tags
-    - key: credentials
-      path: credentials
+    secretName: {{ tpl $secretName $ }}
 {{- end }}
 {{- end }}
 
@@ -133,24 +131,110 @@ Name of the imagePullSecret
 {{- end }}
 
 {{/*
+Calculate the final image name
+*/}}
+{{- define "web-application.imageName" -}}
+{{- $tag := .Values.image.tag | default .Values.global.image.tag | default "latest" }}
+{{- $registry := .Values.image.registry | default .Values.global.image.registry }}
+{{- if $registry }}
+{{- $registry | trimSuffix "/" }}/{{ .Values.image.repository }}:{{ $tag }}
+{{- else }}
+{{- .Values.image.repository }}:{{ $tag }}
+{{- end }}
+{{- end }}
+
+{{/*
 Create the name of a service instance.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
-If release name contains chart name it will be used as service insatnce name.
+If release name contains chart name it will be used as service instance name.
 */}}
 {{- define "web-application.serviceInstanceName" -}}
+  {{- $name := "" }}
   {{- if .binding.serviceInstanceFullname }}
     {{- if gt (len .binding.serviceInstanceFullname) 63 }}
       {{- fail (printf "name exceeds 63 characters: '%s'" .binding.serviceInstanceFullname) }}
     {{- end }}
-    {{- .binding.serviceInstanceFullname }}
+    {{- $name = .binding.serviceInstanceFullname }}
   {{- else }}
-    {{- $name := .binding.serviceInstanceName }}
-    {{- if not (hasPrefix .release $name)}}
-      {{- $name = printf "%s-%s" .release $name }}
+    {{- $name = .binding.serviceInstanceName }}
+    {{- if not (hasPrefix .root.Release.Name $name)}}
+      {{- $name = printf "%s-%s" .root.Release.Name $name }}
     {{- end }}
     {{- if gt (len $name) 63 }}
       {{- fail (printf "name exceeds 63 characters: '%s'" $name) }}
     {{- end }}
-    {{- $name }}
   {{- end }}
+  {{- tpl $name .root }}
+{{- end }}
+
+{{- define "web-application.processEnv" -}}
+{{- $result := dict }}
+{{- $variables := list }}
+{{- range $k, $v := .Values.env }}
+  {{- $variable := dict }}
+  {{/*
+    We support two versions to provide environment varialbes: as an array and as a map
+
+    env:
+    - name: TEST
+      value: X
+
+    env:
+      TEST: X
+
+    Transform the map case into the array case:
+  */}}
+  {{- if (not (kindIs "map" $v)) }}
+    {{- $v = (dict "value" $v) }}
+  {{- end }}
+  {{- if (kindIs "string" $k) }} {{/* $k will be the array index (therefore int) in the array case */}}
+    {{- $_ := (set $v "name" $k) }}
+  {{- end }}
+
+  {{/* we have defaults for APPLICATION_NAME and APPLICATION_URI, but only want to provide them, if the users has no explicit values. */}}
+  {{- if eq "APPLICATION_NAME" $v.name }}
+    {{- $_ := set $result "appName" true }}
+  {{- end }}
+  {{- if eq "APPLICATION_URI" $v.name }}
+    {{- $_ := set $result "appURI" true }}
+  {{- end }}
+
+  {{/* Translate into K8s struct */}}
+  {{- $_ := set $variable "name" $v.name }}
+  {{- if $v.value }}
+    {{- $_ := set $variable "value" ($v.value | toString) }}
+  {{- else }}
+    {{- $_ := set $variable "valueFrom" (omit $v "name")}}
+  {{- end }}
+  {{- $variables = append $variables $variable}}
+{{- end }}
+{{- $_ := set $result "vars" $variables }}
+ {{- (fromYaml (tpl (toYaml $result) $)) | mustToJson }}
+{{- end }}
+
+{{- define "web-application.processEnvFrom" -}}
+{{- $result := dict }}
+{{- $variables := list }}
+{{- range $secretName := .Values.envSecretNames }}
+  {{- $variable := dict }}
+  {{- $_ := set $variable "name" $secretName -}}
+  {{- $variables = append $variables (dict "secretRef" $variable)}}
+{{- end }}
+{{- range $envFrom := .Values.envFrom }}
+  {{- $variables = append $variables $envFrom }}
+{{- end }}
+{{- $_ := set $result "vars" $variables }}
+{{- (fromYaml (tpl (toYaml $result) $)) | mustToJson }}
+{{- end }}
+
+{{- define "web-application.ha" -}}
+{{- $ha := true }}
+{{- if hasKey .Values "ha"}}
+  {{- if hasKey .Values.ha "enabled" }}
+    {{- $ha = .Values.ha.enabled }}
+  {{- end }}
+{{- end }}
+{{- if $ha }}
+true
+{{- end}}
 {{- end }}
