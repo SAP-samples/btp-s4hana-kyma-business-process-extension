@@ -6,7 +6,7 @@
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
-    "@sap/cds": "6.1.1",
+    "@sap/cds": "6.6.0",
     "@sap/cds-odata-v2-adapter-proxy": "^1.8.19",
     "@sap/xb-msg-amqp-v100": "^0.9.58",
     "cds-swagger-ui-express": "^0.3.0",
