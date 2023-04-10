@@ -18,7 +18,7 @@ The application showcases:
 
 A business scenario is used to showcase how to build an SAP S/4HANA on-premise extension Application on SAP BTP, Kyma runtime.
 
-John who is an employee of Business Partner Validation Firm iCredible, which is a third-party vendor of ACME Corporation would like to get notifications whenever new Business Partners are added to the SAP S/4HANA backend system of ACME Corporation. John would then be able to review the Business Partner details in his extension app. John would proceed to visit the Business Partner’s registered office and do some background verification. John would then proceed to update/validate the verification details into the extension app. Once the details are verified, the Business Partner gets activated in the SAP S/4HANA system of ACME Corporation.
+John, who is an employee of Business Partner Validation Firm iCredible, which is a third-party vendor of ACME Corporation, would like to get notifications whenever new Business Partners are added to the SAP S/4HANA backend system of ACME Corporation. John would then be able to review the Business Partner details in his extension app. John would proceed to visit the Business Partner’s registered office and do some background verification. John would then proceed to update/validate the verification details into the extension app. Once the details are verified, the Business Partner gets activated in the SAP S/4HANA system of ACME Corporation.
 
 Scenario details:
 

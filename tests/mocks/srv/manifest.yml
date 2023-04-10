@@ -1,0 +1,9 @@
+---
+applications:
+  - name: BusinessPartnerValidation-srv-mocks
+    path: .
+    memory: 256M
+    buildpacks:
+      - nodejs_buildpack
+    services:
+      - BusinessPartnerValidation-ems

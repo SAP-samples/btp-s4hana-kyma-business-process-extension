@@ -1,0 +1,50 @@
+{
+  "apiVersion": "v1",
+  "data": {
+    ".metadata": "eyJjcmVkZW50aWFsUHJvcGVydGllcyI6W3sibmFtZSI6ImNyZWRlbnRpYWwtdHlwZSIsImZvcm1hdCI6InRleHQifSx7Im5hbWUiOiJ1YWFkb21haW4iLCJmb3JtYXQiOiJ0ZXh0In0seyJuYW1lIjoieHNhcHBuYW1lIiwiZm9ybWF0IjoidGV4dCJ9LHsibmFtZSI6InVybCIsImZvcm1hdCI6InRleHQifSx7Im5hbWUiOiJ2ZXJpZmljYXRpb25rZXkiLCJmb3JtYXQiOiJ0ZXh0In0seyJuYW1lIjoiem9uZWlkIiwiZm9ybWF0IjoidGV4dCJ9LHsibmFtZSI6ImNsaWVudHNlY3JldCIsImZvcm1hdCI6InRleHQifSx7Im5hbWUiOiJpZGVudGl0eXpvbmVpZCIsImZvcm1hdCI6InRleHQifSx7Im5hbWUiOiJzYnVybCIsImZvcm1hdCI6InRleHQifSx7Im5hbWUiOiJ0ZW5hbnRtb2RlIiwiZm9ybWF0IjoidGV4dCJ9LHsibmFtZSI6ImFwaXVybCIsImZvcm1hdCI6InRleHQifSx7Im5hbWUiOiJjbGllbnRpZCIsImZvcm1hdCI6InRleHQifSx7Im5hbWUiOiJpZGVudGl0eXpvbmUiLCJmb3JtYXQiOiJ0ZXh0In0seyJuYW1lIjoidGVuYW50aWQiLCJmb3JtYXQiOiJ0ZXh0In0seyJuYW1lIjoic3ViYWNjb3VudGlkIiwiZm9ybWF0IjoidGV4dCJ9XSwibWV0YURhdGFQcm9wZXJ0aWVzIjpbeyJuYW1lIjoiaW5zdGFuY2VfbmFtZSIsImZvcm1hdCI6InRleHQifSx7Im5hbWUiOiJpbnN0YW5jZV9ndWlkIiwiZm9ybWF0IjoidGV4dCJ9LHsibmFtZSI6InBsYW4iLCJmb3JtYXQiOiJ0ZXh0In0seyJuYW1lIjoibGFiZWwiLCJmb3JtYXQiOiJ0ZXh0In0seyJuYW1lIjoidHlwZSIsImZvcm1hdCI6InRleHQifSx7Im5hbWUiOiJ0YWdzIiwiZm9ybWF0IjoianNvbiJ9XX0=",
+    "apiurl": "aHR0cHM6Ly9hcGkuYXV0aGVudGljYXRpb24uZXUxMi5oYW5hLm9uZGVtYW5kLmNvbQ==",
+    "clientid": "c2Ita3ltYS1jYXAtczRlbXMhdDMwMzg5",
+    "clientsecret": "M2IyNTkwMWUtZDEwYS00Y2E3LWE3OTUtYzM5YmYxNmYyNzZhJFhfVmVqQ3kxN1ZrSWt5Z2k2eE1sU3BLbGlYRVJyRE80Zm5ic0U3N2pSTkk9",
+    "credential-type": "YmluZGluZy1zZWNyZXQ=",
+    "identityzone": "a3ltYWhkaS1uZDljaGt3Ng==",
+    "identityzoneid": "ZDQwMjBlMTgtYjg4NC00OTk4LTg1NmItZGNiOTZhNGQxYWE2",
+    "instance_guid": "ZWRkM2U3MTgtMWM4NC00NmZlLTk1NjUtMjNkNDVjYzIxNjBj",
+    "instance_name": "a3ltYS14c3VhYQ==",
+    "label": "eHN1YWE=",
+    "plan": "YXBwbGljYXRpb24=",
+    "sburl": "aHR0cHM6Ly9pbnRlcm5hbC14c3VhYS5hdXRoZW50aWNhdGlvbi5ldTEyLmhhbmEub25kZW1hbmQuY29t",
+    "subaccountid": "OGE2NWRkZWItN2E3Mi00NmZiLTlmMmQtNjA3NzA2NzEwNDhj",
+    "tags": "WyJ4c3VhYSJd",
+    "tenantid": "ZDQwMjBlMTgtYjg4NC00OTk4LTg1NmItZGNiOTZhNGQxYWE2",
+    "tenantmode": "c2hhcmVk",
+    "type": "eHN1YWE=",
+    "uaadomain": "YXV0aGVudGljYXRpb24uZXUxMi5oYW5hLm9uZGVtYW5kLmNvbQ==",
+    "url": "aHR0cHM6Ly9reW1haGRpLW5kOWNoa3c2LmF1dGhlbnRpY2F0aW9uLmV1MTIuaGFuYS5vbmRlbWFuZC5jb20=",
+    "verificationkey": "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQklqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FROEFNSUlCQ2dLQ0FRRUFwSWVqNkZaaHBhOVhEMmZMaGt0VwpINnRoVEtzdWxFWGllZXZmcXg2YkRUOU5wSE5UbVlPVW9zZ3hadTFJRjh2L1ljTnpPKzg4Qkhtc040bVp0cW9LCjA5dlV2NU9lVUNmVjB6aVFCOE9SSC9jSkVIQUF2UlFJUUJxVFV6ZU9FMk1DeXZLOG5GWkNkN2hFK1pSZml0UFMKbi9ocG5FT0VKSFkvbUIrbjdaOHBqZFpXSHlBL0tjMXhqbWc1UkZNR0J2SVJHdVM1SldHSFVsTkFTSXpTNmlnRgpnaytkajZXeVRjMWw3NXNNSklhOG10OUxjcTJBMTBDVXNNUTNsRENkR0RmMkVsU1U4aFhKTUR1Wk1VRUhKNldUCjk4M3pPWWhWVEc5K3F1ck4ybGpKanZJZnhWbUtqRmhKMnhmaUUrQUloanFlRitPUW9NOWU3TjB1M1A3a1JGQTgKN1FJREFRQUIKLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0t",
+    "xsappname": "a3ltYS1jYXAtczRlbXMhdDMwMzg5",
+    "zoneid": "ZDQwMjBlMTgtYjg4NC00OTk4LTg1NmItZGNiOTZhNGQxYWE2"
+  },
+  "kind": "Secret",
+  "metadata": {
+    "creationTimestamp": "2022-11-23T12:04:15Z",
+    "labels": {
+      "binding": "kyma-srv-uaa"
+    },
+    "name": "kyma-srv-uaa",
+    "namespace": "grs",
+    "ownerReferences": [
+      {
+        "apiVersion": "services.cloud.sap.com/v1",
+        "blockOwnerDeletion": true,
+        "controller": true,
+        "kind": "ServiceBinding",
+        "name": "kyma-srv-uaa",
+        "uid": "71578996-0678-4a04-bebe-d054f2a1ebdd"
+      }
+    ],
+    "resourceVersion": "22326596",
+    "uid": "ffcbb269-5bcd-4190-bdd9-d65cbfa67619"
+  },
+  "type": "Opaque",
+  "domain": "c-4eb97ca.stage.kyma.ondemand.com"
+}
