@@ -10,14 +10,3 @@ The [SAP Cloud Application Programming Model (CAP)](https://cap.cloud.sap/docs/a
 Later, the events are consumed using [inbuilt APIs from CAP](https://cap.cloud.sap/docs/guides/messaging/#events-from-sap-s4hana).
 
 [CAP CDS definition of service can be found here](https://github.com/SAP-samples/btp-s4hana-kyma-business-process-extension/blob/main/srv/service.cds)
-
-# API Endpoints
-
-The following API endpoints are created by the Business Partner Service.
-
-To get a response, append the following endpoints to the deployed Business Partner Service URL:
-  - `/sales/Notifications`
-  - `/sales/Addresses`
-  - `/sales/BusinessPartnerAddress`
-  - `/sales/BusinessPartner`
-  - `/sales/StatusValues`

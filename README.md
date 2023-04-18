@@ -33,7 +33,7 @@ The scenario covers:
 
 ### Solution Diagram
 
-![solution diagram](./documentation/images/solutionDiagram.jpg)
+![solution diagram](./documentation/images/solutionDiagram.png)
 
 The Business Partner Validation application is developed using CAP and runs on the SAP BTP, Kyma runtime. It consumes platform services like SAP Event Mesh, SAP HANA and Connectivity. The events occuring in SAP S/4HANA on-premise are inserted into the SAP Event Mesh queue. The application running in Kyma is notified on events, consumes them from the queue and inserts the event data into the SAP HANA database. The Business Partner Validation Application uses SAP S/4HANA REST API's to read additional Business Partner Data from the SAP S/4HANA system. in a next step, the Business Partner Validation App uses an event-driven approach as well by firing events that get consumed by Serverless Function which posts the relevant business partner data to SAP S/4HANA on-premise system using SAP S4/HANA OData api's.
 
@@ -64,7 +64,7 @@ The application requires the following set of [Entitlements and Quotas](https://
 | Event Mesh                        | default            |          1          |
 | Kyma runtime                      |                    |          1          |
 | Connectivity Service              | connectivity_proxy |          1          |
-| SAP Build Work Zone               | standard/free     |  Subscription       |
+| SAP Build Work Zone               | standard/free      |  Subscription       |
 
 ## Configuration
 
