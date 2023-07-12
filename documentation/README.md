@@ -46,6 +46,7 @@
   - [Deploy the Application to SAP BTP, Kyma Runtime](deploy/deploy/README.md)
   - [Configure Launchpad](deploy/launchpad-configuration/README.md)
   - [Optional: Set Up Mock Server](deploy/setup-mock/README.md)
+  - [Test the scenario](deploy/test-scenario/README.md)
 
 - COMPLETE
   - [Complete the Mission](complete/complete-mission/README.md)
