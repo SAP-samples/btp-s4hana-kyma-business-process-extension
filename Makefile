@@ -1,5 +1,4 @@
-
-DOCKER_ACCOUNT=shankarigr
+DOCKER_ACCOUNT=<DOCKER_REPOSITORY>
 
 cds-build:
 	npm i
