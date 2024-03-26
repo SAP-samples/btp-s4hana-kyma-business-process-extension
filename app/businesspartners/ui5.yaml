@@ -4,22 +4,39 @@ metadata:
 type: application
 server:
   customMiddleware:
-  - name: fiori-tools-proxy
-    afterMiddleware: compression
-    configuration:
-      ignoreCertError: false # If set to true, certificate errors will be ignored. E.g. self-signed certificates will be accepted
-      backend:
-      - path: /sales
-        url: http://localhost:4004
-      ui5:
-        path: 
-        - /resources
-        - /test-resources
-        url: https://ui5.sap.com
-        version:  # The UI5 version, for instance, 1.78.1. Empty means latest version
-  - name: fiori-tools-appreload
-    afterMiddleware: compression
-    configuration:
-     port: 35729
-     path: webapp
-     delay: 300
+    - name: fiori-tools-proxy
+      afterMiddleware: compression
+      configuration:
+        ignoreCertError: false # If set to true, certificate errors will be ignored. E.g. self-signed certificates will be accepted
+        backend:
+          - path: /sales
+            url: http://localhost:4004
+        ui5:
+          path:
+            - /resources
+            - /test-resources
+          url: https://ui5.sap.com
+          version: # The UI5 version, for instance, 1.78.1. Empty means latest version
+    - name: fiori-tools-appreload
+      afterMiddleware: compression
+      configuration:
+        port: 35729
+        path: webapp
+        delay: 300
+
+resources:
+  configuration:
+    propertiesFileSourceEncoding: UTF-8
+
+builder:
+  resources:
+    excludes:
+      - "/test/**"
+      - "/localService/**"
+  customTasks:
+    - name: ui5-task-zipper
+      afterTask: generateCachebusterInfo
+      configuration:
+        archiveName: businesspartners
+        additionalFiles:
+          - xs-app.json

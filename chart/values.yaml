@@ -1,5 +1,5 @@
 global:
-  domain: <DOMAIN>
+  domain: c23a99d.stage.kyma.ondemand.com
   imagePullSecret: {}
 srv:
   bindings:
@@ -12,7 +12,7 @@ srv:
     messaging:
       serviceInstanceName: event-mesh
   image:
-    repository: <DOCKER_ACCOUNT>/kyma-cap-s4ems-srv
+    repository: shankarigr/kyma-cap-s4ems-srv
     tag: latest
   env:
   - name: PUBLISHER_URL
@@ -38,10 +38,10 @@ srv:
       projected:
         sources:
           - secret:
-              name: <CONNECTIVITY_SECRET>
+              name: connectivity-secret
               optional: false
           - secret:
-              name: <CONNECTIVITY_SECRET>
+              name: connectivity-secret
               optional: false
               items:
                 - key: token_service_url
@@ -51,7 +51,7 @@ srv:
               optional: false
 hana-deployer:
   image:
-    repository: <DOCKER_ACCOUNT>/kyma-cap-s4ems-db
+    repository: shankarigr/kyma-cap-s4ems-db
     tag: latest
   bindings:
     hana:
@@ -91,7 +91,7 @@ html5-apps-deployer:
     - configMapRef:
         name: "{{ .Release.Name }}-html5-apps-deployer-configmap"
   image:
-    repository: <DOCKER_ACCOUNT>/kyma-cap-s4ems-html5-deployer
+    repository: shankarigr/kyma-cap-s4ems-html5-deployer
     tag: latest
   bindings:
     xsuaa:
@@ -110,13 +110,11 @@ html5-apps-deployer:
 backendDestinations:
   srv-binding: 
       service: srv
-
-namespace: <namespace>
-gitusername: <base64_encodeduser>
-gitpassword: <base_64_encoded_GIT_secret>
-giturl: <git_repo_url>
-gitbranch: <git_branch>
+namespace: grs
+gitusername: c2hhbmthcmlncg==
+gitpassword: Z2hwX2w1YnJmdk1PelFxNmFNdlJLTTdibVRVcGdNRkQxTzE1cGdTag==
+giturl: https://github.com/shankarigr/btp-s4hana-kyma-business-process-extension.git
+gitbranch: main
   
 functionshttpproxy: https://connectivity-proxy.kyma-system.svc.cluster.local:20003
 functionsenv: '{ "name":"s4h", "attachmentSrvApi":"API_CV_ATTACHMENT_SRV", "businessPartnerSrvApi":"API_BUSINESS_PARTNER", "businessObjectTypeName" : "BUS1006" }'
-

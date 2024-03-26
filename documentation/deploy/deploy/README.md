@@ -18,8 +18,7 @@
      kubectl apply -f ./script/connectivity.yaml -n <NAME_SPACE>
      ```
 
-    **[NOTE]:** If connectivity service instance resides in a different namespace, then create the secret for connectivity service by running the following command.
- Make sure you update the `connectivity-secret.yaml` file with the required encoded values before secret creation.
+    **[NOTE]:** If admin has created the connectivity service instance in a different namespace, then get the secret and update the `connectivity-secret.yaml` file with the required encoded values. As a next step, Create the secret for connectivity service by running the following command.
 
      ```shell
      kubectl apply -f ./script/connectivity-secret.yaml -n <NAME_SPACE>
@@ -51,7 +50,7 @@
 7. Find all values for **DOCKER_ACCOUNT** and replace all with your docker account/repository.
 
 8. Navigate to **Kyma Console** --> **Your Namespace** --> **Configuration** --> **Secrets**. Copy the       connectivity service secret name.
-Find all values for **CONNECTIVITY_SERVICE_SECRET** and replace all with your connectivity secret name.
+Find all values for **CONNECTIVITY_SECRET** and replace all with your connectivity secret name.
 
 9. Find all values for **RELEASE_NAME** and replace all with your Helm Chart's release name. This can be any name of your choice.
 

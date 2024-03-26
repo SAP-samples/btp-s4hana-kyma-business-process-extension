@@ -1,11 +1,18 @@
 {
-    "name": "kyma-html5-app-deployer",
-    "version": "1.0.0",
-    "dependencies": {
-      "@sap/html5-app-deployer": "4.1.2"
-    },
-    "scripts": {
-      "start": "node node_modules/@sap/html5-app-deployer/index.js"
-    }
+  "name": "kyma-html5-app-deployer",
+  "version": "1.0.0",
+  "dependencies": {
+    "@sap/html5-app-deployer": "6.2.0"
+  },
+  "scripts": {
+    "start": "node node_modules/@sap/html5-app-deployer/index.js"
+  },
+  "private": true,
+  "description": "<description>",
+  "main": "webapp/index.html",
+  "devDependencies": {
+    "@ui5/cli": "^3.8.0",
+    "ui5-middleware-simpleproxy": "^3.2.10",
+    "ui5-task-zipper": "^3.1.1"
   }
-  
+}
