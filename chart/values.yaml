@@ -1,5 +1,5 @@
 global:
-  domain: c23a99d.stage.kyma.ondemand.com
+  domain: <DOMAIN>
   imagePullSecret: {}
 srv:
   bindings:
@@ -110,9 +110,9 @@ html5-apps-deployer:
 backendDestinations:
   srv-binding: 
       service: srv
-namespace: grs
-gitusername: c2hhbmthcmlncg==
-gitpassword: Z2hwX2w1YnJmdk1PelFxNmFNdlJLTTdibVRVcGdNRkQxTzE1cGdTag==
+namespace: <namespace>
+gitusername: <base64_encodeduser>
+gitpassword: <base_64_encoded_GIT_secret>
 giturl: https://github.com/shankarigr/btp-s4hana-kyma-business-process-extension.git
 gitbranch: main
   
