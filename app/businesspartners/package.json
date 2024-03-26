@@ -7,3 +7,4 @@
   "scripts": {
     "start": "node node_modules/@sap/html5-app-deployer/index.js"
   }
+}
