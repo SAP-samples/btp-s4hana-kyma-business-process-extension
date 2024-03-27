@@ -3,7 +3,7 @@
 ### Open SAP Build Work Zone, standard Edition
 
 1. Login to your SAP BTP account.
-2. Check if your user has access to open the SAP Build Work Zone, standard Edition application, check and assign the role collection **Launchpad_admin** to your user following [Assign Role for SAP Launchpad](https://help.sap.com/viewer/8c8e1958338140699bd4811b37b82ece/Cloud/en-US/fd79b232967545569d1ae4d8f691016b.html). Your user would have automatically got the necessary roles if you have [created a BTP account using the boosters](../scp-setup/README.md).
+2. Check if your user has access to open the SAP Build Work Zone, standard Edition application, check and assign the role collection **Launchpad_admin** to your user following [Assign Role for SAP Launchpad](https://help.sap.com/viewer/8c8e1958338140699bd4811b37b82ece/Cloud/en-US/fd79b232967545569d1ae4d8f691016b.html).
 3. Select **Services** and choose **Instances and Subscriptions**. 
 4. Select the tab **Subscriptions**, look for **SAP Build Work Zone, standard Edition**, Select the three dots **...** to open the relevant **Actions**. Select **Go to Application** to open the **SAP SAP Build Work Zone, standard Edition** service. 
 
@@ -63,7 +63,7 @@
  
    ![create Site3](./images/createSite3.png)
    
- 5. You can see the company SAP Build Work Zone, standard Edition site URL in the URL field. Copy the URL of the SAP Build Work Zone, standard Edition site which you can add later in SAP SuccessFactors Employee Central in the Home page.
+ 5. You can see the company SAP Build Work Zone, standard Edition site URL in the URL field. 
   <a id="copyURL"></a>
    ![open Created Site](./images/openCreatedSite.png)
 
@@ -77,7 +77,7 @@
    
 3. Select **Edit** and in the **Users** section, enter the **ID**, choose the **Identity Provider** and enter **E-mail** for all the users who would access the SAP Build Work Zone, standard Edition site. 
 
-    ![assignrole2](./images/assignrole2.png)
+    ![assignrole2](./images/assignRole2.png)
     
  4. You can now access the SAP Build Work Zone, standard Edition site URL which you copied in the previous step. If you do not have authorizations, try to logout and login with the user or open in a private browser window. You will see the **Business Partner** HTML5 applications.
 

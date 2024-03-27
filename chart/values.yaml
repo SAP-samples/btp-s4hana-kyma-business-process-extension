@@ -119,4 +119,3 @@ gitbranch: <git_branch>
   
 functionshttpproxy: https://connectivity-proxy.kyma-system.svc.cluster.local:20003
 functionsenv: '{ "name":"s4h", "attachmentSrvApi":"API_CV_ATTACHMENT_SRV", "businessPartnerSrvApi":"API_BUSINESS_PARTNER", "businessObjectTypeName" : "BUS1006" }'
-
