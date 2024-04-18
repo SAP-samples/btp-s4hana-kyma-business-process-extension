@@ -6,7 +6,9 @@ Your services are available at:
 {{- $root := . }}
 {{- range $name := include "cap.deploymentNames" . | split ";" }}
   {{- $deployment := (get $root.Values $name) }}
+  {{- if $deployment.expose.enabled }}
   {{- $ := merge (dict "name" $name "deployment" $deployment) $root }}
   {{- $url := include "cap.deploymentHostFull" $ }}
   {{ printf "%s - https://%s" $name $url }}
+  {{- end -}}
 {{- end }}
