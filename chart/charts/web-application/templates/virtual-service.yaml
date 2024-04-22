@@ -1,0 +1,36 @@
+{{- if include "web-application.internal.TENANT_HOST_PATTERN" . -}}
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: {{ include "web-application.fullname" . }}-multitenancy
+  labels: {{- include "web-application.labels" . | nindent 4 }}
+spec:
+  gateways:
+    - {{ tpl (default .Values.expose.gateway .Values.expose.tenantGateway) $ }}
+  hosts:
+    - "*"
+  http:
+    - corsPolicy:
+        allowHeaders:
+          - Authorization
+          - Content-Type
+          - "*"
+        allowMethods:
+          - GET
+          - POST
+          - PUT
+          - DELETE
+          - PATCH
+        allowOrigins:
+          - regex: .*
+      match:
+        - uri:
+            regex: /.*
+          headers:
+            Host:
+              regex: {{ tpl (include "web-application.internal.TENANT_HOST_PATTERN" .) . }}
+      route:
+        - weight: 100
+          destination:
+            host: "{{ include "web-application.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local"
+{{- end }}

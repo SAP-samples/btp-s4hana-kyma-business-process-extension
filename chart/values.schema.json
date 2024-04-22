@@ -66,10 +66,6 @@
             "$id": "#/properties/xsuaa",
             "description": "Service Instance"
         },
-        "auditlog": {
-            "$id": "#/properties/auditlog",
-            "description": "Service Instance"
-        },
         "destination": {
             "$id": "#/properties/destination",
             "description": "Service Instance"

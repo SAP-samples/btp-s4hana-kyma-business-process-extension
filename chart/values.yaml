@@ -1,6 +1,7 @@
 global:
   domain: <DOMAIN_NAME>
-  imagePullSecret: {}
+  imagePullSecret:
+    {}
 srv:
   bindings:
     messaging:
@@ -20,6 +21,6 @@ srv:
       memory: 500M
   health:
     liveness:
-      path: /
+      path: /health
     readiness:
-      path: /
+      path: /health

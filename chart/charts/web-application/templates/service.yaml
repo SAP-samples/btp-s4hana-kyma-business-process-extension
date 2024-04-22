@@ -3,9 +3,31 @@ kind: Service
 metadata:
   name: {{ include "web-application.fullname" . }}
   labels: {{- include "web-application.labels" . | nindent 4 }}
+  {{- if .Values.annotations.service }}
+  annotations:
+    {{- tpl (toYaml .Values.annotations.service) $ | nindent 4 }}
+  {{- end }}
 spec:
   ports:
     - port: {{ .Values.port }}
       targetPort: {{ .Values.port }}
       protocol: TCP
   selector: {{- include "web-application.selectorLabels" . | nindent 4 }}
+{{- if .Values.prometheus.enabled }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "web-application.fullname" . }}-metrics
+  labels: {{- include "web-application.labels" . | nindent 4 }}
+  annotations:
+    prometheus.io/scrape: "true"
+    prometheus.io/path: {{ .Values.prometheus.path }}
+    prometheus.io/port: {{ .Values.prometheus.port | default .Values.port | quote }}
+spec:
+  ports:
+    - port: {{ .Values.prometheus.port | default .Values.port }}
+      targetPort: {{ .Values.prometheus.port | default .Values.port }}
+      protocol: TCP
+  selector: {{- include "web-application.selectorLabels" . | nindent 4 }}
+{{- end }}

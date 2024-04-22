@@ -1,28 +1,31 @@
-{{- range $name, $params := .Values.bindings }}
-{{- if not $params.fromSecret }}
+{{- $bindings := omit .Values.bindings "defaultProperties" -}}
+{{- range $name, $params := $bindings }}
+{{- $defaultProperties := deepCopy $.Values.bindings.defaultProperties -}}
+{{- $mergedParams := (deepCopy $params | mergeOverwrite $defaultProperties ) -}}
+{{- if not $mergedParams.fromSecret }}
 ---
 apiVersion: services.cloud.sap.com/v1
 kind: ServiceBinding
 metadata:
-  name: {{ include "web-application.bindingName" (dict "root" $ "name" $name) }}
+  name: {{ include "web-application.internal.bindingName" (dict "root" $ "name" $name) }}
   labels: {{- include "web-application.labels" $ | nindent 4 }}
 spec:
-  serviceInstanceName: {{include "web-application.serviceInstanceName" (dict "binding" $params "root" $) }}
+  serviceInstanceName: {{include "web-application.internal.serviceInstanceName" (dict "binding" $mergedParams "root" $) }}
   secretKey: credentials
-  {{- if $params.externalName }}
-  externalName: {{ $params.externalName }}
+  {{- if $mergedParams.externalName }}
+  externalName: {{ $mergedParams.externalName }}
   {{- end }}
-  {{- if $params.secretName }}
-  secretName: {{ tpl $params.secretName $ }}
+  {{- if $mergedParams.secretName }}
+  secretName: {{ tpl $mergedParams.secretName $ }}
   {{- end }}
-  {{- if $params.parameters }}
-  parameters: {{ $params.parameters | toYaml | nindent 4 }}
+  {{- if $mergedParams.parameters }}
+  parameters: {{ $mergedParams.parameters | toYaml | nindent 4 }}
   {{- end }}
-  {{- if $params.parametersFrom }}
-  parametersFrom: {{ tpl ($params.parametersFrom | toYaml) $ | nindent 4 }}
+  {{- if $mergedParams.parametersFrom }}
+  parametersFrom: {{ tpl ($mergedParams.parametersFrom | toYaml) $ | nindent 4 }}
   {{- end }}
-  {{- if $params.credentialsRotationPolicy }}
-  credentialsRotationPolicy: {{ $params.credentialsRotationPolicy | toYaml | nindent 4 }}
+  {{- if $mergedParams.credentialsRotationPolicy }}
+  credentialsRotationPolicy: {{ $mergedParams.credentialsRotationPolicy | toYaml | nindent 4 }}
   {{- end }}
 {{- end }}
 {{- end }}

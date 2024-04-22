@@ -1,0 +1,27 @@
+---
+apiVersion: services.cloud.sap.com/v1
+kind: ServiceInstance
+metadata:
+  labels: {{- include "service-instance.internal.labels" . | nindent 4 }}
+  {{- if or .Values.annotations.serviceInstance }}
+  annotations:
+  {{- tpl (toYaml .Values.annotations.serviceInstance) $ | nindent 4 }}
+  {{- end }}
+  name: {{ include "service-instance.internal.fullname" . }}
+spec:
+  serviceOfferingName: {{ .Values.serviceOfferingName }}
+  servicePlanName: {{ .Values.servicePlanName }}
+  {{- if .Values.externalName }}
+  externalName: {{ .Values.externalName }}
+  {{- end }}
+  {{- if .Values.customTags }}
+  customTags: {{ .Values.customTags | toYaml | nindent 4 }}
+  {{- end }}
+  {{- if or .Values.parameters .Values.jsonParameters }}
+  {{- $parameters := .Values.parameters | default (dict) }}
+  {{- $jsonParameters := .Values.jsonParameters | default "{}" }}
+  parameters: {{- tpl ($jsonParameters | fromJson | merge $parameters | toYaml) $ | nindent 4 }}
+  {{- end }}
+  {{- if .Values.parametersFrom }}
+  parametersFrom: {{ tpl (.Values.parametersFrom | toYaml) $ | nindent 4}}
+  {{- end }}

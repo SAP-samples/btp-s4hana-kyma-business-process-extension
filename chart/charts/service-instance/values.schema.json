@@ -1,0 +1,101 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "https://github.tools.sap/cki/web-application-cf/blob/main/values.schema.json",
+    "type": "object",
+    "required": [
+        "serviceOfferingName",
+        "servicePlanName"
+    ],
+    "additionalProperties": false,
+    "properties": {
+        "global": {
+            "$id": "#/properties/global",
+            "type": "object",
+            "x-ignore-untested": true
+        },
+        "nameOverride": {
+            "$id": "#/properties/nameOverride",
+            "type": "string",
+            "pattern": "[0-9a-z][0-9a-z-.]*"
+        },
+        "fullnameOverride": {
+            "$id": "#/properties/fullnameOverride",
+            "type": "string",
+            "pattern": "[0-9a-z][0-9a-z-.]*"
+        },
+        "serviceOfferingName": {
+            "$id": "#/properties/serviceOfferingName",
+            "type": "string",
+            "pattern": "[0-9a-z][0-9a-z-.]*"
+        },
+        "servicePlanName": {
+            "$id": "#/properties/servicePlanName",
+            "type": "string",
+            "pattern": "[0-9a-z][0-9a-z-.]*"
+        },
+        "externalName": {
+            "$id": "#/properties/externalName",
+            "type": "string",
+            "pattern": "[0-9a-z][0-9a-z-.]*"
+        },
+        "customTags": {
+            "$id": "#/properties/customTags",
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+                "type": "string"
+            }
+        },
+        "parameters": {
+            "$id": "#/properties/parameters",
+            "type": "object"
+        },
+        "jsonParameters": {
+            "$id": "#/properties/jsonParameters",
+            "type": "string"
+        },
+        "parametersFrom": {
+            "$id": "#/properties/parametersFrom",
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                    "secretKeyRef": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                            "name",
+                            "key"
+                        ],
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            },
+                            "key": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "annotations": {
+            "$id": "#/properties/annotations",
+            "title": "Additional annotations",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "serviceInstance": {
+                    "type": "object",
+                    "patternProperties": {
+                        ".*": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

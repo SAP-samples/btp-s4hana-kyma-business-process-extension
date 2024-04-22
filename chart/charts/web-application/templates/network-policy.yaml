@@ -1,18 +1,93 @@
-apiVersion: networking.k8s.io/v1
+{{- if .Values.networkSecurity.enabled -}}
 kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
 metadata:
   name: {{ include "web-application.fullname" . }}
   labels: {{- include "web-application.labels" . | nindent 4 }}
 spec:
   ingress:
+{{- if .Values.expose.enabled }}
   - from:
     - podSelector:
         matchLabels:
           app: istio-ingressgateway
       namespaceSelector:
         matchLabels:
-          name: istio-system
-  podSelector:
-    matchLabels: {{- include "web-application.selectorLabels" . | nindent 6 }}
+          kubernetes.io/metadata.name: istio-system
+    ports:
+      - protocol: TCP
+        port: {{ .Values.port }}
+      {{- range $port := .Values.networkSecurity.additionalPorts }}
+      - protocol: TCP
+        port: {{ $port }}
+      {{- end }}
+  - from:
+    - podSelector:
+        matchLabels:
+          app.kubernetes.io/instance: ory
+          app.kubernetes.io/name: oathkeeper
+      namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: kyma-system
+    ports:
+      - protocol: TCP
+        port: {{ .Values.port }}
+      {{- range $port := .Values.networkSecurity.additionalPorts }}
+      - protocol: TCP
+        port: {{ $port }}
+      {{- end }}
+{{- end }}
+{{- if .Values.prometheus.enabled }}
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: kyma-system
+    ports:
+      - protocol: TCP
+        port: {{ .Values.prometheus.port | default .Values.port }}
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: kyma-system
+    ports:
+      - protocol: TCP
+        port: 15090
+{{- end }}
+{{- if .Values.networkSecurity.allowNamespaceInternal }}
+  - from:
+    - podSelector: {}
+    ports:
+      - protocol: TCP
+        port: {{ .Values.port }}
+      {{- range $port := .Values.networkSecurity.additionalPorts }}
+      - protocol: TCP
+        port: {{ $port }}
+      {{- end }}
+{{- end }}
+{{- range $netRule := .Values.networkSecurity.ingress }}
+  - from:
+    -
+    {{- if $netRule.namespace }}
+      namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: {{ tpl $netRule.namespace $ }}
+    {{- end }}
+    {{- if $netRule.podLabelsSelector }}
+      podSelector:
+        matchLabels: {{ tpl ($netRule.podLabelsSelector | toYaml) $ | nindent 10 }}
+    {{- else }}
+      podSelector: {}
+    {{- end }}
+    ports:
+      - protocol: TCP
+        port: {{ $.Values.port }}
+      {{- range $port := $.Values.networkSecurity.additionalPorts }}
+      - protocol: TCP
+        port: {{ $port }}
+      {{- end }}
+{{- end }}
   policyTypes:
   - Ingress
+  podSelector:
+    matchLabels: {{- include "web-application.selectorLabels" . | nindent 6 }}
+{{- end }}

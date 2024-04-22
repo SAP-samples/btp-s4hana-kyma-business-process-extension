@@ -1,0 +1,46 @@
+# Will be used instead of the `.Chart.Name`, e.g. when generating the Deployment name.
+# nameOverride: foo
+
+# Will be used as an override for the `.fullname` helper function (i.e. `.Release.Name-.Chart.Name`).
+# fullnameOverride: foo
+
+# The name of the SAP BTP service offering.
+# serviceOfferingName: feature-flags
+
+# The plan to use for the service instance.
+# servicePlanName: plan-name
+
+# The name for the service instance in SAP BTP.
+# externalName: feature-flags-test
+
+# List of custom tags describing the ServiceInstance, will be copied to `ServiceBinding` secret in the key called `tags`.
+# customTags:
+#   - foo
+#   - bar
+
+# Some services support the provisioning of additional configuration parameters. For the list of supported parameters, check the documentation of the particular service offering.
+# parameters:
+#   key: val
+
+# Some services support the provisioning of additional configuration parameters. For the list of supported parameters, check the documentation of the particular service offering.
+# jsonParameters: {}
+
+# Kubernetes Secret as a parameters source.
+# parametersFrom:
+# https://kubernetes.io/docs/tasks/inject-data-application/distribute-credentials-secure/#define-container-environment-variables-using-secret-data
+#   - secretKeyRef:
+#       name: my-secret
+#       key: secret-parameter
+# https://kubernetes.io/docs/tasks/configure-pod-container/configure-pod-configmap/#define-container-environment-variables-using-configmap-data
+#   - configMapKeyRef:
+#       name: my-cm
+#       key: cm-parameter
+
+annotations:
+  serviceInstance: {}
+global:
+  sap:
+    _internal:
+      service-instance:
+        versions:
+          1.3.0: true
