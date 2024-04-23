@@ -1,8 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  labels: {{- include "web-application.labels" . | nindent 4 }}
   name: {{ include "web-application.fullname" . }}
+  labels: {{- include "web-application.labels" . | nindent 4 }}
+  {{- if or .Values.annotations.deployment }}
+  annotations:
+  {{- tpl (toYaml .Values.annotations.deployment) $ | nindent 4 }}
+  {{- end }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
@@ -10,87 +14,102 @@ spec:
   template:
     metadata:
       labels: {{- include "web-application.selectorLabels" . | nindent 8 }}
+      {{- if .Values.istio }}
+        sidecar.istio.io/inject: {{ .Values.istio.enabled | quote }}
+      {{ end }}
       annotations:
         container.apparmor.security.beta.kubernetes.io/{{ include "web-application.name" . }}: runtime/default
+        {{- if or .Values.annotations.deployment }}
+        {{- tpl (toYaml .Values.annotations.deployment) $ | nindent 8 }}
+        {{- end }}
     spec:
-      {{- if (include "web-application.imagePullSecretName" .) }}
+      {{- if (include "web-application.internal.imagePullSecretName" .) }}
       imagePullSecrets:
-        - name: {{ include "web-application.imagePullSecretName" . }}
+        - name: {{ include "web-application.internal.imagePullSecretName" . }}
       {{- end }}
-      automountServiceAccountToken: false
+      automountServiceAccountToken: {{ ternary false true (empty (or .Values.rbac.rules .Values.rbac.role .Values.rbac.clusterRole)) }}
       serviceAccountName: {{ tpl (.Values.serviceAccountName | default (include "web-application.fullname" .)) $ }}
       containers:
-      - image: {{ include "web-application.imageName" . }}
+      - image: {{ include "web-application.internal.imageName" (dict "image" .Values.image "context" $) }}
+      {{- if ( or .Values.global.imagePullPolicy .Values.imagePullPolicy ) }}
+        imagePullPolicy: {{ .Values.imagePullPolicy |  default .Values.global.imagePullPolicy }}
+      {{- end }}
         name: {{ include "web-application.name" . }}
         ports:
         - name: http
           containerPort: {{ .Values.port }}
           protocol: TCP
         envFrom:
-        {{- $envFromVars := (include "web-application.processEnvFrom" . | fromJson) }}
+        {{- $envFromVars := (include "web-application.internal.processEnvFrom" (dict "envFrom" .Values.envFrom "context" $) | fromJson) }}
         {{- if not (eq (len $envFromVars.vars) 0) }}
         {{- $envFromVars.vars | toYaml | nindent 8}}
         {{- end }}
         env:
-        {{- if .Values.bindings }}
         - name: SERVICE_BINDING_ROOT
           value: /bindings
-        {{- end }}
         - name: PORT
           value: {{ .Values.port | quote }}
         - name: TMPDIR
           value: /tmp
-        {{- $envVars := (include "web-application.processEnv" $ | fromJson) }}
-        {{- if not (eq (len $envVars.vars) 0) }}
-        {{- $envVars.vars | toYaml | nindent 8}}
+        {{- if .Values.otlp.traces.enabled }}
+        - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+          value: {{ .Values.otlp.traces.endpoint }}
         {{- end }}
+        {{- if .Values.otlp.metrics.enabled }}
+        - name: OTEL_EXPORTER_OTLP_METRICS_ENDPOINT
+          value: {{ .Values.otlp.metrics.endpoint }}
+        {{- end }}
+        {{- $envVars := (include "web-application.internal.processEnv" (dict "env" .Values.env "context" $) | fromJson) }}
         {{- if not $envVars.appName}}
         - name: APPLICATION_NAME
           value: {{ include "web-application.fullname" . }}
         {{- end }}
         {{- if not $envVars.appURI}}
         - name: APPLICATION_URI
-          value: {{ include "web-application.applicationUri" . }}
+          value: {{ include "web-application.internal.applicationUri" . }}
         {{- end }}
-        {{- $health := .Values.health_check | default .Values.health }}
+        {{- if not (eq (len $envVars.vars) 0) }}
+        {{- $envVars.vars | toYaml | nindent 8}}
+        {{- end }}
         livenessProbe:
-        {{- if $health.liveness.path }}
+        {{- if .Values.health.liveness.path }}
           httpGet:
-            path: {{ $health.liveness.path }}
+            path: {{ .Values.health.liveness.path }}
             port: http
         {{- else }}
           tcpSocket:
             port: {{ .Values.port }}
         {{- end }}
         readinessProbe:
-        {{- if $health.readiness.path }}
+        {{- if .Values.health.readiness.path }}
           httpGet:
-            path: {{ $health.readiness.path }}
+            path: {{ .Values.health.readiness.path }}
             port: http
         {{- else }}
           tcpSocket:
             port: {{ .Values.port }}
         {{- end }}
         startupProbe:
-        {{- if $health.liveness.path }}
+        {{- if .Values.health.liveness.path }}
           httpGet:
-            path: {{ $health.liveness.path }}
+            path: {{ .Values.health.liveness.path }}
             port: http
         {{- else }}
           tcpSocket:
             port: {{ .Values.port }}
         {{- end }}
-          {{- $startupTimeout := .Values.startupTimeout | default .Values.startupTimeoutSeconds }}
-          failureThreshold: {{ div (add1  $startupTimeout) 2 }}
+          failureThreshold: {{ div (add1  .Values.startupTimeoutSeconds) 2 }}
           periodSeconds: 2
         volumeMounts:
         - name: tmp
           mountPath: /tmp
+        - name: bindings-root
+          mountPath: /bindings
         {{- range $volume := .Values.additionalVolumes }}
         - name: {{ $volume.name | quote }}
           {{- toYaml $volume.volumeMount  | nindent 10 }}
         {{- end }}
-        {{- include "web-application.serviceMounts" . | nindent 8 }}
+        {{- include "web-application.internal.serviceMounts" . | nindent 8 }}
         resources:
           {{- toYaml .Values.resources | nindent 10 }}
         securityContext:
@@ -99,14 +118,71 @@ spec:
             drop:
             - ALL
           privileged: false
-          readOnlyRootFilesystem: false
+          runAsNonRoot: true
+          {{- if .Values.runAsUser }}
+          runAsUser: {{ .Values.runAsUser }}
+          {{- end }}
+          readOnlyRootFilesystem: {{ .Values.readOnlyRootFilesystem | default false }}
           seccompProfile:
             type: RuntimeDefault
+      {{- range $key, $sidecar := .Values.sidecars }}
+      - image: {{ include "web-application.internal.imageName" (dict "image" $sidecar.image "context" $) }}
+      {{- if ( or $.Values.global.imagePullPolicy $sidecar.imagePullPolicy ) }}
+        imagePullPolicy: {{ $sidecar.imagePullPolicy |  default $.Values.global.imagePullPolicy }}
+      {{- end }}
+        name: {{ $key }}
+        envFrom:
+        {{- $envFromVars := (include "web-application.internal.processEnvFrom" (dict "envFrom" $sidecar.envFrom "context" $) | fromJson) }}
+        {{- if not (eq (len $envFromVars.vars) 0) }}
+        {{- $envFromVars.vars | toYaml | nindent 8}}
+        {{- end }}
+        env:
+        - name: SERVICE_BINDING_ROOT
+          value: /bindings
+        - name: TMPDIR
+          value: /tmp
+        {{- if $.Values.otlp.traces.enabled }}
+        - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+          value: {{ $.Values.otlp.traces.endpoint }}
+        {{- end }}
+        {{- if $.Values.otlp.metrics.enabled }}
+        - name: OTEL_EXPORTER_OTLP_METRICS_ENDPOINT
+          value: {{ $.Values.otlp.metrics.endpoint }}
+        {{- end }}
+        {{- $envVars := (include "web-application.internal.processEnv" (dict "env" $sidecar.env "context" $) | fromJson) }}
+        {{- if not (eq (len $envVars.vars) 0) }}
+        {{- $envVars.vars | toYaml | nindent 8}}
+        {{- end }}
+        volumeMounts:
+        - name: tmp
+          mountPath: /tmp
+        - name: bindings-root
+          mountPath: /bindings
+        {{- range $volume := $.Values.additionalVolumes }}
+        - name: {{ $volume.name | quote }}
+          {{- toYaml $volume.volumeMount  | nindent 10 }}
+        {{- end }}
+        {{- include "web-application.internal.serviceMounts" $ | nindent 8 }}
+        {{- if $sidecar.resources }}
+        resources:
+          {{- toYaml $sidecar.resources | nindent 10 }}
+        {{- end }}
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          runAsNonRoot: true
+          {{- if $sidecar.runAsUser }}
+          runAsUser: {{ $sidecar.runAsUser }}
+          {{- end }}
+          readOnlyRootFilesystem: {{ $.Values.readOnlyRootFilesystem | default false }}
+          seccompProfile:
+            type: RuntimeDefault
+      {{- end }}
       restartPolicy: Always
       terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
-      securityContext:
-        runAsNonRoot: true
-      {{- if (include "web-application.ha" .) }}
       topologySpreadConstraints:
       {{- range $constraint := .Values.availability.topologySpreadConstraints }}
       - labelSelector:
@@ -114,12 +190,14 @@ spec:
         maxSkew: {{ $constraint.maxSkew }}
         topologyKey: {{ $constraint.topologyKey }}
         whenUnsatisfiable: {{ $constraint.whenUnsatisfiable }}
-      {{- end }}
+        matchLabelKeys: {{ $constraint.matchLabelKeys | default (list "pod-template-hash") | toYaml | nindent 10 }}
       {{- end }}
       volumes:
       - emptyDir: {}
         name: tmp
-      {{- include "web-application.serviceVolumes" . | nindent 6 }}
+      - emptyDir: {}
+        name: bindings-root
+      {{- include "web-application.internal.serviceVolumes" . | nindent 6 }}
       {{- range $volume := .Values.additionalVolumes }}
       -
         {{- tpl (omit $volume "volumeMount" | toYaml) $ | nindent 8 }}

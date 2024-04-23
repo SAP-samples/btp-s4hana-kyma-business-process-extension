@@ -1,8 +1,8 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "content-deployment.name" -}}
-{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
+{{- define "content-deployment.internal.name" -}}
+{{- tpl (default .Chart.Name .Values.nameOverride) . | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
@@ -10,47 +10,54 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "content-deployment.fullname" -}}
-{{- if .Values.fullnameOverride }}
-{{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
-{{- else }}
-{{- $name := default .Chart.Name .Values.nameOverride }}
-{{- if contains $name .Release.Name }}
-{{- .Release.Name | trunc 63 | trimSuffix "-" }}
-{{- else }}
-{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" }}
-{{- end }}
-{{- end }}
+{{- define "content-deployment.internal.fullname" -}}
+  {{- if .Values.fullnameOverride }}
+    {{- $name := tpl .Values.fullnameOverride . }}
+    {{- if gt (len $name) 63 }}
+      {{- fail (printf "name exceeds 63 characters: '%s'" $name) }}
+    {{- end }}
+    {{- $name }}
+  {{- else }}
+    {{- $name := tpl (default .Chart.Name .Values.nameOverride) . }}
+    {{- if not (eq .Release.Name $name)}}
+      {{- $name = printf "%s-%s" .Release.Name $name }}
+    {{- end }}
+    {{- if gt (len $name) 63 }}
+      {{- fail (printf "name exceeds 63 characters: '%s'" $name) }}
+    {{- end }}
+    {{- $name }}
+  {{- end }}
 {{- end }}
 
 {{/*
 Define a name for the Job object
 */}}
-{{- define "content-deployment.jobName" -}}
-{{- printf "%s-%04d" ((include "content-deployment.fullname" . ) | trunc 59) (mod .Release.Revision 1000) }}
+{{- define "content-deployment.internal.jobName" -}}
+{{- printf "%s-%04d" ((include "content-deployment.internal.fullname" . ) | trunc 59) (mod .Release.Revision 1000) }}
 {{- end }}
 
 {{/*
 Define a name for a ServiceBinding object
 */}}
-{{- define "content-deployment.bindingName" -}}
-{{- printf "%s-%s" (include "content-deployment.fullname" .root ) .name }}
+{{- define "content-deployment.internal.bindingName" -}}
+{{- printf "%s-%s" (include "content-deployment.internal.fullname" .root ) .name }}
 {{- end }}
 
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "content-deployment.chart" -}}
+{{- define "content-deployment.internal.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "content-deployment.labels" -}}
+{{- define "content-deployment.internal.labels" -}}
+sidecar.istio.io/inject: "false"
 helm.sh/revision: {{ .Release.Revision | quote }}
-helm.sh/chart: {{ include "content-deployment.chart" . }}
-{{ include "content-deployment.selectorLabels" . }}
+helm.sh/chart: {{ include "content-deployment.internal.chart" . }}
+{{ include "content-deployment.internal.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -59,9 +66,9 @@ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{/*
 Selector labels
 */}}
-{{- define "content-deployment.selectorLabels" -}}
+{{- define "content-deployment.internal.selectorLabels" -}}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
-app.kubernetes.io/name: {{ include "content-deployment.name" . }}
+app.kubernetes.io/name: {{ include "content-deployment.internal.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- if .Values.global}}
 {{- if .Values.global.component }}
@@ -76,7 +83,7 @@ app.kubernetes.io/partOf: {{ .Values.global.partOf }}
 {{/*
 Service Binding secret mounts
 */}}
-{{- define "content-deployment.serviceMounts" -}}
+{{- define "content-deployment.internal.serviceMounts" -}}
 {{- range $name, $params := .Values.bindings }}
 - mountPath: /bindings/{{ $name }}/
   name: {{ $name }}-binding
@@ -87,9 +94,9 @@ Service Binding secret mounts
 {{/*
 Service Binding secret volumes
 */}}
-{{- define "content-deployment.serviceVolumes" -}}
+{{- define "content-deployment.internal.serviceVolumes" -}}
 {{- range $name, $params := .Values.bindings }}
-{{- $secretName := (include "content-deployment.bindingName" (dict "root" $ "name" $name)) }}
+{{- $secretName := (include "content-deployment.internal.bindingName" (dict "root" $ "name" $name)) }}
 {{- if $params.fromSecret }}
 {{- $secretName = $params.fromSecret}}
 {{- else if $params.secretName }}
@@ -104,27 +111,29 @@ Service Binding secret volumes
 {{/*
 Name of the imagePullSecret
 */}}
-{{- define "content-deployment.imagePullSecretName" -}}
+{{- define "content-deployment.internal.imagePullSecretName" -}}
 {{ $ips := (dict "local" .Values.imagePullSecret "global" .Values.global.imagePullSecret) }}
 {{- if $ips.local.name }}
 {{- $ips.local.name }}
 {{- else if $ips.global.name }}
 {{- $ips.global.name }}
 {{- else if or $ips.local.dockerconfigjson $ips.global.dockerconfigjson }}
-{{- include "content-deployment.fullname" . }}
+{{- include "content-deployment.internal.fullname" . }}
+{{- else }}
+{{- "image-pull-secret" }}
 {{- end }}
 {{- end }}
 
 {{/*
 Calculate the final image name
 */}}
-{{- define "content-deployment.imageName" -}}
+{{- define "content-deployment.internal.imageName" -}}
 {{- $tag := .Values.image.tag | default .Values.global.image.tag | default "latest" }}
 {{- $registry := .Values.image.registry | default .Values.global.image.registry }}
 {{- if $registry }}
-{{- $registry | trimSuffix "/" }}/{{ .Values.image.repository }}:{{ $tag }}
+{{- $registry | trimSuffix "/" | trimPrefix "https://" }}/{{ .Values.image.repository | trimSuffix "/" }}:{{ $tag }}
 {{- else }}
-{{- .Values.image.repository }}:{{ $tag }}
+{{- .Values.image.repository | trimSuffix "/" | trimPrefix "https://" }}:{{ $tag }}
 {{- end }}
 {{- end }}
 
@@ -133,7 +142,7 @@ Create the name of a service instance.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as service instance name.
 */}}
-{{- define "content-deployment.serviceInstanceName" -}}
+{{- define "content-deployment.internal.serviceInstanceName" -}}
   {{- $name := "" }}
   {{- if .binding.serviceInstanceFullname }}
     {{- if gt (len .binding.serviceInstanceFullname) 63 }}
@@ -152,7 +161,7 @@ If release name contains chart name it will be used as service instance name.
   {{- tpl $name .root }}
 {{- end }}
 
-{{- define "content-deployment.processEnv" -}}
+{{- define "content-deployment.internal.processEnv" -}}
 {{- $result := dict }}
 {{- $variables := list }}
 {{- range $k, $v := .Values.env }}
@@ -178,7 +187,7 @@ If release name contains chart name it will be used as service instance name.
 {{- (fromYaml (tpl (toYaml $result) $)) | mustToJson }}
 {{- end }}
 
-{{- define "content-deployment.processEnvFrom" -}}
+{{- define "content-deployment.internal.processEnvFrom" -}}
 {{- $result := dict }}
 {{- $variables := list }}
 {{- range $secretName := .Values.envSecretNames }}

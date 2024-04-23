@@ -1,7 +1,7 @@
 # Please do not modify this file. This file may be overwritten.
 
-{{- $cloudService := index .Values "html5-apps-deployer.env.SAP_CLOUD_SERVICE" -}}
-{{- $defaultParameters :=  dict "Type" "HTTP" "ProxyType" "Internet" "Authentication" "NoAuthentication" "sap.cloud.service" "sap.fe.cap.sflight" "HTML5.forwardAuthToken" "true" }}
+{{- $cloudService := index .Values "html5-apps-deployer" "env" "SAP_CLOUD_SERVICE" -}}
+{{- $defaultParameters :=  dict "Type" "HTTP" "ProxyType" "Internet" "Authentication" "NoAuthentication" "sap.cloud.service" $cloudService "HTML5.forwardAuthToken" "true" }}
 {{- $ := dict "root" . "defaultParameters" $defaultParameters "html5" true }}
 
 apiVersion: v1

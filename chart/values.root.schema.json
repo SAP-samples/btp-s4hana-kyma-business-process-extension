@@ -37,11 +37,6 @@
             "description": "Service Instance",
             "$ref": "./charts/service-instance/values.schema.json"
         },
-        "auditlog": {
-            "$id": "#/properties/auditlog",
-            "description": "Service Instance",
-            "$ref": "./charts/service-instance/values.schema.json"
-        },
         "destination": {
             "$id": "#/properties/destination",
             "description": "Service Instance",

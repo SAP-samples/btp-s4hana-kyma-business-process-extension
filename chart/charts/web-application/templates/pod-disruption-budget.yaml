@@ -1,4 +1,3 @@
-{{- if (include "web-application.ha" .) }}
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
@@ -8,4 +7,3 @@ spec:
   maxUnavailable: {{ .Values.availability.podDisruptionBudget.maxUnavailable }}
   selector:
     matchLabels: {{- include "web-application.selectorLabels" . | nindent 6 }}
-{{- end }}

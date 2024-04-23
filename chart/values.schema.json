@@ -66,10 +66,6 @@
             "$id": "#/properties/xsuaa",
             "description": "Service Instance"
         },
-        "auditlog": {
-            "$id": "#/properties/auditlog",
-            "description": "Service Instance"
-        },
         "destination": {
             "$id": "#/properties/destination",
             "description": "Service Instance"
@@ -191,7 +187,6 @@
                             ],
                             "properties": {
                                 "fromSecret": {
-                                    "description": "Name of a Kubernetes Secret, with the binding content, compliant to the SAP Kubernetes Service Binding spec https://github.tools.sap/Kubernetes-Service-Bindings/doc/",
                                     "$ref": "#/definitions/KubernetesName"
                                 }
                             }

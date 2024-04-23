@@ -5,7 +5,7 @@
 	"logoutEndpoint": "/do/logout"
 	},
 	"routes": [{
-		"source": "^/sales/(.*)$",
+		"source": "^/odata/v4/sales/(.*)$",
 		"destination": "srv-binding",
 		"authenticationType": "xsuaa"
 	},{

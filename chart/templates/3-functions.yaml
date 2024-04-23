@@ -1,4 +1,3 @@
-
 apiVersion: serverless.kyma-project.io/v1alpha2
 kind: Function
 metadata:

@@ -1,6 +1,5 @@
 {
     "$schema": "http://json-schema.org/draft-07/schema",
-    "$id": "https://github.tools.sap/cki/content-deployment/blob/main/values.schema.json",
     "type": "object",
     "required": [
         "image", "bindings"
@@ -10,26 +9,18 @@
         "global": {
             "$id": "#/properties/global",
             "type": "object",
-            "title": "Helm global values",
-            "description": "For more information, see https://helm.sh/docs/chart_template_guide/subcharts_and_globals/#global-chart-values",
             "x-ignore-untested": true,
             "additionalProperties": true,
             "properties": {
                 "imagePullSecret": {
                     "$id": "#/properties/global/imagePullSecret",
-                    "title": "Image Pull Secret configuration",
-                    "description": "For more information, see https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/",
                     "additionalProperties": true,
                     "type": "object",
                     "properties": {
                         "name": {
-                            "title": "Secret name",
-                            "description": "Name of the Kubernetes Secret, used as an image pull secret (must be of type kubernetes.io/dockerconfigjson). Can't be used with the `dockerconfigjson` option.",
                             "$ref": "#/definitions/KubernetesName"
                         },
                         "dockerconfigjson": {
-                            "title": "Secret content",
-                            "description": "The content for the dynamically generated Kubernetes Secret, which will be used as an image pull secret. Can't be used with the `name` option.",
                             "type": "string"
                         }
                     },
@@ -53,7 +44,6 @@
                 "image": {
                     "$id": "#/properties/global/image",
                     "title": "Image configuration",
-                    "description": "Either name or repository is required.",
                     "type": "object",
                     "required": [],
                     "additionalProperties": true,
@@ -67,28 +57,30 @@
                             "$ref": "#/definitions/ImageRegistry"
                         }
                     }
+                },
+                "imagePullPolicy": {
+                    "$ref": "#/definitions/ImagePullPolicy"
                 }
             }
         },
         "nameOverride": {
             "$id": "#/properties/nameOverride",
-            "title": "Chart name override",
-            "description": "Will be used instead of the `.Chart.Name`, e.g. when generating the Deployment name.",
             "type": "string",
             "pattern": "[0-9a-z][0-9a-z-.]*"
         },
         "fullnameOverride": {
             "$id": "#/properties/fullnameOverride",
-            "title": "Override for the `.fullname` helper function.",
-            "description": "Will be used as an override for the `.fullname` helper function (i.e. `.Release.Name-.Chart.Name`).",
             "type": "string",
             "pattern": "[0-9a-z][0-9a-z-.]*"
         },
         "serviceAccountName": {
             "$id": "#/properties/serviceAccountName",
-            "title": "Service Account name",
-            "description": "Name of the Service Account assigned to pods.",
             "type": "string"
+        },
+        "runAsUser": {
+            "$id": "#/properties/runAsUser",
+            "type": "integer",
+            "minimum": 1
         },
         "image": {
             "$id": "#/properties/image",
@@ -101,10 +93,8 @@
             "properties": {
                 "repository": {
                     "$id": "#/properties/image/properties/repository",
-                    "title": "Repository of the image",
-                    "description": "Should also include the image name (i.e. everything before the `:` sign).",
                     "type": "string",
-                    "pattern": "^[\\w-./:]*[@sha256]*$"
+                    "pattern": "^[\\w-./:]*(@sha256)?$"
                 },
                 "tag": {
                     "$id": "#/properties/image/properties/tag",
@@ -118,19 +108,13 @@
         },
         "imagePullSecret": {
             "$id": "#/properties/imagePullSecret",
-            "title": "Image Pull Secret configuration",
-            "description": "For more information, see https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/",
             "additionalProperties": false,
             "type": "object",
             "properties": {
                 "name": {
-                    "title": "Secret name",
-                    "description": "Name of the Kubernetes Secret, used as an image pull secret (must be of type kubernetes.io/dockerconfigjson). Can't be used with the `dockerconfigjson` option.",
                     "$ref": "#/definitions/KubernetesName"
                 },
                 "dockerconfigjson": {
-                    "title": "Secret content",
-                    "description": "The content for the dynamically generated Kubernetes Secret, which will be used as an image pull secret. Can't be used with the `name` option.",
                     "type": "string"
                 }
             },
@@ -151,30 +135,28 @@
                 }
             }
         },
+        "imagePullPolicy": {
+            "$ref": "#/definitions/ImagePullPolicy"
+        },
         "resources": {
             "$id": "#/properties/resources",
             "type": "object",
-            "title": "Pod resources configuration",
             "additionalProperties": false,
             "properties": {
                 "requests": {
                     "type": "object",
-                    "description": "Minimal required resources for the application to operate, that will be reserved for each replica.",
                     "additionalProperties": false,
                     "properties": {
                         "cpu": {
                             "$id": "#/properties/resources/properties/requests/properties/cpu",
-                            "description": "CPU resource units, as described here https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#meaning-of-cpu",
                             "type": ["number", "string"]
                         },
                         "ephemeral-storage": {
                             "$id": "#/properties/resources/properties/requests/properties/ephemeral-storage",
-                            "description": "Size of the local ephemeral storage, measured in bytes. For more info, see https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#local-ephemeral-storage",
                             "type": "string"
                         },
                         "memory": {
                             "$id": "#/properties/resources/properties/requests/properties/memory",
-                            "description": "Amount of memory, mesaured in bytes. For more info, see https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#meaning-of-memory",
                             "type": "string"
                         }
                     }
@@ -185,17 +167,14 @@
                     "properties": {
                         "cpu": {
                             "$id": "#/properties/resources/properties/limits/properties/cpu",
-                            "description": "CPU resource units, as described here https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#meaning-of-cpu",
                             "type": ["number", "string"]
                         },
                         "ephemeral-storage": {
                             "$id": "#/properties/resources/properties/limits/properties/ephemeral-storage",
-                            "description": "Size of the local ephemeral storage, measured in bytes. For more info, see https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#local-ephemeral-storage",
                             "type": "string"
                         },
                         "memory": {
                             "$id": "#/properties/resources/properties/limits/properties/memory",
-                            "description": "Amount of memory, mesaured in bytes. For more info, see https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#meaning-of-memory",
                             "type": "string"
                         }
                     }
@@ -204,7 +183,6 @@
         },
         "env": {
             "$id": "#/properties/env",
-            "description": "Key-value map of environment variables, which should be added to the Pod spec.",
             "anyOf": [
                 {
 
@@ -214,68 +192,55 @@
                             "$comment": "regex above copied from https://github.com/kubernetes/kubernetes/blob/ea0764452222146c47ec826977f49d7001b0ea8c/staging/src/k8s.io/apimachinery/pkg/util/validation/validation.go#L402",
                             "anyOf": [
                                 {
-                                    "description": "Plain value of an environment variable.",
                                     "type": ["integer", "string"]
                                 },
                                 {
-                                    "description": "`valueFrom` configuration for the environment variable https://kubernetes.io/docs/tasks/inject-data-application/environment-variable-expose-pod-information/",
                                     "type": "object",
                                     "additionalProperties": false,
                                     "maxProperties": 1,
                                     "properties": {
                                         "configMapKeyRef": {
-                                            "description": "Selects a key of a ConfigMap.",
                                             "type": "object",
                                             "additionalProperties": false,
                                             "properties": {
                                                 "name": {
-                                                    "description": "Name of a ConfigMap.",
                                                     "type": "string"
                                                 },
                                                 "key": {
-                                                    "description": "Key in that ConfigMap, which value will be used.",
                                                     "type": "string"
                                                 }
                                             }
                                         },
                                         "secretKeyRef": {
-                                            "description": "Selects a key of a Secret.",
                                             "type": "object",
                                             "additionalProperties": false,
                                             "properties": {
                                                 "name": {
-                                                    "description": "Name of a Secret.",
                                                     "type": "string"
                                                 },
                                                 "key": {
-                                                    "description": "Key in that Secret, which value will be used.",
                                                     "type": "string"
                                                 }
                                             }
                                         },
                                         "resourceFieldRef": {
-                                            "description": "Selects a resource of the container.",
                                             "type": "object",
                                             "additionalProperties": false,
                                             "properties": {
                                                 "containerName": {
-                                                    "description": "Name of a Container.",
                                                     "type": "string"
                                                 },
                                                 "resource": {
-                                                    "description": "Only resources limits and requests (limits.cpu, limits.memory, limits.ephemeral-storage, requests.cpu, requests.memory and requests.ephemeral-storage) are currently supported.",
                                                     "type": "string"
                                                 }
                                             }
                                         },
                                         "fieldRef": {
-                                            "description": "Selects a field of the pod.",
                                             "type": "object",
                                             "additionalProperties": false,
                                             "properties": {
                                                 "fieldPath": {
-                                                    "type": "string",
-                                                    "description": "Supports metadata.name, metadata.namespace, `metadata.labels['<KEY>']`, `metadata.annotations['<KEY>']`, spec.nodeName, spec.serviceAccountName, status.hostIP, status.podIP, status.podIPs."
+                                                    "type": "string"
                                                 }
                                             }
                                         }
@@ -306,58 +271,47 @@
                                 "type": ["string", "integer"]
                             },
                             "configMapKeyRef": {
-                                "description": "Selects a key of a ConfigMap.",
                                 "type": "object",
                                 "additionalProperties": false,
                                 "properties": {
                                     "name": {
-                                        "description": "Name of a ConfigMap.",
                                         "type": "string"
                                     },
                                     "key": {
-                                        "description": "Key in that ConfigMap, which value will be used.",
                                         "type": "string"
                                     }
                                 }
                             },
                             "secretKeyRef": {
-                                "description": "Selects a key of a Secret.",
                                 "type": "object",
                                 "additionalProperties": false,
                                 "properties": {
                                     "name": {
-                                        "description": "Name of a Secret.",
                                         "type": "string"
                                     },
                                     "key": {
-                                        "description": "Key in that Secret, which value will be used.",
                                         "type": "string"
                                     }
                                 }
                             },
                             "resourceFieldRef": {
-                                "description": "Selects a resource of the container.",
                                 "type": "object",
                                 "additionalProperties": false,
                                 "properties": {
                                     "containerName": {
-                                        "description": "Name of a Container.",
                                         "type": "string"
                                     },
                                     "resource": {
-                                        "description": "Only resources limits and requests (limits.cpu, limits.memory, limits.ephemeral-storage, requests.cpu, requests.memory and requests.ephemeral-storage) are currently supported.",
                                         "type": "string"
                                     }
                                 }
                             },
                             "fieldRef": {
-                                "description": "Selects a field of the pod.",
                                 "type": "object",
                                 "additionalProperties": false,
                                 "properties": {
                                     "fieldPath": {
-                                        "type": "string",
-                                        "description": "Supports metadata.name, metadata.namespace, `metadata.labels['<KEY>']`, `metadata.annotations['<KEY>']`, spec.nodeName, spec.serviceAccountName, status.hostIP, status.podIP, status.podIPs."
+                                        "type": "string"
                                     }
                                 }
                             }
@@ -369,7 +323,6 @@
         },
         "envSecretNames": {
             "$id": "#/properties/envSecretNames",
-            "description": "[Deprecated] Use `envFrom` instead",
             "type": "array",
             "uniqueItems": true,
             "items": {
@@ -379,7 +332,6 @@
         },
         "envFrom": {
             "$id": "#/properties/envFrom",
-            "description": "List of sources to populate environment variables in the pod.",
             "type": "array",
             "default": [],
             "items": {
@@ -389,10 +341,8 @@
                         "additionalProperties": false,
                         "properties": {
                             "configMapRef": {
-                                "description": "The contents of the target ConfigMap's Data field will represent the key-value pairs as environment variables.",
                                 "properties": {
                                     "name": {
-                                        "description": "Name of a ConfigMap.",
                                         "type": "string"
                                     }
                                 },
@@ -407,10 +357,8 @@
                         "additionalProperties": false,
                         "properties": {
                             "secretRef": {
-                                "description": "The contents of the target Secret's Data field will represent the key-value pairs as environment variables.",
                                 "properties": {
                                     "name": {
-                                        "description": "Name of a Secret.",
                                         "type": "string"
                                     }
                                 },
@@ -427,7 +375,6 @@
         "ttlDaysAfterFinished": {
             "$id": "#/properties/ttlDaysAfterFinished",
             "title": "Time to keep the Job after it has finished.",
-            "description": "Number of days to keep the Kubernetes Job once it is finished. 0 means it is removed as soon as it is finished.",
             "type": "integer",
             "minimum": 0,
             "default": 14
@@ -449,7 +396,6 @@
                             ],
                             "properties": {
                                 "fromSecret": {
-                                    "description": "Name of a Kubernetes Secret, with the binding content, compliant to the SAP Kubernetes Service Binding spec https://github.tools.sap/Kubernetes-Service-Bindings/doc/",
                                     "type": "string"
                                 }
                             }
@@ -459,33 +405,26 @@
                             "additionalProperties": false,
                             "properties": {
                                 "serviceInstanceName": {
-                                    "description": "Name of a BTP Operator Service Instance, created by the `service-instance` Helm chart. Can't be used with the `serviceInstanceFullname` option.",
                                     "type": "string"
                                 },
                                 "serviceInstanceFullname": {
-                                    "description": "Full name of a BTP Operator Service Instance. Can't be used with the `serviceInstanceName` option.",
                                     "type": "string"
                                 },
                                 "externalName": {
-                                    "description": "The name for the service binding in SAP BTP",
                                     "type": "string"
                                 },
                                 "secretName": {
-                                    "description": "The name of the secret where the credentials are stored.",
                                     "type": "string"
                                 },
                                 "parameters": {
-                                    "description": "Some services support the provisioning of additional configuration parameters during the bind request. For the list of supported parameters, check the documentation of the particular service offering.",
                                     "type": "object"
                                 },
                                 "parametersFrom": {
-                                    "description": "List of sources to populate parameters.",
                                     "type": "array",
                                     "items": {
                                         "anyOf": [
                                             {
                                                 "type": "object",
-                                                "description": "Kubernetes Secret as a parameters source.",
                                                 "additionalProperties": false,
                                                 "properties": {
                                                     "secretKeyRef": {
@@ -497,11 +436,9 @@
                                                         ],
                                                         "properties": {
                                                             "name": {
-                                                                "description": "Name of a Secret.",
                                                                 "type": "string"
                                                             },
                                                             "key": {
-                                                                "description": "Key in that Secret, which contains a string that represents the json to include in the set of parameters to be sent to the broker.",
                                                                 "type": "string"
                                                             }
                                                         }
@@ -510,7 +447,6 @@
                                             },
                                             {
                                                 "type": "object",
-                                                "description": "Kubernetes Config Map as a parameters source.",
                                                 "additionalProperties": false,
                                                 "properties": {
                                                     "configMapKeyRef": {
@@ -522,11 +458,9 @@
                                                         ],
                                                         "properties": {
                                                             "name": {
-                                                                "description": "Name of a Config Map",
                                                                 "type": "string"
                                                             },
                                                             "key": {
-                                                                "description": "Key in that Config Map, which contains a string that represents the json to include in the set of parameters to be sent to the broker.",
                                                                 "type": "string"
                                                             }
                                                         }
@@ -537,7 +471,6 @@
                                     }
                                 },
                                 "credentialsRotationPolicy": {
-                                    "description": "Holds automatic credentials rotation configuration. For more details, see https://github.com/SAP/sap-btp-service-operator#spec-1",
                                     "type": "object"
                                 }
                             },
@@ -561,6 +494,23 @@
                     ]
                 }
             }
+        },
+        "annotations": {
+            "$id": "#/properties/annotations",
+            "title": "Additional annotations",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "job": {
+                    "type": "object",
+                    "title": "Annotations to add to the Job",
+                    "patternProperties": {
+                        ".*": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -572,14 +522,18 @@
         "ImageRegistry": {
             "type": "string",
             "title": "Image registry",
-            "description": "Image registry e.g. docker.io",
-            "pattern": "^[\\w-./]+$"
+            "pattern": "^[\\w-./:]+$"
         },
         "ImageTag": {
             "title": "Image tag",
-            "description": "Image tag without the name (everything after the `:` sign, potentially including the `@sha256` section at the end).",
             "type": "string",
             "$comment": "Copied from https://github.com/containers/image/blob/18d58d29fdc4fc32fb8a8a6d186b829b217f1bf5/docker/reference/regexp.go#L68-L70",
-            "pattern": "^((?:(?:[a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])(?:(?:\\.(?:[a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]))+)?(?::[0-9]+)?/)?[a-z0-9]+(?:(?:(?:[._]|__|[-]*)[a-z0-9]+)+)?(?:(?:/[a-z0-9]+(?:(?:(?:[._]|__|[-]*)[a-z0-9]+)+)?)+)?)(?::([\\w][\\w.-]{0,127}))?(?:@([A-Za-z][A-Za-z0-9]*(?:[-_+.][A-Za-z][A-Za-z0-9]*)*[:][[:xdigit:]]{32,}))?$"        }
+            "pattern": "^((?:(?:[a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])(?:(?:\\.(?:[a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]))+)?(?::[0-9]+)?/)?[a-z0-9]+(?:(?:(?:[._]|__|[-]*)[a-z0-9]+)+)?(?:(?:/[a-z0-9]+(?:(?:(?:[._]|__|[-]*)[a-z0-9]+)+)?)+)?)(?::([\\w][\\w.-]{0,127}))?(?:@([A-Za-z][A-Za-z0-9]*(?:[-_+.][A-Za-z][A-Za-z0-9]*)*[:][[:xdigit:]]{32,}))?$"
+        },
+        "ImagePullPolicy": {
+            "title": "ImagePullPolicy",
+            "type": "string",
+            "enum": ["Always", "IfNotPresent", "Never"]
+        }
     }
 }

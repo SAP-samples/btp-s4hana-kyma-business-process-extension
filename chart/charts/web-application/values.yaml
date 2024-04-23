@@ -1,27 +1,56 @@
+# Helm global values, for more information, see https://helm.sh/docs/chart_template_guide/subcharts_and_globals/#global-chart-values
 global:
+  # Image Pull Secret configuration, for more information, see https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
   imagePullSecret: {}
-    # name: ""
-    # dockerconfigjson: ""
-  image: {}
-    # registry: gcr.io/my-project
-    # tag: latest
-
-replicaCount: 1
-port: 8080
-#serviceAccountName: my-serviceaccount
-
-  # To use a digest, change those values like that
-  # repository: nginx@sha256
-  # tag: 2834dc507516af02784808c5f48b7cbe38b8ed5d0f4837f16e78d00deb7e7767
-image: {}
-  # repository: repo/image
-  # registry: gcr.io/my-project
-  # tag: latest
-
-imagePullSecret: {}
+  ## Name of the Kubernetes Secret, used as an image pull secret (must be of type kubernetes.io/dockerconfigjson). Can't be used with the `dockerconfigjson` option.
   # name: ""
+  ## The content for the dynamically generated Kubernetes Secret, which will be used as an image pull secret. Can't be used with the `name` option.
   # dockerconfigjson: ""
+  # Either name or repository is required.
+  image: {}
+  ## Setting the imagePullPolicy, see https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
+  # imagePullPolicy: Always
 
+  sap:
+    _internal:
+      web-application:
+        versions:
+          1.12.0: true
+## Will be used instead of the `.Chart.Name`, e.g. when generating the Deployment name.
+# nameOverride: name
+
+## Will be used as an override for the `.fullname` helper function (i.e. `.Release.Name-.Chart.Name`).
+# fullnameOverride: my-name
+
+## The UID to run the entrypoint of the container process. Defaults to user specified in image metadata if unspecified.
+# runAsUser: 1000
+
+# Number of desired pods within the Deployment.
+replicaCount: 1
+# Application's exposed port.
+port: 8080
+## Name of the Service Account assigned to pods.
+# serviceAccountName: my-serviceaccount
+image: {}
+## To use a digest, change those values as shown
+# repository: nginx@sha256
+# tag: 2834dc507516af02784808c5f48b7cbe38b8ed5d0f4837f16e78d00deb7e7767
+## Should also include the image name (i.e. everything before the `:` sign).
+# repository: repo/image
+# registry: gcr.io/my-project
+# tag: latest
+
+# Image Pull Secret configuration, for more information, see https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+imagePullSecret: {}
+## Name of the Kubernetes Secret, used as an image pull secret (must be of type kubernetes.io/dockerconfigjson). Can't be used with the `dockerconfigjson` option.
+# name: ""
+## The content for the dynamically generated Kubernetes Secret, which will be used as an image pull secret. Can't be used with the `name` option.
+# dockerconfigjson: ""
+
+## Setting the imagePullPolicy, see https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
+# imagePullPolicy: Always
+
+# List of volumes, which should be mounted into Pods, see https://kubernetes.io/docs/concepts/storage/volumes/ for full list of options
 additionalVolumes: []
 # - name: my-volume
 #   secret:
@@ -30,6 +59,7 @@ additionalVolumes: []
 #     mountPath: /etc/mysecret
 #     readOnly: true
 
+## Pod resources configuration, see https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/ for more information
 # resources:
 #   limits:
 #     cpu: 100m
@@ -40,32 +70,44 @@ additionalVolumes: []
 #     ephemeral-storage: 1G
 #     memory: 1G
 
+## Enable or disable istio sidecars for this workload (other default is taken, e.g. namespace)
+# istio:
+#   enabled: true
+
+# Availability related configuration
 availability:
+  # The max disruption to the pods, see https://kubernetes.io/docs/concepts/workloads/pods/disruptions/ for details
   podDisruptionBudget:
     maxUnavailable: 10%
+  # How pods ought to spread across topology domains., see https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/ for details
   topologySpreadConstraints:
-  - topologyKey: topology.kubernetes.io/zone
-    maxSkew: 1
-    whenUnsatisfiable: ScheduleAnyway
-  - topologyKey: kubernetes.io/hostname
-    maxSkew: 1
-    whenUnsatisfiable: ScheduleAnyway
-
+    - topologyKey: topology.kubernetes.io/zone
+      maxSkew: 1
+      whenUnsatisfiable: ScheduleAnyway
+      matchLabelKeys:
+        - pod-template-hash
+    - topologyKey: kubernetes.io/hostname
+      maxSkew: 1
+      whenUnsatisfiable: ScheduleAnyway
+      matchLabelKeys:
+        - pod-template-hash
+# Health-check configuration
 health:
+  # Liveness-probe configuration.
   liveness:
+    # HTTP path used by Kubernetes, to perform liveness-probe calls.
     path: /healthz
+  # Readiness-probe configuration.
   readiness:
+    # HTTP path used by Kubernetes, to perform readiness-probe calls.
     path: /healthz
-
-terminationGracePeriodSeconds: 30
+# Initial timeout in seconds, during which the app must start giving the response to the liveness-probe.
 startupTimeoutSeconds: 30
+## Use read only filesystem for the Deployment.
+# readOnlyRootFilesystem: false
 
-envFrom: []
-# - configMapRef:
-#     name: my-configmap1
-# - secretRef:
-#     name: my-secret-ref1
-
+# Time in seconds after which the pod will be forcefully stopped after receiving SIGTERM.
+terminationGracePeriodSeconds: 30
 env: {}
 # env:
 #   key1: value
@@ -77,7 +119,7 @@ env: {}
 #     configMapKeyRef:
 #       name: my-configmap
 #       key: my-key
-# Also can be specified as a list
+## Also can be specified as a list
 # env:
 #   - name: key1
 #     value: value1
@@ -86,12 +128,98 @@ env: {}
 #       name: my-configmap
 #       key: my-key
 
+envFrom: []
+# - configMapRef:
+#     name: my-configmap1
+# - secretRef:
+#     name: my-secret-ref1
+
 expose:
-  enabled: true
-  gateway: kyma-gateway.kyma-system.svc.cluster.local
+  ## Specifies the service's dns name for inbound external traffic. If it doesn't contain a dot, the default cluster domain will be appended.
   # host: ""
 
-# bindings:
+  # Expose the application to the internet.
+  enabled: true
+  # Use this istio gateway for incoming traffic.
+  gateway: kyma-gateway.kyma-system.svc.cluster.local
+  ## Custom Istio Gateway to use with the VirtualService created using the TENANT_HOST_PATTERN.
+  ## If your TENANT_HOST_PATTERN uses top level domain for the tenants (like tenant-name.<provider>.<cluster-domain>), you need to create custom Certificate and Gateway since the default Kyma Gateway will not work.
+  # tenantGateway: tenants-gateway.my-ns.svc.cluster.local
+
+  # Rules represents collection of Rule to apply.
+  rules:
+    - accessStrategies:
+        - handler: allow
+      methods:
+        - GET
+        - POST
+        - PUT
+        - PATCH
+        - DELETE
+        - HEAD
+      path: /.*
+      ## APIRule CORS policy configuration
+      ## https://kyma-project.io/#/api-gateway/user/custom-resources/apirule/04-10-apirule-custom-resource
+      # corsPolicy:
+      #   allowHeaders:
+      #     - foo
+      #     - bar
+      #   allowMethods:
+      #     - GET
+      #     - POST
+      #   allowCredentials: true
+      #   exposeHeaders:
+      #     - foo
+      #     - bar
+      #   maxAge: 3s
+      #   allowOrigins:
+      #     - regex: foo
+      #     - exact: bar
+      #     - prefix: baz
+prometheus:
+  # Add annotations to the Service for Prometheus Service Discovery
+  enabled: false
+  # URI used by Prometheus for scraping
+  path: /metrics
+  ## Custom port for Prometheus scraping, defaults to the application port
+  # port: 8081
+# Open Telemetry support
+otlp:
+  metrics:
+    enabled: true
+    # Metrics endpoint
+    endpoint: http://telemetry-otlp-metrics.kyma-system.svc.cluster.local:4317
+  traces:
+    enabled: true
+    # Trace endpoint
+    endpoint: http://telemetry-otlp-traces.kyma-system.svc.cluster.local:4317
+networkSecurity:
+  enabled: true
+  # allowNamespaceInternal: true
+  additionalPorts: []
+  ingress: []
+  #   - namespace: my-namespace
+  #     podLabelsSelector:
+  #       app: my-app
+# RBAC configuration https://kubernetes.io/docs/reference/access-authn-authz/rbac/. Only one of "role", "clusterRole" or "rules" can be specified.
+rbac: {}
+## Name of the existing Role to use
+# role: existing-role-name
+
+## Name of the existing ClusterRole to use
+# clusterRole: existingClusterRoleName
+
+## List of RBAC rules assigned to the new Role.
+# rules:
+#   - apiGroups: [""]
+#     resources: ["pods"]
+#     verbs: ["get", "watch", "list"]
+bindings:
+  defaultProperties:
+    credentialsRotationPolicy:
+      enabled: false
+      rotationFrequency: "720h"
+      rotatedBindingTTL: "24h"
 #   ui5-repo-servicerepo:
 #     serviceInstanceName: ui5-repo-instance
 #     externalName: ui5-kyma-binding
@@ -103,8 +231,55 @@ expose:
 #           key: test
 #           name: test
 #     credentialsRotationPolicy:
-#       enabled: true
+#       enabled: false
 #   hana:
 #     serviceInstanceName: hana-manual
 #   portal:
 #     fromSecret: manual-secret # user-provided-service
+
+## Annotations to add to objects
+annotations:
+  ## Annotations to add to the Deployment and underlying Pods
+  deployment: {}
+  ## Annotations to add to the Service
+  service: {}
+# sidecars:
+#   sidecar-1:
+#     image:
+#       repository: gcr.io/my-sidecar-1
+#       tag: latest
+#     imagePullPolicy: Always
+#     resources:
+#       limits:
+#         cpu: 100m
+#         ephemeral-storage: 1G
+#         memory: 1G
+#       requests:
+#         cpu: 100m
+#         ephemeral-storage: 1G
+#         memory: 1G
+#     env:
+#       - name: SIDECAR_PROXY_REQUEST_TIMEOUT
+#         value: "60000"
+#     envFrom:
+#       - configMapRef:
+#           name: my-configmap1
+#   sidecar-2:
+#     image:
+#       repository: gcr.io/my-sidecar-2
+#       tag: latest
+#     imagePullPolicy: Always
+#     resources:
+#       limits:
+#         cpu: 100m
+#         ephemeral-storage: 1G
+#         memory: 1G
+#       requests:
+#         cpu: 100m
+#         ephemeral-storage: 1G
+#         memory: 1G
+#     env:
+#       SIDECAR_PROXY_REQUEST_TIMEOUT: 30000
+#     envFrom:
+#       - configMapRef:
+#           name: my-configmap1

@@ -6,16 +6,10 @@ metadata:
   labels:
     name: kyma-cap-s4ems
 spec:
-  filter:
-    filters:
-    - eventSource:
-        property: source
-        type: exact
-        value: ""
-      eventType:
-        property: type
-        type: exact
-        value: sap.kyma.custom.internal.bp.notification.v1
-  protocol: ""
-  protocolsettings: {}
+  typeMatching: standard
+  source: /default/bp.ems/bpems
+  types:
+    - bp.notification.v1
   sink: http://{{ .Release.Name }}-qrcodegenerator.{{.Values.namespace}}.svc.cluster.local #this is the service name and port
+  config:
+    maxInFlightMessages: "10"

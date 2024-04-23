@@ -1,24 +1,19 @@
-{{ if .Values.expose.enabled}}
+{{- if .Values.expose.enabled -}}
 apiVersion: gateway.kyma-project.io/v1beta1
 kind: APIRule
 metadata:
   name: {{ include "web-application.fullname" . }}
   labels: {{- include "web-application.labels" . | nindent 4 }}
 spec:
-  gateway: {{ .Values.expose.gateway }}
-  host: {{ include "web-application.exposeHost" . }}
+  gateway: {{tpl .Values.expose.gateway $ }}
+  host: {{ include "web-application.internal.exposeHost" . }}
   service:
     name: {{ include "web-application.fullname" . }}
     port: {{ .Values.port }}
   rules:
-  - accessStrategies:
-    - handler: allow
-    methods:
-    - GET
-    - POST
-    - PUT
-    - PATCH
-    - DELETE
-    - HEAD
-    path: /.*
-{{ end }}
+    {{- toYaml .Values.expose.rules | nindent 6 }}
+  {{ if .Values.expose.corsPolicy }}
+  corsPolicy:
+    {{- toYaml .Values.expose.corsPolicy | nindent 6 }}
+  {{- end }}
+{{- end }}

@@ -13,6 +13,7 @@ module.exports = async srv => {
   srv.on("READ", BusinessPartner, req => bupaSrv.run(req.query))
   //works locally
   messaging.on(`ce/sap/s4/beh/businesspartner/v1/BusinessPartner/Created/v1`, async msg => {
+    LOG.info("BUSINESSPARTNER create ", msg.data.BusinessPartner);
       const BUSINESSPARTNER = msg.data.BusinessPartner
       const bpEntity = await bupaSrv.run(SELECT.one(BusinessPartner).where({ businessPartnerId: BUSINESSPARTNER }));
       LOG.debug("bpEntity", bpEntity);
@@ -30,6 +31,7 @@ module.exports = async srv => {
   });
 
   messaging.on(`ce/sap/s4/beh/businesspartner/v1/BusinessPartner/Changed/v1`, async msg => {
+    LOG.info("BUSINESSPARTNER changed ", msg.data.BusinessPartner);
       const BUSINESSPARTNER = msg.data.BusinessPartner
       LOG.info("BUSINESSPARTNER", BUSINESSPARTNER);
       const bpIsAlive = await cds.run(SELECT.one(Notifications, (n) => n.verificationStatus_code).where({ businessPartnerId: BUSINESSPARTNER }));
@@ -46,19 +48,19 @@ module.exports = async srv => {
   });
 
   srv.before("SAVE", "Notifications", req => {
+    LOG.info("Notification bfr save", req.data.businessPartnerId);
     if (req.data.verificationStatus_code == "C") {
       req.error({ code: '400', message: "Cannot mark as COMPLETED. Please change to VERIFIED", numericSeverity: 2, target: 'verificationStatus_code' });
       LOG.debug("Invalid status transition to COMPLETED");
     }
   });
 
-  srv.before("PATCH", "Addresses", req => {
+  srv.before("UPDATE", "Addresses.drafts", req => {
     // To set whether address is Edited
     req.data.isModified = true;
   });
 
-  srv.after("PATCH", "Addresses", (data, req) => {
-    LOG.info("Received address in PATCH", data);
+  srv.after("UPDATE", "Addresses.drafts", (data, req) => {
     var isValidPinCode = true;
     if(data.postalCode){
       isValidPinCode = validatePostcode(data);
@@ -82,12 +84,12 @@ module.exports = async srv => {
   }
 
   async function emitEvent(result, req) {
-    LOG.info("emit event");
+    LOG.info("emit event ");
     const resultJoin = await cds.run(SELECT.one("my.businessPartnerValidation.Notifications as N").leftJoin("my.businessPartnerValidation.Addresses as A").on("N.businessPartnerId = A.businessPartnerId").where({ "N.ID": result.ID }));
     const statusValues = { "N": "NEW", "P": "PROCESS", "INV": "INVALID", "V": "VERIFIED" }
     // Format JSON as per serverless requires
     const payload = new CloudEvent({
-      type: "sap.kyma.custom.internal.bp.notification.v1",
+      type: "bp.notification.v1",
       source: "/default/bp.ems/bpems",
       data: {
           "businessPartner": resultJoin.businessPartnerId,

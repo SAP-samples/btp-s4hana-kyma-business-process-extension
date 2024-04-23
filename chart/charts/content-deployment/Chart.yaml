@@ -1,5 +1,5 @@
 apiVersion: v2
-name: content-deployment
 description: A Helm Chart for creating a Content Deployment job
+name: content-deployment
 type: application
-version: 0.1.0
+version: 1.6.0

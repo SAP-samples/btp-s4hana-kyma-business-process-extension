@@ -1,0 +1,15 @@
+{{- $deprecations := list -}}
+
+{{/*
+    v0.9.0 deprecations 
+*/}}
+{{- if not (hasKey .Values "readOnlyRootFilesystem") -}}
+    {{- $deprecations = append $deprecations "You are currently using the default value of readOnlyRootFilesystem, which is currently false, but will change to true soon. We recommend setting the value to true now and validate that your application works with the new default." -}}
+{{- end -}}
+
+{{- if gt (len $deprecations) 0 -}}
+Found usage of {{len $deprecations}} deprecated {{ len $deprecations | plural "feature" "features" }} in {{ .Chart.Name }}:
+{{- range $deprecations }}
+- {{ . }}
+{{- end }}
+{{- end -}}
