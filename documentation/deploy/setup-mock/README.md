@@ -17,7 +17,7 @@ To deploy the application, perform the following steps:
 
     ```shell
     cds build --production
-    pack build kymamock --path gen/srv --builder paketobuildpacks/builder:base
+    pack build kymamock --path gen/srv --builder paketobuildpacks/builder-jammy-base
     docker tag kymamock:latest <DOCKER_ACCOUNT>/kymamock:latest
     docker push <DOCKER_ACCOUNT>/kymamock:latest
     ```

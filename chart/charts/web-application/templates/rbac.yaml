@@ -1,0 +1,26 @@
+---
+{{- if .Values.rbac.rules }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  labels: {{- include "web-application.labels" . | nindent 4 }}
+  name: {{ include "web-application.fullname" . }}
+rules:
+{{- .Values.rbac.rules | toYaml | nindent 2}}
+---
+{{- end }}
+{{- if or .Values.rbac.rules .Values.rbac.role .Values.rbac.clusterRole }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  labels: {{- include "web-application.labels" . | nindent 4 }}
+  name: {{ include "web-application.fullname" . }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ tpl (default (include "web-application.fullname" .) .Values.serviceAccountName) . }}
+    namespace: {{ .Release.Namespace }}
+roleRef:
+  kind: {{ ternary "Role" "ClusterRole" (empty .Values.rbac.clusterRole) }}
+  name: {{ tpl (default (include "web-application.fullname" .) (default .Values.rbac.role .Values.rbac.clusterRole)) . }}
+  apiGroup: rbac.authorization.k8s.io
+{{- end }}

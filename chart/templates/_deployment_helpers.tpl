@@ -1,16 +1,4 @@
 {{/*
-Add custom env variables 
-*/}}
-{{- define "cap.env" -}}
-    {{- if . -}}
-        {{- range $name, $value := . }}
-- name: {{ $name | quote }}
-  value: {{ $value | quote }}
-        {{- end -}}
-    {{- end -}}
-{{- end -}}
-
-{{/*
 Get list of deployment names
 */}}
 {{- define "cap.deploymentNames" -}}
@@ -63,7 +51,11 @@ copied from web-application: web-application.fullname
 Get FQDN of a deployment
 */}}
 {{- define "cap.deploymentHostFull" -}}
-{{ include "cap.deploymentHost" $ }}.{{ $.Values.global.domain }}
+{{- if not .deployment.expose.enabled }}
+{{- printf "%s-%s.%s.svc.cluster.local:8080" .Release.Name .name .Release.Namespace }}
+{{- else }}
+{{- include "cap.deploymentHost" $ }}.{{ $.Values.global.domain }}
+{{- end -}}
 {{- end -}}
 
 {{/*
@@ -85,7 +77,11 @@ Backend Destinations
     {{- $deployment := (get $root.Values $destination.service) -}}
     {{- $srv := merge (dict "name" $destination.service "destination" $destination "deployment" $deployment) $root -}}
     {{- $destinationHost := include "cap.deploymentHostFull" $srv -}}
-    {{- $currentDestination := dict $nameKey $destination.name $urlKey (print  "https://" $destinationHost ) -}}
+    {{- $protocol := "https" -}}
+    {{- if not $deployment.expose.enabled }}
+    {{- $protocol = "http" -}}
+    {{- end -}}
+    {{- $currentDestination := dict $nameKey $destination.name $urlKey (print  $protocol "://" $destinationHost ) -}}
     {{- $currentDestination := merge $currentDestination $.defaultParameters -}}
     {{- $destinations = (append $destinations $currentDestination) -}}
 {{- end -}}

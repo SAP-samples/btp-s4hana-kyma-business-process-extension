@@ -2,8 +2,12 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  labels: {{- include "content-deployment.labels" . | nindent 4 }}
-  name: {{ include "content-deployment.jobName" . }}
+  labels: {{- include "content-deployment.internal.labels" . | nindent 4 }}
+  {{- if or .Values.annotations.job }}
+  annotations:
+  {{- tpl (toYaml .Values.annotations.job) $ | nindent 4 }}
+  {{- end }}
+  name: {{ include "content-deployment.internal.jobName" . }}
 spec:
   completions: 1
   manualSelector: false
@@ -11,20 +15,25 @@ spec:
   ttlSecondsAfterFinished: {{ mul .Values.ttlDaysAfterFinished 24 60 60 }}
   template:
     metadata:
-      labels: {{- include "content-deployment.labels" . | nindent 8 }}
+      labels: {{- include "content-deployment.internal.labels" . | nindent 8 }}
       annotations:
-        sidecar.istio.io/inject: "false"
-        container.apparmor.security.beta.kubernetes.io/{{ include "content-deployment.name" . }}: runtime/default
+        container.apparmor.security.beta.kubernetes.io/{{ include "content-deployment.internal.name" . }}: runtime/default
+        {{- if or .Values.annotations.job }}
+        {{- tpl (toYaml .Values.annotations.job) $ | nindent 8 }}
+        {{- end }}
     spec:
-      {{- if (include "content-deployment.imagePullSecretName" .) }}
+      {{- if (include "content-deployment.internal.imagePullSecretName" .) }}
       imagePullSecrets:
-        - name: {{ include "content-deployment.imagePullSecretName" . }}
+        - name: {{ include "content-deployment.internal.imagePullSecretName" . }}
       {{- end }}
       automountServiceAccountToken: false
-      serviceAccountName: {{ tpl (.Values.serviceAccountName | default (include "content-deployment.fullname" .)) $ }}
+      serviceAccountName: {{ tpl (.Values.serviceAccountName | default (include "content-deployment.internal.fullname" .)) $ }}
       containers:
-      - image: {{ include "content-deployment.imageName" . }}
-        name: {{ include "content-deployment.name" . }}
+      - image: {{ include "content-deployment.internal.imageName" . }}
+      {{- if ( or .Values.global.imagePullPolicy .Values.imagePullPolicy ) }}
+        imagePullPolicy: {{ .Values.imagePullPolicy |  default .Values.global.imagePullPolicy }}
+      {{- end }}
+        name: {{ include "content-deployment.internal.name" . }}
         env:
         - name: EXIT
           value: "1"
@@ -34,12 +43,12 @@ spec:
           value: /tmp
         - name: SERVICE_BINDING_ROOT
           value: /bindings
-        {{- $envVars := (include "content-deployment.processEnv" $ | fromJson) }}
+        {{- $envVars := (include "content-deployment.internal.processEnv" $ | fromJson) }}
         {{- if not (eq (len $envVars.vars) 0) }}
         {{- $envVars.vars | toYaml | nindent 8}}
         {{- end }}
         envFrom:
-        {{- $envFromVars := (include "content-deployment.processEnvFrom" . | fromJson) }}
+        {{- $envFromVars := (include "content-deployment.internal.processEnvFrom" . | fromJson) }}
         {{- if not (eq (len $envFromVars.vars) 0) }}
         {{- $envFromVars.vars | toYaml | nindent 8}}
         {{- end }}
@@ -51,16 +60,17 @@ spec:
             drop:
             - ALL
           privileged: false
+          runAsNonRoot: true
+          {{- if .Values.runAsUser }}
+          runAsUser: {{ .Values.runAsUser }}
+          {{- end }}
           readOnlyRootFilesystem: false
         volumeMounts:
         - mountPath: /tmp
           name: tmp
-        {{- include "content-deployment.serviceMounts" . | nindent 8 }}
+        {{- include "content-deployment.internal.serviceMounts" . | nindent 8 }}
       restartPolicy: OnFailure
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
       volumes:
       - name: tmp
         emptyDir: {}
-      {{- include "content-deployment.serviceVolumes" . | nindent 6 }}
+      {{- include "content-deployment.internal.serviceVolumes" . | nindent 6 }}
