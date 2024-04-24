@@ -9,7 +9,7 @@ HDI container is created in SAP HANA Cloud and a corresponding SAP HANA secret w
 
 ## Database Tables That Are Used
 
-<image src="./ER.png"/>
+![er](./ER.png)
 
 This database module creates the following tables:
 - Notifications
