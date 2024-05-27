@@ -14,7 +14,7 @@
 
 ### Add HTML5 applications to necessary Group and Role
   
-1. Select on **Provider Manager** to check the Content Providers and to refresh the list of HTML5 Applications. 
+1. Select on **Channel Manager** to check the Content Providers and to refresh the list of HTML5 Applications. 
 
    ![check Created Site](./images/checkCreatedSite.png)
    
@@ -22,27 +22,31 @@
 
    ![refresh Content](./images/refreshContent.png)
    
-3. In **Content Manager**, Select  **Content Explorer** tab and Select **HTML5 Apps** to see the list of HTML5 applications to be added to the SAP Build Work Zone, standard Edition site.
+3. In **Content Manager**, Select  **Content Explorer** tab 
 
-    ![open Content Explorer](./images/openContentExplorer.png)
+   ![open Content Explorer](./images/openContentExplorer.png)
+
+4. Select **HTML5 Apps** to see the list of HTML5 applications to be added to the SAP Build Work Zone, standard Edition site.
+
+   ![open Content Explorer](./images/openContentExplorer1.png)
     
-4. Select your HTML5 application: **Business Partner** from the list and Select **Add to Content**. 
+5. Select your HTML5 application: **Business Partner** from the list and Select **Add**. 
 
    ![add App to Content](./images/addApptoContent.png)
 
-5. Select **My Content** and choose **New** and Select **New Role** to create a role for this applicationapplications.
+6. Navigate back to Content Manager and choose **Create** and Select **New Role** to create a role for this applications.
 
    ![addSFSFRole1](./images/addSFSFRole1.png)
    
-6. Enter a meaningful **Title** and **Description**. Navigate to **Assignments** section, Select the **Search** icon which displays both the HTML5 applications, Select the **+** icon next to **Business Partner** app and Select **Save** to save the new role which has now access to the HTML5 application.
+7. Enter a meaningful **Title** and **Description** for the role. Navigate to **Apps** section, Switch on the **Assignment Status**  for Business Partner app and Select **Save** to save the new role which has now access to the HTML5 application.
 
    ![addSFSFRole2](./images/addSFSFRole2.png)
 
-7. Select **back** icon to go back to the previous screen and Select **New** and Select **Group** to create a new group.
+8. Navigate back to **Content Manager** and Select **Create** and Select **Group** to create a new group.
 
    ![create Group1](./images/createGroup1.png)
    
-8. Enter a group name, for example: **BPGroup** and a valid description. In the **Assignments** section, Select the **Search** icon which displays the HTML5 application, Select the **+** icon next to **Business Partner** app and Select **Save** to save the new group.
+9.  Enter a meaningful **Title** and **Description** for the group. Navigate to **Apps** section, Switch on the **Assignment Status**  for Business Partner app and Select **Save** to save the new role which has now access to the HTML5 application.
 
    ![create Group2](./images/createGroup2.png)
    
