@@ -10,6 +10,3 @@ dependencies:
   - name: web-application
     alias: srv
     version: ">0.0.0"
-  - name: content-deployment
-    alias: hana-deployer
-    version: ">0.0.0"
